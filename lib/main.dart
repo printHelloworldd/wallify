@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallify/authentication/authentication_page/authentication_page.dart';
+import 'package:wallify/components/custom_bottom_nav_bar.dart';
+import 'package:wallify/home%20page/home_page.dart';
 import 'package:wallify/theme/theme_provider.dart';
 
 void main() {
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      home: AuthenticationPage(),
+      home: CustomBottomNavBar(),
     );
   }
 }
