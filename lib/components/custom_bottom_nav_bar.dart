@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:wallify/authentication/create_account_page/create_account_page.dart';
 import 'package:wallify/authentication/login_page/login_page.dart';
 import 'package:wallify/home%20page/home_page.dart';
+import 'package:wallify/profile_page/profile_page.dart';
+import 'package:wallify/saved_wallpapers_page/saved_wallpapers_page.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   const CustomBottomNavBar({super.key});
@@ -17,8 +19,8 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    LoginPage(),
-    const CreateAccountPage()
+    const SavedWallpapersPage(),
+    ProfilePage(),
   ];
 
   void changePageIndex(int index) {
