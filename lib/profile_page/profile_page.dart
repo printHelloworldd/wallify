@@ -6,11 +6,22 @@ what should be here
 3. Privacy Policy
 4. Notifications
 5. Settings
+  - Language
+  - App color theme
+  - Clear search history
+  - Clear cahce
+  - Recommend
+  - Rate app
+  - Send feedback
+  - Privacy Policy
+  - App version info
 6. Sign out button
 
 */
 
 import 'package:flutter/material.dart';
+import 'package:wallify/profile_page/components/custom_text_button.dart';
+import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/theme/theme.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -18,6 +29,21 @@ class ProfilePage extends StatelessWidget {
 
   final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
   final lightTextTheme = lightTheme.textTheme;
+
+  List<String> _buttons = [
+    "Settings",
+    "Recommend",
+    "Rate app",
+    "Send feedback",
+    "Privacy Policy"
+  ];
+  List<IconData> _buttonIcons = [
+    Icons.settings,
+    Icons.share,
+    Icons.star_border,
+    Icons.email,
+    Icons.verified_user
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +67,74 @@ class ProfilePage extends StatelessWidget {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  Text("Name Surname"),
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Name Surname",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                  ),
                 ],
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
 
-              // Buttons
-              TextButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.settings),
-                label: Text("Settings"),
+              // Options
+              ListView.separated(
+                shrinkWrap: true,
+                itemCount: 5,
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Divider(
+                    color: Colors.grey,
+                    thickness: 1,
+                    height: 0,
+                  );
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  return CustomTextButton(
+                    onPressed: () {
+                      if (_buttons[index] == "Settings") {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SettingsPage()));
+                      } else if (_buttons[index] == "Recommend") {
+                      } else if (_buttons[index] == "Rate app") {
+                      } else if (_buttons[index] == "Send feedback") {
+                      } else if (_buttons[index] == "Privacy Policy") {}
+                    },
+                    text: _buttons[index],
+                    icon: _buttonIcons[index],
+                  );
+                },
               ),
+
+              const SizedBox(height: 40),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: lightButtonTheme!.primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Sign out",
+                        style: TextStyle(
+                          color: lightButtonTheme!.onPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ),
