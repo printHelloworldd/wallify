@@ -9,7 +9,7 @@ what should be here
   - Language
   - App color theme
   - Clear search history
-  - Clear cahce
+  - Clear cache
   - Recommend
   - Rate app
   - Send feedback
