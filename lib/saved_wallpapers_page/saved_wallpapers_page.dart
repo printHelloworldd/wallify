@@ -32,7 +32,7 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
 
               // Page title
               Align(
@@ -43,14 +43,14 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                 ),
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
 
               Divider(
                 thickness: 0.5,
                 color: lightTheme.dividerColor,
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
 
               // Images
               Expanded(

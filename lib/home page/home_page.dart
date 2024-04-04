@@ -7,6 +7,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
+import 'package:wallify/image_page/image_page.dart';
 
 import 'package:wallify/theme/theme.dart';
 
@@ -187,12 +188,26 @@ class _HomePageState extends State<HomePage>
                                     crossAxisCount: 2),
                             itemBuilder: (context, index) => Padding(
                               padding: const EdgeInsets.all(4),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: Image.asset(
-                                  "assets/images/${images[index]}",
-                                  fit: BoxFit.cover,
+                              child: GestureDetector(
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.asset(
+                                    "assets/images/${images[index]}",
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ImagePage(
+                                        imagePath:
+                                            "assets/images/${images[index]}",
+                                      ),
+                                    ),
+                                  );
+                                },
+                                onLongPress: () {},
                               ),
                             ),
                           ),

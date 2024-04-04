@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:wallify/profile_page/components/settings_tile.dart';
 import 'package:wallify/theme/theme.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   SettingsPage({super.key});
 
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
   final lightTextTheme = lightTheme.textTheme;
 
@@ -60,14 +65,15 @@ class SettingsPage extends StatelessWidget {
             children: [
               Expanded(
                 child: ListView.builder(
-                    itemCount: settingsTiles.length,
-                    itemBuilder: ((context, index) {
-                      return SettingsTile(
-                        icon: settingsTiles[index][0],
-                        title: settingsTiles[index][1],
-                        subtitle: settingsTiles[index][2],
-                      );
-                    })),
+                  itemCount: settingsTiles.length,
+                  itemBuilder: (context, index) {
+                    return SettingsTile(
+                      icon: settingsTiles[index][0],
+                      title: settingsTiles[index][1],
+                      subtitle: settingsTiles[index][2],
+                    );
+                  },
+                ),
               )
             ],
           ),
