@@ -128,7 +128,6 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                         : Icons.person_outline),
                     color: _currentPageIndex == 2 ? Colors.white : Colors.black,
                     onPressed: () {
-                      print('Profile button pressed');
                       changePageIndex(2);
                       _pageController.animateToPage(
                         2,

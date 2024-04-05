@@ -30,7 +30,7 @@ class ImagePage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 10),
+            // const SizedBox(height: 10),
 
             // image
             ClipRRect(
@@ -43,34 +43,72 @@ class ImagePage extends StatelessWidget {
               ),
             ),
 
+            const Spacer(),
+
             // buttons panel
-            Row(
-              children: [
-                // donwload button
-                IconButton(
-                  icon: Icon(Icons.file_download),
-                  onPressed: () {},
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  // donwload button
+                  IconButton(
+                    icon: Icon(Icons.file_download, color: Colors.black),
+                    onPressed: () {},
+                  ),
 
-                // share button
-                IconButton(
-                  icon: Icon(Icons.share),
-                  onPressed: () {},
-                ),
+                  const SizedBox(width: 10),
 
-                // save button
-                IconButton(
-                  icon: Icon(Icons.bookmark),
-                  onPressed: () {},
-                ),
+                  // share button
+                  IconButton(
+                    icon: Icon(Icons.share, color: Colors.black),
+                    onPressed: () {},
+                  ),
 
-                // install button
-                IconButton(
-                  icon: Icon(Icons.file_download),
-                  onPressed: () {},
-                ),
-              ],
+                  const SizedBox(width: 10),
+
+                  // save button
+                  IconButton(
+                    icon: Icon(Icons.bookmark_border, color: Colors.black),
+                    onPressed: () {},
+                  ),
+
+                  const Spacer(),
+
+                  // install button
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 34, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: lightButtonTheme!.primary,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Row(
+                          children: [
+                            Text(
+                              "Install",
+                              style: TextStyle(
+                                color: lightButtonTheme.onPrimary,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Icon(
+                              Icons.install_mobile,
+                              color: lightButtonTheme.onPrimary,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
