@@ -44,14 +44,24 @@ class _HomePageState extends State<HomePage>
 
   final List<String> tabs = ["Cars", "Anime", "Film", "Nature"];
 
+  // final List<String> images = [
+  //   "amine-mayoufi-_5PyWBp9HqA-unsplash.jpg",
+  //   "john-towner-3Kv48NS4WUU-unsplash.jpg",
+  //   "mads-schmidt-rasmussen-6YmzwamGzCg-unsplash.jpg",
+  //   "marcelo-cidrack-7jZNgIuJrCM-unsplash.jpg",
+  //   "marcelo-vaz-ka6WGHXcFMY-unsplash.jpg",
+  //   "paul-pastourmatzis-KT3WlrL_bsg-unsplash.jpg",
+  //   "tobias-rademacher-NuBvAE6VfSM-unsplash.jpg"
+  // ];
+
   final List<String> images = [
-    "amine-mayoufi-_5PyWBp9HqA-unsplash.jpg",
-    "john-towner-3Kv48NS4WUU-unsplash.jpg",
-    "mads-schmidt-rasmussen-6YmzwamGzCg-unsplash.jpg",
-    "marcelo-cidrack-7jZNgIuJrCM-unsplash.jpg",
-    "marcelo-vaz-ka6WGHXcFMY-unsplash.jpg",
-    "paul-pastourmatzis-KT3WlrL_bsg-unsplash.jpg",
-    "tobias-rademacher-NuBvAE6VfSM-unsplash.jpg"
+    "https://unsplash.com/photos/gray-car-FcyipqujfGg",
+    "https://unsplash.com/photos/gray-sports-coupe-parking-during-daytime-6lSBynPRaAQ",
+    "https://unsplash.com/photos/black-and-red-lamborghini-aventador-sv-rear-left-side-aTX_bRaOZnA",
+    "https://unsplash.com/photos/yellow-porsche-911-on-road-during-daytime-DwxlhTvC16Q",
+    "https://images.unsplash.com/photo-1514316454349-750a7fd3da3a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
+    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
+    "https://unsplash.com/photos/orange-lamborghini-car-oUBjd22gF6w",
   ];
 
   bool isPressed = false;
@@ -191,8 +201,8 @@ class _HomePageState extends State<HomePage>
                               child: GestureDetector(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
-                                  child: Image.asset(
-                                    "assets/images/${images[index]}",
+                                  child: Image.network(
+                                    images[index],
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -201,8 +211,7 @@ class _HomePageState extends State<HomePage>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ImagePage(
-                                        imagePath:
-                                            "assets/images/${images[index]}",
+                                        imagePath: images[index],
                                       ),
                                     ),
                                   );

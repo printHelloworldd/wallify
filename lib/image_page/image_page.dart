@@ -1,9 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:wallify/theme/theme.dart';
 
-class ImagePage extends StatelessWidget {
+class ImagePage extends StatefulWidget {
   final String imagePath;
 
   const ImagePage({
@@ -12,9 +16,128 @@ class ImagePage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<ImagePage> createState() => _ImagePageState();
+}
+
+class _ImagePageState extends State<ImagePage> {
+  // static const _url =
+  //     'https://dosomthings.com/wp-content/uploads/2023/07/How-to-download-and-save-image-to-file-in-FlutterDosomthings.com_-1024x576.png';
+  // var random = Random();
+
+  // Future<void> _saveImage(BuildContext context) async {
+  //   final scaffoldMessenger = ScaffoldMessenger.of(context);
+  //   late String message;
+
+  //   try {
+  //     // Download image
+  //     final http.Response response = await http.get(Uri.parse(_url));
+
+  //     // Get temporary directory
+  //     final dir = await getTemporaryDirectory();
+
+  //     // Create an image name
+  //     var filename = '${dir.path}/SaveImage${random.nextInt(100)}.png';
+
+  //     // Save to filesystem
+  //     final file = File(filename);
+  //     await file.writeAsBytes(response.bodyBytes);
+
+  //     // Ask the user to save it
+  //     final params = SaveFileDialogParams(sourceFilePath: file.path);
+  //     final finalPath = await FlutterFileDialog.saveFile(params: params);
+
+  //     if (finalPath != null) {
+  //       message = 'Image saved to disk';
+  //     }
+  //   } catch (e) {
+  //     message = e.toString();
+  //     scaffoldMessenger.showSnackBar(SnackBar(
+  //       content: Text(
+  //         message,
+  //         style: TextStyle(
+  //           fontSize: 12,
+  //           color: Colors.white,
+  //           fontWeight: FontWeight.bold,
+  //         ),
+  //       ),
+  //       backgroundColor: Color(0xFFe91e63),
+  //     ));
+  //   }
+
+  //   if (message != null) {
+  //     scaffoldMessenger.showSnackBar(SnackBar(
+  //       content: Text(
+  //         message,
+  //         style: TextStyle(
+  //           fontSize: 12,
+  //           color: Colors.white,
+  //           fontWeight: FontWeight.bold,
+  //         ),
+  //       ),
+  //       backgroundColor: Color(0xFFe91e63),
+  //     ));
+  //   }
+  // }
+
+  Future openFile({required String url, String? fileName}) async {
+    final name = fileName ?? url.split("/").last;
+    final file = await downloadFile(url, name);
+    if (file == null) return;
+
+    print("Path: ${file.path}");
+
+    // OpenFile.open(file.path);
+  }
+
+  // download file into private folder not visible to user
+  Future<File?> downloadFile(String url, String name) async {
+    final appStorage = await getApplicationDocumentsDirectory();
+    final file = File("${appStorage.path}/$name");
+
+    try {
+      final response = await Dio().get(
+        url,
+        options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          receiveTimeout: Duration.zero,
+        ),
+      );
+
+      final raf = file.openSync(mode: FileMode.write);
+      raf.writeFromSync(response.data);
+      await raf.close();
+
+      return file;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // save image to favourites
+  void saveImage() {}
+
+  @override
   Widget build(BuildContext context) {
     final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
     final lightTextTheme = lightTheme.textTheme;
+
+    bool downloading = false;
+
+    // Future<void> downloadImage(String url) async {
+    //   setState(() {
+    //     downloading = true;
+    //   });
+    //   // const _url = "https://picsum.photos/200";
+    //   await WebImageDownloader.downloadImageFromWeb(
+    //     url,
+    //     name: 'image01',
+    //     // imageType: ImageType.png,
+    //   );
+    //   setState(() {
+    //     downloading = false;
+    //   });
+    // }
 
     return Scaffold(
       backgroundColor: lightTheme.scaffoldBackgroundColor,
@@ -35,8 +158,8 @@ class ImagePage extends StatelessWidget {
             // image
             ClipRRect(
               borderRadius: BorderRadius.circular(24),
-              child: Image.asset(
-                imagePath,
+              child: Image.network(
+                widget.imagePath,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height / 1.25,
                 fit: BoxFit.cover,
@@ -53,7 +176,9 @@ class ImagePage extends StatelessWidget {
                   // donwload button
                   IconButton(
                     icon: Icon(Icons.file_download, color: Colors.black),
-                    onPressed: () {},
+                    onPressed: () => openFile(
+                      url: widget.imagePath,
+                    ),
                   ),
 
                   const SizedBox(width: 10),

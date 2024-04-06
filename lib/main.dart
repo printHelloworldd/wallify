@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:wallify/authentication/authentication_page/authentication_page.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
 import 'package:wallify/home%20page/home_page.dart';
+import 'package:wallify/image_page/image_page.dart';
+import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/theme/theme_provider.dart';
 
 void main() {
@@ -21,7 +23,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
-      home: CustomBottomNavBar(),
+      home: const CustomBottomNavBar(),
+      routes: {
+        "/settings_page": (context) => SettingsPage(),
+      },
     );
   }
 }

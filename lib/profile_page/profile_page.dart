@@ -95,10 +95,7 @@ class ProfilePage extends StatelessWidget {
                   return CustomTextButton(
                     onPressed: () {
                       if (_buttons[index] == "Settings") {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SettingsPage()));
+                        Navigator.pushNamed(context, "/settings_page");
                       } else if (_buttons[index] == "Recommend") {
                       } else if (_buttons[index] == "Rate app") {
                       } else if (_buttons[index] == "Send feedback") {
