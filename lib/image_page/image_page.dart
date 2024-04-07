@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:wallify/image_page/image_data_provider.dart';
 
 import 'package:wallify/theme/theme.dart';
 
@@ -11,15 +13,55 @@ class ImagePage extends StatefulWidget {
   final String imagePath;
 
   const ImagePage({
-    Key? key,
+    super.key,
     required this.imagePath,
-  }) : super(key: key);
+  });
 
   @override
   State<ImagePage> createState() => _ImagePageState();
 }
 
 class _ImagePageState extends State<ImagePage> {
+  bool isFavouriteImage = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadFavouriteImage();
+  }
+
+  // load existing note
+  void loadFavouriteImage() {
+    Provider.of<ImageDataProvider>(context, listen: false).initializeImages();
+    List<String> allFavouritesImages =
+        Provider.of<ImageDataProvider>(context, listen: false).getAllImages();
+    if (allFavouritesImages.contains(widget.imagePath)) {
+      setState(() {
+        isFavouriteImage = true;
+      });
+    }
+  }
+
+  // save image to favourites
+  void saveImage() {
+    Provider.of<ImageDataProvider>(context, listen: false).addImage(
+      widget.imagePath,
+    );
+    setState(() {
+      isFavouriteImage = true;
+    });
+  }
+
+  // delete image from favourites
+  void deleteImage() {
+    Provider.of<ImageDataProvider>(context, listen: false).deleteImage(
+      widget.imagePath,
+    );
+    setState(() {
+      isFavouriteImage = false;
+    });
+  }
+
   // static const _url =
   //     'https://dosomthings.com/wp-content/uploads/2023/07/How-to-download-and-save-image-to-file-in-FlutterDosomthings.com_-1024x576.png';
   // var random = Random();
@@ -114,9 +156,6 @@ class _ImagePageState extends State<ImagePage> {
     }
   }
 
-  // save image to favourites
-  void saveImage() {}
-
   @override
   Widget build(BuildContext context) {
     final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
@@ -175,7 +214,7 @@ class _ImagePageState extends State<ImagePage> {
                 children: [
                   // donwload button
                   IconButton(
-                    icon: Icon(Icons.file_download, color: Colors.black),
+                    icon: const Icon(Icons.file_download, color: Colors.black),
                     onPressed: () => openFile(
                       url: widget.imagePath,
                     ),
@@ -185,7 +224,7 @@ class _ImagePageState extends State<ImagePage> {
 
                   // share button
                   IconButton(
-                    icon: Icon(Icons.share, color: Colors.black),
+                    icon: const Icon(Icons.share, color: Colors.black),
                     onPressed: () {},
                   ),
 
@@ -193,8 +232,14 @@ class _ImagePageState extends State<ImagePage> {
 
                   // save button
                   IconButton(
-                    icon: Icon(Icons.bookmark_border, color: Colors.black),
-                    onPressed: () {},
+                    icon: Icon(
+                        isFavouriteImage
+                            ? Icons.bookmark
+                            : Icons.bookmark_border,
+                        color: Colors.black),
+                    onPressed: () {
+                      isFavouriteImage ? deleteImage() : saveImage();
+                    },
                   ),
 
                   const Spacer(),

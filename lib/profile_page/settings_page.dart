@@ -3,7 +3,7 @@ import 'package:wallify/profile_page/components/settings_tile.dart';
 import 'package:wallify/theme/theme.dart';
 
 class SettingsPage extends StatefulWidget {
-  SettingsPage({super.key});
+  const SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();

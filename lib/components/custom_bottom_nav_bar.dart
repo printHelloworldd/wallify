@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:wallify/authentication/create_account_page/create_account_page.dart';
-import 'package:wallify/authentication/login_page/login_page.dart';
 import 'package:wallify/home%20page/home_page.dart';
 import 'package:wallify/profile_page/profile_page.dart';
 import 'package:wallify/saved_wallpapers_page/saved_wallpapers_page.dart';

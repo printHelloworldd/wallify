@@ -33,7 +33,7 @@ class LoginPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                "Welcome back, you\'ve been missed!",
+                "Welcome back, you've been missed!",
                 style: lightTextTheme.titleSmall,
               ),
 

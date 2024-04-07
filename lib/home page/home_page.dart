@@ -1,12 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:dot_navigation_bar/dot_navigation_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:wallify/components/custom_bottom_nav_bar.dart';
 import 'package:wallify/image_page/image_page.dart';
 
 import 'package:wallify/theme/theme.dart';
@@ -281,12 +275,12 @@ class _CirclePainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    late Paint _paint;
-    _paint = Paint()..color = color;
-    _paint = _paint..isAntiAlias = true;
+    late Paint paint;
+    paint = Paint()..color = color;
+    paint = paint..isAntiAlias = true;
     final Offset circleOffset = offset +
         Offset(
             configuration.size!.width / 2, configuration.size!.height - radius);
-    canvas.drawCircle(circleOffset, radius, _paint);
+    canvas.drawCircle(circleOffset, radius, paint);
   }
 }

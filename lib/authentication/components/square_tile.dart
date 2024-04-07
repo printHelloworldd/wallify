@@ -12,9 +12,9 @@ class SquareTile extends StatelessWidget {
   );
 
   SquareTile({
-    Key? key,
+    super.key,
     required this.imagePath,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

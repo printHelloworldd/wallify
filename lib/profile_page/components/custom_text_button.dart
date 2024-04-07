@@ -7,11 +7,11 @@ class CustomTextButton extends StatelessWidget {
   final IconData icon;
 
   const CustomTextButton({
-    Key? key,
+    super.key,
     required this.onPressed,
     required this.text,
     required this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

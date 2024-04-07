@@ -21,7 +21,6 @@ what should be here
 
 import 'package:flutter/material.dart';
 import 'package:wallify/profile_page/components/custom_text_button.dart';
-import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/theme/theme.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -30,14 +29,14 @@ class ProfilePage extends StatelessWidget {
   final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
   final lightTextTheme = lightTheme.textTheme;
 
-  List<String> _buttons = [
+  final List<String> _buttons = [
     "Settings",
     "Recommend",
     "Rate app",
     "Send feedback",
     "Privacy Policy"
   ];
-  List<IconData> _buttonIcons = [
+  final List<IconData> _buttonIcons = [
     Icons.settings,
     Icons.share,
     Icons.star_border,

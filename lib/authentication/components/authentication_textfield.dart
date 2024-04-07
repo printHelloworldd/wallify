@@ -15,11 +15,11 @@ class AuthenticationTextField extends StatelessWidget {
   );
 
   AuthenticationTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.obscureText,
     required this.hintText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
