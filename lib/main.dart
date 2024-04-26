@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
@@ -8,9 +7,13 @@ import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/theme/theme_provider.dart';
 
 void main() async {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    // Log or handle the error details
+    print("$details");
+  };
+
   // initialize hive
-  final appDocumentDir = await getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDir.path);
+  await Hive.initFlutter();
 
   // open a hivebox
   await Hive.openBox("test_image_database");

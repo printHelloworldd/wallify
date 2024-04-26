@@ -1,10 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'dart:async';
+import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
+import 'package:gallery_saver_updated/gallery_saver.dart';
+import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+// import 'package:share_plus/share_plus.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 
 import 'package:wallify/theme/theme.dart';
@@ -62,65 +70,6 @@ class _ImagePageState extends State<ImagePage> {
     });
   }
 
-  // static const _url =
-  //     'https://dosomthings.com/wp-content/uploads/2023/07/How-to-download-and-save-image-to-file-in-FlutterDosomthings.com_-1024x576.png';
-  // var random = Random();
-
-  // Future<void> _saveImage(BuildContext context) async {
-  //   final scaffoldMessenger = ScaffoldMessenger.of(context);
-  //   late String message;
-
-  //   try {
-  //     // Download image
-  //     final http.Response response = await http.get(Uri.parse(_url));
-
-  //     // Get temporary directory
-  //     final dir = await getTemporaryDirectory();
-
-  //     // Create an image name
-  //     var filename = '${dir.path}/SaveImage${random.nextInt(100)}.png';
-
-  //     // Save to filesystem
-  //     final file = File(filename);
-  //     await file.writeAsBytes(response.bodyBytes);
-
-  //     // Ask the user to save it
-  //     final params = SaveFileDialogParams(sourceFilePath: file.path);
-  //     final finalPath = await FlutterFileDialog.saveFile(params: params);
-
-  //     if (finalPath != null) {
-  //       message = 'Image saved to disk';
-  //     }
-  //   } catch (e) {
-  //     message = e.toString();
-  //     scaffoldMessenger.showSnackBar(SnackBar(
-  //       content: Text(
-  //         message,
-  //         style: TextStyle(
-  //           fontSize: 12,
-  //           color: Colors.white,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //       backgroundColor: Color(0xFFe91e63),
-  //     ));
-  //   }
-
-  //   if (message != null) {
-  //     scaffoldMessenger.showSnackBar(SnackBar(
-  //       content: Text(
-  //         message,
-  //         style: TextStyle(
-  //           fontSize: 12,
-  //           color: Colors.white,
-  //           fontWeight: FontWeight.bold,
-  //         ),
-  //       ),
-  //       backgroundColor: Color(0xFFe91e63),
-  //     ));
-  //   }
-  // }
-
   Future openFile({required String url, String? fileName}) async {
     final name = fileName ?? url.split("/").last;
     final file = await downloadFile(url, name);
@@ -156,27 +105,45 @@ class _ImagePageState extends State<ImagePage> {
     }
   }
 
+  // save image to gallery
+  void downloadImage() async {
+    String url = widget.imagePath;
+    try {
+      final bytes = (await get(Uri.parse(url))).bodyBytes;
+      final dir = await getTemporaryDirectory();
+      final file =
+          await File("${dir.path}/wallpaper_image.png").writeAsBytes(bytes);
+
+      log("filePath: ${file.path}");
+      await GallerySaver.saveImage(file.path, albumName: "Wallify")
+          .then((success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Downloaded to Gallery!")),
+        );
+      });
+    } catch (e) {
+      log("downloadImageE: $e");
+    }
+  }
+
+  Future<void> setWallpaper() async {
+    try {
+      String url = "https://source.unsplash.com/random";
+      int location = WallpaperManager
+          .BOTH_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
+      var file = await DefaultCacheManager().getSingleFile(url);
+      final bool result =
+          await WallpaperManager.setWallpaperFromFile(file.path, location);
+      print(result);
+    } on PlatformException {}
+  }
+
   @override
   Widget build(BuildContext context) {
     final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
     final lightTextTheme = lightTheme.textTheme;
 
     bool downloading = false;
-
-    // Future<void> downloadImage(String url) async {
-    //   setState(() {
-    //     downloading = true;
-    //   });
-    //   // const _url = "https://picsum.photos/200";
-    //   await WebImageDownloader.downloadImageFromWeb(
-    //     url,
-    //     name: 'image01',
-    //     // imageType: ImageType.png,
-    //   );
-    //   setState(() {
-    //     downloading = false;
-    //   });
-    // }
 
     return Scaffold(
       backgroundColor: lightTheme.scaffoldBackgroundColor,
@@ -215,9 +182,7 @@ class _ImagePageState extends State<ImagePage> {
                   // donwload button
                   IconButton(
                     icon: const Icon(Icons.file_download, color: Colors.black),
-                    onPressed: () => openFile(
-                      url: widget.imagePath,
-                    ),
+                    onPressed: downloadImage,
                   ),
 
                   const SizedBox(width: 10),
@@ -225,7 +190,16 @@ class _ImagePageState extends State<ImagePage> {
                   // share button
                   IconButton(
                     icon: const Icon(Icons.share, color: Colors.black),
-                    onPressed: () {},
+                    onPressed: () async {
+                      // final result = await Share.shareWithResult(
+                      //     "Test share text\n\n${widget.imagePath}");
+                      //
+                      // if (result.status == ShareResultStatus.success) {
+                      //   print('Thank you for sharing my website!');
+                      // } else {
+                      //   print("Could not share the image");
+                      // }
+                    },
                   ),
 
                   const SizedBox(width: 10),
@@ -246,7 +220,7 @@ class _ImagePageState extends State<ImagePage> {
 
                   // install button
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => setWallpaper(),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 34, vertical: 8),
