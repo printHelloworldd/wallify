@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   
+  device_preview: ^1.1.0
+  
   google_fonts:
 
   cupertino_icons: 
@@ -31,6 +33,7 @@ dependencies:
   gallery_saver_updated: ^3.0.0
 
   flutter_wallpaper_manager:
+  async_wallpaper: ^2.0.3
 
   flutter_cache_manager: 
   # uuid: 
@@ -40,7 +43,7 @@ dependencies:
   # collection: 
   # clock: 
 
-  # share_plus:
+  share_plus: ^9.0.0
   # url_launcher_linux: 
   # url_launcher_platform_interface: 
   # cross_file: 

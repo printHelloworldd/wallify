@@ -2,16 +2,16 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:async_wallpaper/async_wallpaper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'dart:async';
-import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
 import 'package:gallery_saver_updated/gallery_saver.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 // import 'package:share_plus/share_plus.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 
@@ -70,6 +70,7 @@ class _ImagePageState extends State<ImagePage> {
     });
   }
 
+  // download the image {Linux / Windows / Web}
   Future openFile({required String url, String? fileName}) async {
     final name = fileName ?? url.split("/").last;
     final file = await downloadFile(url, name);
@@ -105,7 +106,7 @@ class _ImagePageState extends State<ImagePage> {
     }
   }
 
-  // save image to gallery
+  // save image to gallery {Android / IOS}
   void downloadImage() async {
     String url = widget.imagePath;
     try {
@@ -126,16 +127,53 @@ class _ImagePageState extends State<ImagePage> {
     }
   }
 
-  Future<void> setWallpaper() async {
+  void setWallpaper(int screen) async {
+    String result;
+    String url = widget.imagePath;
+    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      String url = "https://source.unsplash.com/random";
-      int location = WallpaperManager
-          .BOTH_SCREEN; // or location = WallpaperManager.LOCK_SCREEN;
-      var file = await DefaultCacheManager().getSingleFile(url);
-      final bool result =
-          await WallpaperManager.setWallpaperFromFile(file.path, location);
-      print(result);
-    } on PlatformException {}
+      /* 
+        Home screen == 0
+        Lock screen == 1
+        Both screens == 2 
+      */
+      if (screen == 0) {
+        result = await AsyncWallpaper.setWallpaper(
+          url: url,
+          wallpaperLocation: AsyncWallpaper.HOME_SCREEN,
+          goToHome: false,
+          toastDetails: ToastDetails.success(),
+          errorToastDetails: ToastDetails.error(),
+        )
+            ? 'Wallpaper set'
+            : 'Failed to get wallpaper.';
+      } else if (screen == 1) {
+        result = await AsyncWallpaper.setWallpaper(
+          url: url,
+          wallpaperLocation: AsyncWallpaper.LOCK_SCREEN,
+          goToHome: false,
+          toastDetails: ToastDetails.success(),
+          errorToastDetails: ToastDetails.error(),
+        )
+            ? 'Wallpaper set'
+            : 'Failed to get wallpaper.';
+      } else if (screen == 2) {
+        result = await AsyncWallpaper.setWallpaper(
+          url: url,
+          wallpaperLocation: AsyncWallpaper.BOTH_SCREENS,
+          goToHome: false,
+          toastDetails: ToastDetails.success(),
+          errorToastDetails: ToastDetails.error(),
+        )
+            ? 'Wallpaper set'
+            : 'Failed to get wallpaper.';
+      } else {
+        result = 'Wrong wallpaper location provided';
+      }
+    } on PlatformException {
+      result = 'Failed to get wallpaper.';
+    }
+    log(result);
   }
 
   @override
@@ -191,14 +229,14 @@ class _ImagePageState extends State<ImagePage> {
                   IconButton(
                     icon: const Icon(Icons.share, color: Colors.black),
                     onPressed: () async {
-                      // final result = await Share.shareWithResult(
-                      //     "Test share text\n\n${widget.imagePath}");
-                      //
-                      // if (result.status == ShareResultStatus.success) {
-                      //   print('Thank you for sharing my website!');
-                      // } else {
-                      //   print("Could not share the image");
-                      // }
+                      final result = await Share.share(
+                          "Test share text\n\n${widget.imagePath}");
+
+                      if (result.status == ShareResultStatus.success) {
+                        print('Thank you for sharing my app!');
+                      } else {
+                        print("Could not share the image");
+                      }
                     },
                   ),
 
@@ -220,7 +258,177 @@ class _ImagePageState extends State<ImagePage> {
 
                   // install button
                   GestureDetector(
-                    onTap: () => setWallpaper(),
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            height: MediaQuery.of(context).size.height / 3.5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 16),
+                                  child: Text(
+                                    "Set as wallpaper",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    setWallpaper(0);
+                                    Navigator.pop(context);
+                                  },
+                                  style: ButtonStyle(
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                            EdgeInsets.zero),
+                                    shape: MaterialStateProperty.all<
+                                        OutlinedBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                    backgroundColor:
+                                        MaterialStateColor.resolveWith(
+                                      (Set<MaterialState> states) {
+                                        if (states.contains(
+                                                MaterialState.hovered) ||
+                                            states.contains(
+                                                MaterialState.pressed)) {
+                                          return Colors.grey[
+                                              300]!; // Цвет фона при наведении и нажатии
+                                        }
+                                        return Colors
+                                            .transparent; // Исходный цвет фона
+                                      },
+                                    ),
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 8.0),
+                                    child: const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Home screen",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    setWallpaper(1);
+                                    Navigator.pop(context);
+                                  },
+                                  style: ButtonStyle(
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                            EdgeInsets.zero),
+                                    shape: MaterialStateProperty.all<
+                                        OutlinedBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                    backgroundColor:
+                                        MaterialStateColor.resolveWith(
+                                      (Set<MaterialState> states) {
+                                        if (states.contains(
+                                                MaterialState.hovered) ||
+                                            states.contains(
+                                                MaterialState.pressed)) {
+                                          return Colors.grey[
+                                              300]!; // Цвет фона при наведении и нажатии
+                                        }
+                                        return Colors
+                                            .transparent; // Исходный цвет фона
+                                      },
+                                    ),
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 8.0),
+                                    child: const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Lock screen",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    setWallpaper(2);
+                                    Navigator.pop(context);
+                                  },
+                                  style: ButtonStyle(
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                            EdgeInsets.zero),
+                                    shape: MaterialStateProperty.all<
+                                        OutlinedBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                    backgroundColor:
+                                        MaterialStateColor.resolveWith(
+                                      (Set<MaterialState> states) {
+                                        if (states.contains(
+                                                MaterialState.hovered) ||
+                                            states.contains(
+                                                MaterialState.pressed)) {
+                                          return Colors.grey[
+                                              300]!; // Цвет фона при наведении и нажатии
+                                        }
+                                        return Colors
+                                            .transparent; // Исходный цвет фона
+                                      },
+                                    ),
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16.0, vertical: 8.0),
+                                    child: const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Home and Lock screens",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 34, vertical: 8),
@@ -232,7 +440,7 @@ class _ImagePageState extends State<ImagePage> {
                         child: Row(
                           children: [
                             Text(
-                              "Install",
+                              "Set",
                               style: TextStyle(
                                 color: lightButtonTheme.onPrimary,
                                 fontWeight: FontWeight.bold,
