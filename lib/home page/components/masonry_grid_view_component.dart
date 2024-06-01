@@ -4,7 +4,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import 'package:wallify/home%20page/fetched_images_provider.dart';
 
-class MasonryGridViewComponent extends StatelessWidget {
+class MasonryGridViewComponent extends StatefulWidget {
   final Function(int index) onTap;
   final String query;
 
@@ -15,48 +15,83 @@ class MasonryGridViewComponent extends StatelessWidget {
   });
 
   @override
+  State<MasonryGridViewComponent> createState() =>
+      _MasonryGridViewComponentState();
+}
+
+class _MasonryGridViewComponentState extends State<MasonryGridViewComponent> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(loadMoreImages);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<FetchedImagesProvider>(context, listen: false)
+          .fetchImages(widget.query);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
       behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
-      child: FutureBuilder(
-        future: Provider.of<FetchedImagesProvider>(context, listen: false)
-            .fetchImages(query),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
+      // Можно обвернуть в Future
+      child: Consumer<FetchedImagesProvider>(
+        builder: (context, imageProvider, child) {
+          if (imageProvider.getAllImages().isEmpty) {
+            return const Center(
+                child:
+                    CircularProgressIndicator()); // Список пустой только в начале
+          } else {
             return MasonryGridView.builder(
-              itemCount:
-                  Provider.of<FetchedImagesProvider>(context, listen: false)
-                      .getAllImages()
-                      .length,
+              itemCount: imageProvider.getAllImages().length,
               gridDelegate:
                   const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
               ),
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.all(4),
-                child: GestureDetector(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      Provider.of<FetchedImagesProvider>(context, listen: false)
-                          .getAllImages()[index][0],
-                      fit: BoxFit.cover,
+              controller: scrollController,
+              itemBuilder: (context, index) => Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4),
+                    child: GestureDetector(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(
+                          imageProvider.getAllImages()[index][0],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      onTap: () => widget.onTap(index),
+                      onLongPress: () {},
                     ),
                   ),
-                  onTap: () => onTap(index),
-                  onLongPress: () {},
-                ),
+                  if (index == imageProvider.getAllImages().length - 1 &&
+                      imageProvider.isLoading == true)
+                    const Padding(
+                      padding: EdgeInsets.all(6),
+                      child: CircularProgressIndicator(),
+                    ),
+                ],
               ),
             );
-          } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.data == null) {
-            return const Center(child: Text("No data"));
-          } else {
-            return const Center(child: Text("Error to load data"));
           }
         },
       ),
     );
+  }
+
+  void loadMoreImages() {
+    if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent &&
+        Provider.of<FetchedImagesProvider>(context, listen: false)
+                .getAllImages()
+                .length <
+            Provider.of<FetchedImagesProvider>(context, listen: false)
+                .totalResults) {
+      Provider.of<FetchedImagesProvider>(context, listen: false)
+          .loadMoreImages(widget.query);
+    }
   }
 }

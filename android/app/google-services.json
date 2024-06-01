@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "871738769118",
+    "project_id": "wallify-f8ca6",
+    "storage_bucket": "wallify-f8ca6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:871738769118:android:6cdbad66a9c4f391880c4f",
+        "android_client_info": {
+          "package_name": "com.example.wallify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDb-t6gjpCVO5IgqC-TKYpaQxpdsAD17Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

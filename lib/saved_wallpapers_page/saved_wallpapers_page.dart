@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/image_page/image_page.dart';
+import 'package:wallify/services/firestore.dart';
 import 'package:wallify/theme/theme.dart';
 
 class SavedWallpapersPage extends StatefulWidget {
@@ -13,6 +15,9 @@ class SavedWallpapersPage extends StatefulWidget {
 }
 
 class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
+  // firestore
+  final FirestoreService firestoreService = FirestoreService();
+
   List<String> images = [];
 
   @override
@@ -73,39 +78,61 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                   const SizedBox(height: 20),
 
                   // Images
-                  Expanded(
-                    child: ScrollConfiguration(
-                      behavior: ScrollConfiguration.of(context)
-                          .copyWith(scrollbars: false),
-                      child: MasonryGridView.builder(
-                        itemCount: images.length,
-                        gridDelegate:
-                            const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2),
-                        itemBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.all(4),
-                          child: GestureDetector(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                images[index],
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ImagePage(
-                                    imagePath: images[index],
-                                  ),
-                                ),
-                              );
-                            },
+                  StreamBuilder<QuerySnapshot>(
+                    stream: firestoreService.getImagesStream(),
+                    builder: ((context, snapshot) {
+                      if (snapshot.hasData) {
+                        List firestoreImages = snapshot.data!.docs;
+
+                        return Expanded(
+                          child: ScrollConfiguration(
+                            behavior: ScrollConfiguration.of(context)
+                                .copyWith(scrollbars: false),
+                            child: MasonryGridView.builder(
+                                itemCount: firestoreImages.length,
+                                gridDelegate:
+                                    const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2),
+                                itemBuilder: (context, index) {
+                                  // get each individual doc
+                                  DocumentSnapshot document =
+                                      firestoreImages[index];
+                                  String docID = document.id;
+
+                                  Map<String, dynamic> data =
+                                      document.data() as Map<String, dynamic>;
+                                  String imageLink = data["image"];
+
+                                  return Padding(
+                                    padding: const EdgeInsets.all(4),
+                                    child: GestureDetector(
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.network(
+                                          imageLink,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => ImagePage(
+                                              imagePath: imageLink,
+                                              docID: docID,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }),
                           ),
-                        ),
-                      ),
-                    ),
+                        );
+                      } else {
+                        return const Text("No images..");
+                      }
+                    }),
                   ),
                 ],
               ),

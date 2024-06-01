@@ -43,7 +43,10 @@ dependencies:
   # collection: 
   # clock: 
 
-  share_plus: ^9.0.0
+  share_plus:
+  firebase_core: ^2.31.1
+  cloud_firestore: ^4.17.4
+  firebase_auth: ^4.20.0
   # url_launcher_linux: 
   # url_launcher_platform_interface: 
   # cross_file: 
@@ -61,10 +64,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
   hive_generator:
-  build_runner:
+  build_runner: ^2.4.10
 
 flutter:
   uses-material-design: true

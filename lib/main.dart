@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:wallify/authentication/authentication_page/authentication_page.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
+import 'package:wallify/firebase_options.dart';
 import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/profile_page/settings_page.dart';
@@ -12,6 +15,9 @@ void main() async {
     // Log or handle the error details
     print("$details");
   };
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // initialize hive
   await Hive.initFlutter();
@@ -48,7 +54,7 @@ class MyApp extends StatelessWidget {
         // locale: DevicePreview.locale(context),
         // builder: DevicePreview.appBuilder,
         theme: Provider.of<ThemeProvider>(context).themeData,
-        home: const CustomBottomNavBar(),
+        home: AuthenticationPage(),
         routes: {
           "/settings_page": (context) => const SettingsPage(),
         },

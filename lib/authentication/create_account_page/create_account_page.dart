@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallify/authentication/components/authentication_textfield.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/authentication/components/square_tile.dart';
+import 'package:wallify/helper/helper_functions.dart';
 import 'package:wallify/theme/theme.dart';
 
 class CreateAccountPage extends StatefulWidget {
@@ -20,7 +22,46 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
   final lightTextTheme = lightTheme.textTheme;
 
-  void signUserUp() {}
+  void signUserUp() async {
+    // show loading circle
+    showDialog(
+      context: context,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    // make sure passwords match
+    if (passwordController.text != confirmedPasswordController.text) {
+      // pop loading circle
+      Navigator.pop(context);
+
+      // show error message to user
+      displayMessageToUser("Passwords do not match!", context);
+    }
+
+    // if passwords do match
+    else {
+      // try creating the user
+      try {
+        // create the user
+        UserCredential? userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+
+        // pop loading circle
+        Navigator.pop(context);
+      } on FirebaseAuthException catch (e) {
+        // pop loading circle
+        Navigator.pop(context);
+
+        // display error message to user
+        displayMessageToUser(e.code, context);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +123,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
               const SizedBox(height: 25),
 
-              // Sign in button
+              // Sign up button
               AuthenticationButton(
                 onTap: signUserUp,
                 name: "Sign Up",

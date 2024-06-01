@@ -19,6 +19,7 @@ what should be here
 
 */
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallify/profile_page/components/custom_text_button.dart';
 import 'package:wallify/theme/theme.dart';
@@ -43,6 +44,10 @@ class ProfilePage extends StatelessWidget {
     Icons.email,
     Icons.verified_user
   ];
+
+  void signUserOut() {
+    FirebaseAuth.instance.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +116,7 @@ class ProfilePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: signUserOut,
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(

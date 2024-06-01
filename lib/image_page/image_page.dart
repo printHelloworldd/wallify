@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -6,30 +7,34 @@ import 'package:async_wallpaper/async_wallpaper.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:async';
 import 'package:gallery_saver_updated/gallery_saver.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-// import 'package:share_plus/share_plus.dart';
-import 'package:wallify/image_page/image_data_provider.dart';
 
+import 'package:wallify/image_page/image_data_provider.dart';
+import 'package:wallify/services/firestore.dart';
 import 'package:wallify/theme/theme.dart';
 
 class ImagePage extends StatefulWidget {
   final String imagePath;
+  final String? docID;
 
   const ImagePage({
-    super.key,
+    Key? key,
     required this.imagePath,
-  });
+    this.docID,
+  }) : super(key: key);
 
   @override
   State<ImagePage> createState() => _ImagePageState();
 }
 
 class _ImagePageState extends State<ImagePage> {
+  // firestore
+  final FirestoreService firestoreService = FirestoreService();
+
   bool isFavouriteImage = false;
 
   @override
@@ -52,6 +57,10 @@ class _ImagePageState extends State<ImagePage> {
 
   // save image to favourites
   void saveImage() {
+    // save to FireBase
+    firestoreService.addImage(widget.imagePath);
+
+    // save to Hive local database
     Provider.of<ImageDataProvider>(context, listen: false).addImage(
       widget.imagePath,
     );
@@ -62,6 +71,10 @@ class _ImagePageState extends State<ImagePage> {
 
   // delete image from favourites
   void deleteImage() {
+    // delete from Firestore
+    firestoreService.deleteImage(widget.docID!);
+
+    // delete from Hive
     Provider.of<ImageDataProvider>(context, listen: false).deleteImage(
       widget.imagePath,
     );
@@ -256,7 +269,7 @@ class _ImagePageState extends State<ImagePage> {
 
                   const Spacer(),
 
-                  // install button
+                  // set button
                   GestureDetector(
                     onTap: () {
                       showModalBottomSheet(
