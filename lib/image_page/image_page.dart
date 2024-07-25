@@ -72,7 +72,7 @@ class _ImagePageState extends State<ImagePage> {
   // delete image from favourites
   void deleteImage() {
     // delete from Firestore
-    firestoreService.deleteImage(widget.docID!);
+    firestoreService.removeImage(widget.imagePath);
 
     // delete from Hive
     Provider.of<ImageDataProvider>(context, listen: false).deleteImage(

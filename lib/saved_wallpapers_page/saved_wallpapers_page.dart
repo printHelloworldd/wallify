@@ -78,11 +78,11 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                   const SizedBox(height: 20),
 
                   // Images
-                  StreamBuilder<QuerySnapshot>(
-                    stream: firestoreService.getImagesStream(),
+                  FutureBuilder<List<String>>(
+                    future: firestoreService.getUserImages(),
                     builder: ((context, snapshot) {
                       if (snapshot.hasData) {
-                        List firestoreImages = snapshot.data!.docs;
+                        List firestoreImages = snapshot.data!;
 
                         return Expanded(
                           child: ScrollConfiguration(
@@ -94,14 +94,14 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                                     const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2),
                                 itemBuilder: (context, index) {
-                                  // get each individual doc
-                                  DocumentSnapshot document =
-                                      firestoreImages[index];
-                                  String docID = document.id;
+                                  // // get each individual doc
+                                  // DocumentSnapshot document =
+                                  //     firestoreImages[index];
+                                  // String docID = document.id;
 
-                                  Map<String, dynamic> data =
-                                      document.data() as Map<String, dynamic>;
-                                  String imageLink = data["image"];
+                                  // Map<String, dynamic> data =
+                                  //     document.data() as Map<String, dynamic>;
+                                  // String imageLink = data["image"];
 
                                   return Padding(
                                     padding: const EdgeInsets.all(4),
@@ -109,7 +109,7 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
                                         child: Image.network(
-                                          imageLink,
+                                          firestoreImages[index],
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -118,8 +118,7 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => ImagePage(
-                                              imagePath: imageLink,
-                                              docID: docID,
+                                              imagePath: firestoreImages[index],
                                             ),
                                           ),
                                         );

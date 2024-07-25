@@ -75,6 +75,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       await FirebaseFirestore.instance.collection("Users").doc(userCredential.user!.email).set({
         "email": userCredential.user!.email,
         "username": nameController.text,
+        "photoUrl": userCredential.user!.photoURL,
+        "images": [],
       });
     }
   }
@@ -186,7 +188,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   // google button
                   SquareTile(
                     imagePath: "assets/logo_icons/google.png",
-                    onTap: () => AuthService().signInWithGoogle(),
+                    onTap: () => AuthService().signInWithGoogle().whenComplete(() => Navigator.pushNamed(context, "/home_page")),
                   ),
 
                   const SizedBox(width: 25),

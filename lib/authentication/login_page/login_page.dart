@@ -156,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                   // google button
                   SquareTile(
                     imagePath: "assets/logo_icons/google.png",
-                    onTap: () => AuthService().signInWithGoogle(),
+                    onTap: () => AuthService().signInWithGoogle().whenComplete(() => Navigator.pushNamed(context, "/home_page")),
                   ),
 
                   const SizedBox(width: 25),

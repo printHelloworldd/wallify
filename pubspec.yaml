@@ -20,6 +20,7 @@ dependencies:
   flutter_staggered_grid_view: 
   google_nav_bar: 
   dot_navigation_bar: 
+  popover: ^0.3.0+1
 
   http: 
   flutter_file_dialog: 

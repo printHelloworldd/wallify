@@ -86,12 +86,12 @@ class ProfilePage extends StatelessWidget {
             children: [
               const SizedBox(height: 30),
 
-              // Profile image and name
+              // Profile image, name, email
               Column(
                 children: [
                   ClipOval(
-                    child: Image.asset(
-                      "assets/profile-image.jpg",
+                    child: Image.network(
+                      user!["photoUrl"] ?? "https://static-00.iconduck.com/assets.00/profile-circle-icon-2048x2048-cqe5466q.png",
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -99,10 +99,18 @@ class ProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    user!["username"],
+                    user["username"],
                     style: const TextStyle(
                       fontSize: 20,
                       color: Colors.black,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    user["email"],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
                     ),
                   ),
                 ],

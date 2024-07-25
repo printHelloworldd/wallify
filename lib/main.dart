@@ -62,7 +62,7 @@ class MyApp extends StatelessWidget {
           "/settings_page": (context) => const SettingsPage(),
           "/create_account_page": (context) => const CreateAccountPage(),
           "/login_page": (context) => const LoginPage(),
-          "/home_page": (context) => const HomePage(),
+          "/home_page": (context) => const CustomBottomNavBar(),
         },
       ),
     );
