@@ -18,21 +18,11 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   final lightTextTheme = lightTheme.textTheme;
 
   void createAccount() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const CreateAccountPage(),
-      ),
-    );
+    Navigator.pushNamed(context, "/create_account_page");
   }
 
   void login() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LoginPage(),
-      ),
-    );
+    Navigator.pushNamed(context, "/login_page");
   }
 
   @override

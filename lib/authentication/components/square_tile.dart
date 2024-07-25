@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class SquareTile extends StatelessWidget {
   final String imagePath;
+  final Function()? onTap;
 
   final lightSquareTileTheme = ThemeData(
     colorScheme: ColorScheme.light(
@@ -14,21 +15,25 @@ class SquareTile extends StatelessWidget {
   SquareTile({
     super.key,
     required this.imagePath,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        border:
-            Border.all(color: lightSquareTileTheme.colorScheme.onBackground),
-        borderRadius: BorderRadius.circular(16),
-        color: lightSquareTileTheme.colorScheme.background,
-      ),
-      child: Image.asset(
-        imagePath,
-        height: 40,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          border:
+              Border.all(color: lightSquareTileTheme.colorScheme.onBackground),
+          borderRadius: BorderRadius.circular(16),
+          color: lightSquareTileTheme.colorScheme.background,
+        ),
+        child: Image.asset(
+          imagePath,
+          height: 40,
+        ),
       ),
     );
   }

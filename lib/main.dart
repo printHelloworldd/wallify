@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wallify/authentication/authentication_page/authentication_page.dart';
+import 'package:wallify/authentication/create_account_page/create_account_page.dart';
+import 'package:wallify/authentication/login_page/login_page.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
 import 'package:wallify/firebase_options.dart';
 import 'package:wallify/home%20page/fetched_images_provider.dart';
+import 'package:wallify/home%20page/home_page.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/theme/theme_provider.dart';
@@ -57,6 +60,9 @@ class MyApp extends StatelessWidget {
         home: AuthenticationPage(),
         routes: {
           "/settings_page": (context) => const SettingsPage(),
+          "/create_account_page": (context) => const CreateAccountPage(),
+          "/login_page": (context) => const LoginPage(),
+          "/home_page": (context) => const HomePage(),
         },
       ),
     );

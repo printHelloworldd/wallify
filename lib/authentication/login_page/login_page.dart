@@ -4,6 +4,7 @@ import 'package:wallify/authentication/components/authentication_textfield.dart'
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/authentication/components/square_tile.dart';
 import 'package:wallify/helper/helper_functions.dart';
+import 'package:wallify/services/auth_service.dart';
 import 'package:wallify/theme/theme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
 
       // pop loading circle
       if (context.mounted) Navigator.pop(context);
+
+      Navigator.pushNamed(context, "/home_page");
     }
 
     // display any errors
@@ -153,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                   // google button
                   SquareTile(
                     imagePath: "assets/logo_icons/google.png",
+                    onTap: () => AuthService().signInWithGoogle(),
                   ),
 
                   const SizedBox(width: 25),
@@ -181,9 +185,12 @@ class _LoginPageState extends State<LoginPage> {
                     "Not a member? ",
                     style: lightTextTheme.labelSmall,
                   ),
-                  Text(
-                    "Register now",
-                    style: lightTextTheme.labelMedium,
+                  GestureDetector(
+                    child: Text(
+                      "Register now",
+                      style: lightTextTheme.labelMedium,
+                    ),
+                    onTap: () => Navigator.pushNamed(context, "/create_account_page"),
                   ),
                 ],
               ),

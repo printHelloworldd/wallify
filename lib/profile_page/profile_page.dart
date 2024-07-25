@@ -19,6 +19,7 @@ what should be here
 
 */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallify/profile_page/components/custom_text_button.dart';
@@ -26,6 +27,11 @@ import 'package:wallify/theme/theme.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
+
+  final User? currentUser = FirebaseAuth.instance.currentUser;
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
+    return await FirebaseFirestore.instance.collection("Users").doc(currentUser!.email).get();
+  }
 
   final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
   final lightTextTheme = lightTheme.textTheme;
@@ -53,7 +59,27 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: lightTheme.scaffoldBackgroundColor,
-      body: SafeArea(
+      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        future: getUserDetails(), 
+        builder: (context, snapshot) {
+        // loading..
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        // error
+        else if (snapshot.hasError) {
+          return Text("Error: ${snapshot.error}");
+        }
+
+        // data received
+        else if (snapshot.hasData) {
+          // extract data
+          Map<String, dynamic>? user = snapshot.data!.data();
+
+          return SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
@@ -72,9 +98,9 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "Name Surname",
-                    style: TextStyle(
+                  Text(
+                    user!["username"],
+                    style: const TextStyle(
                       fontSize: 20,
                       color: Colors.black,
                     ),
@@ -139,7 +165,11 @@ class ProfilePage extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      );
+        } else {
+          return const Text("No data");
+        }
+      }),
     );
   }
 }
