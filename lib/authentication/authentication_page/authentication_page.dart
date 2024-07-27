@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
-import 'package:wallify/authentication/create_account_page/create_account_page.dart';
-import 'package:wallify/authentication/login_page/login_page.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
+import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/theme/theme.dart';
 
 class AuthenticationPage extends StatefulWidget {
@@ -75,9 +74,13 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     const SizedBox(height: 30),
 
                     // Welcome To Wallify
-                    Text(
-                      "Welcome To Wallify",
-                      style: lightTextTheme.titleMedium,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        S.of(context).welcomeToWallify,
+                        style: lightTextTheme.titleMedium,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
 
                     const SizedBox(height: 30),
@@ -85,7 +88,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     // Create account button
                     AuthenticationButton(
                       onTap: createAccount,
-                      name: "Create Account",
+                      name: S.of(context).createAccount,
                       textColor: lightButtonTheme!.onSecondary,
                       buttonColor: lightButtonTheme!.secondary,
                     ),
@@ -95,7 +98,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     // Login button
                     AuthenticationButton(
                       onTap: login,
-                      name: "Login",
+                      name: S.of(context).login,
                       textColor: lightButtonTheme!.onPrimary,
                       buttonColor: lightButtonTheme!.primary,
                     ),

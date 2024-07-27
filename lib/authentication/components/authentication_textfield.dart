@@ -10,7 +10,7 @@ class AuthenticationTextField extends StatelessWidget {
     colorScheme: ColorScheme.light(
       primary: Colors.white,
       secondary: Colors.grey.shade400,
-      background: Colors.grey.shade200,
+      surface: Colors.grey.shade200,
     ),
   );
 
@@ -37,7 +37,7 @@ class AuthenticationTextField extends StatelessWidget {
             borderSide:
                 BorderSide(color: lightTextFieldTheme.colorScheme.secondary),
           ),
-          fillColor: lightTextFieldTheme.colorScheme.background,
+          fillColor: lightTextFieldTheme.colorScheme.surface,
           filled: true,
           hintText: hintText,
         ),

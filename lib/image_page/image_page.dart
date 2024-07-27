@@ -12,6 +12,7 @@ import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:wallify/generated/l10n.dart';
 
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/services/firestore.dart';
@@ -22,10 +23,10 @@ class ImagePage extends StatefulWidget {
   final String? docID;
 
   const ImagePage({
-    Key? key,
+    super.key,
     required this.imagePath,
     this.docID,
-  }) : super(key: key);
+  });
 
   @override
   State<ImagePage> createState() => _ImagePageState();
@@ -132,7 +133,7 @@ class _ImagePageState extends State<ImagePage> {
       await GallerySaver.saveImage(file.path, albumName: "Wallify")
           .then((success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Downloaded to Gallery!")),
+          SnackBar(content: Text(S.of(context).downloadedToGallery)),
         );
       });
     } catch (e) {
@@ -243,7 +244,7 @@ class _ImagePageState extends State<ImagePage> {
                     icon: const Icon(Icons.share, color: Colors.black),
                     onPressed: () async {
                       final result = await Share.share(
-                          "Test share text\n\n${widget.imagePath}");
+                          "Test share text\n\n${widget.imagePath}"); // TODO: Change the text
 
                       if (result.status == ShareResultStatus.success) {
                         print('Thank you for sharing my app!');
@@ -282,11 +283,11 @@ class _ImagePageState extends State<ImagePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 16),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 16),
                                   child: Text(
-                                    "Set as wallpaper",
-                                    style: TextStyle(
+                                    S.of(context).setAsWallpaper,
+                                    style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -299,9 +300,9 @@ class _ImagePageState extends State<ImagePage> {
                                   },
                                   style: ButtonStyle(
                                     padding:
-                                        MaterialStateProperty.all<EdgeInsets>(
+                                        WidgetStateProperty.all<EdgeInsets>(
                                             EdgeInsets.zero),
-                                    shape: MaterialStateProperty.all<
+                                    shape: WidgetStateProperty.all<
                                         OutlinedBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius:
@@ -309,12 +310,12 @@ class _ImagePageState extends State<ImagePage> {
                                       ),
                                     ),
                                     backgroundColor:
-                                        MaterialStateColor.resolveWith(
-                                      (Set<MaterialState> states) {
+                                        WidgetStateColor.resolveWith(
+                                      (Set<WidgetState> states) {
                                         if (states.contains(
-                                                MaterialState.hovered) ||
+                                                WidgetState.hovered) ||
                                             states.contains(
-                                                MaterialState.pressed)) {
+                                                WidgetState.pressed)) {
                                           return Colors.grey[
                                               300]!; // Цвет фона при наведении и нажатии
                                         }
@@ -326,13 +327,13 @@ class _ImagePageState extends State<ImagePage> {
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16.0, vertical: 8.0),
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Home screen",
-                                          style: TextStyle(
+                                          S.of(context).homeScreen,
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         ),
@@ -347,9 +348,9 @@ class _ImagePageState extends State<ImagePage> {
                                   },
                                   style: ButtonStyle(
                                     padding:
-                                        MaterialStateProperty.all<EdgeInsets>(
+                                        WidgetStateProperty.all<EdgeInsets>(
                                             EdgeInsets.zero),
-                                    shape: MaterialStateProperty.all<
+                                    shape: WidgetStateProperty.all<
                                         OutlinedBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius:
@@ -357,12 +358,12 @@ class _ImagePageState extends State<ImagePage> {
                                       ),
                                     ),
                                     backgroundColor:
-                                        MaterialStateColor.resolveWith(
-                                      (Set<MaterialState> states) {
+                                        WidgetStateColor.resolveWith(
+                                      (Set<WidgetState> states) {
                                         if (states.contains(
-                                                MaterialState.hovered) ||
+                                                WidgetState.hovered) ||
                                             states.contains(
-                                                MaterialState.pressed)) {
+                                                WidgetState.pressed)) {
                                           return Colors.grey[
                                               300]!; // Цвет фона при наведении и нажатии
                                         }
@@ -374,13 +375,13 @@ class _ImagePageState extends State<ImagePage> {
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16.0, vertical: 8.0),
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Lock screen",
-                                          style: TextStyle(
+                                          S.of(context).lockScreen,
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         ),
@@ -395,9 +396,9 @@ class _ImagePageState extends State<ImagePage> {
                                   },
                                   style: ButtonStyle(
                                     padding:
-                                        MaterialStateProperty.all<EdgeInsets>(
+                                        WidgetStateProperty.all<EdgeInsets>(
                                             EdgeInsets.zero),
-                                    shape: MaterialStateProperty.all<
+                                    shape: WidgetStateProperty.all<
                                         OutlinedBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius:
@@ -405,12 +406,12 @@ class _ImagePageState extends State<ImagePage> {
                                       ),
                                     ),
                                     backgroundColor:
-                                        MaterialStateColor.resolveWith(
-                                      (Set<MaterialState> states) {
+                                        WidgetStateColor.resolveWith(
+                                      (Set<WidgetState> states) {
                                         if (states.contains(
-                                                MaterialState.hovered) ||
+                                                WidgetState.hovered) ||
                                             states.contains(
-                                                MaterialState.pressed)) {
+                                                WidgetState.pressed)) {
                                           return Colors.grey[
                                               300]!; // Цвет фона при наведении и нажатии
                                         }
@@ -422,13 +423,13 @@ class _ImagePageState extends State<ImagePage> {
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16.0, vertical: 8.0),
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "Home and Lock screens",
-                                          style: TextStyle(
+                                          S.of(context).homeAndLockScreens,
+                                          style: const TextStyle(
                                             color: Colors.black,
                                           ),
                                         ),
@@ -453,7 +454,7 @@ class _ImagePageState extends State<ImagePage> {
                         child: Row(
                           children: [
                             Text(
-                              "Set",
+                              S.of(context).set,
                               style: TextStyle(
                                 color: lightButtonTheme.onPrimary,
                                 fontWeight: FontWeight.bold,

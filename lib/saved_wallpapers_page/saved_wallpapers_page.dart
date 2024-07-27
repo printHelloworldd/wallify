@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
+import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/image_page/image_page.dart';
 import 'package:wallify/services/firestore.dart';
@@ -63,7 +63,7 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "My favourites wallpapers",
+                      S.of(context).myFavouritesWallpapers,
                       style: lightTextTheme.displayLarge,
                     ),
                   ),
@@ -129,7 +129,7 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                           ),
                         );
                       } else {
-                        return const Text("No images..");
+                        return Text(S.of(context).noImages);
                       }
                     }),
                   ),

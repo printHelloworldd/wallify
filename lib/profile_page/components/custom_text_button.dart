@@ -18,16 +18,16 @@ class CustomTextButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.zero),
-        shape: MaterialStateProperty.all<OutlinedBorder>(
+        padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+        shape: WidgetStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
         ),
-        backgroundColor: MaterialStateColor.resolveWith(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.hovered) ||
-                states.contains(MaterialState.pressed)) {
+        backgroundColor: WidgetStateColor.resolveWith(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.hovered) ||
+                states.contains(WidgetState.pressed)) {
               return Colors.grey[400]!; // Цвет фона при наведении и нажатии
             }
             return Colors.transparent; // Исходный цвет фона

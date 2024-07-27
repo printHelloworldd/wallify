@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wallify/authentication/components/authentication_textfield.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/authentication/components/square_tile.dart';
+import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/helper/helper_functions.dart';
 import 'package:wallify/services/auth_service.dart';
 import 'package:wallify/theme/theme.dart';
@@ -39,7 +40,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       Navigator.pop(context);
 
       // show error message to user
-      displayMessageToUser("Passwords do not match!", context);
+      displayMessageToUser(S.of(context).passwordsDoNotMatch, context);
     }
 
     // if passwords do match
@@ -94,13 +95,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
               // Hello again!
               Text(
-                "Wellcome!",
+                S.of(context).wellcome,
                 style: lightTextTheme.displayLarge,
               ),
               const SizedBox(height: 10),
               Text(
-                "Join us and create your account!",
+                S.of(context).joinUsAndCreateYourAccount,
                 style: lightTextTheme.titleSmall,
+                textAlign: TextAlign.center,
               ),
 
               const SizedBox(height: 30),
@@ -109,7 +111,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               AuthenticationTextField(
                 controller: nameController,
                 obscureText: false,
-                hintText: "Full name",
+                hintText: S.of(context).fullName,
               ),
 
               const SizedBox(height: 10),
@@ -118,7 +120,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               AuthenticationTextField(
                 controller: emailController,
                 obscureText: false,
-                hintText: "Email",
+                hintText: S.of(context).email,
               ),
 
               const SizedBox(height: 10),
@@ -127,7 +129,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               AuthenticationTextField(
                 controller: passwordController,
                 obscureText: true,
-                hintText: "Password",
+                hintText: S.of(context).password,
               ),
 
               const SizedBox(height: 10),
@@ -136,7 +138,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               AuthenticationTextField(
                 controller: confirmedPasswordController,
                 obscureText: true,
-                hintText: "Confirm password",
+                hintText: S.of(context).confirmPassword,
               ),
 
               const SizedBox(height: 25),
@@ -144,7 +146,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               // Sign up button
               AuthenticationButton(
                 onTap: signUserUp,
-                name: "Sign Up",
+                name: S.of(context).signUp,
                 textColor: lightButtonTheme!.onPrimary,
                 buttonColor: lightButtonTheme!.primary,
               ),
@@ -165,7 +167,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
-                        "Or",
+                        S.of(context).or,
                         style: lightTextTheme.labelSmall,
                       ),
                     ),
@@ -213,12 +215,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Already have an account? ",
+                    S.of(context).alreadyHaveAnAccount,
                     style: lightTextTheme.labelSmall,
                   ),
                   GestureDetector(
                     child: Text(
-                      "Sign In",
+                      S.of(context).signIn,
                       style: lightTextTheme.labelMedium,
                     ),
                     onTap: () => Navigator.pushNamed(context, "/login_page"),

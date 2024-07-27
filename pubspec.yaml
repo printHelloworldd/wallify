@@ -1,6 +1,6 @@
 name: wallify
 description: "A new Flutter project."
-publish_to: 'none' 
+publish_to: 'none'
 
 version: 1.0.0+1
 
@@ -11,40 +11,42 @@ dependencies:
   flutter:
     sdk: flutter
   
-  device_preview: ^1.1.0
-  
-  google_fonts:
+  flutter_localizations:
+    sdk: flutter
 
-  cupertino_icons: 
-  provider: 
-  flutter_staggered_grid_view: 
-  google_nav_bar: 
-  dot_navigation_bar: 
+  device_preview: ^1.1.0
+
+  google_fonts: null
+
+  cupertino_icons: null
+  provider: null
+  flutter_staggered_grid_view: null
+  google_nav_bar: null
+  dot_navigation_bar: null
   popover: ^0.3.0+1
 
-  http: 
-  flutter_file_dialog: 
+  http: null
+  flutter_file_dialog: null
 
-  dio: 
-  path_provider: 
+  dio: null
+  path_provider: null
   # open_file: 
   hive: ^2.2.3
-  hive_flutter: 
+  hive_flutter: null
 
   gallery_saver_updated: ^3.0.0
 
-  flutter_wallpaper_manager:
+  flutter_wallpaper_manager: null
   async_wallpaper: ^2.0.3
 
-  flutter_cache_manager: 
+  flutter_cache_manager: null
   # uuid: 
   # sqflite: 
   # rxdart: 
   # path: 
   # collection: 
   # clock: 
-
-  share_plus:
+  share_plus: null
   firebase_core: ^2.31.1
   cloud_firestore: ^4.17.4
   firebase_auth: ^4.20.0
@@ -61,14 +63,13 @@ dependencies:
   # url_launcher_windows: 
   # web: 
   # win32: 
-  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^4.0.0
 
-  hive_generator:
+  hive_generator: null
   build_runner: ^2.4.10
 
 flutter:
@@ -79,3 +80,5 @@ flutter:
     - assets/images/
     - assets/icons/
     - assets/
+flutter_intl:
+  enabled: true

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wallify/authentication/authentication_page/authentication_page.dart';
@@ -7,8 +8,8 @@ import 'package:wallify/authentication/create_account_page/create_account_page.d
 import 'package:wallify/authentication/login_page/login_page.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
 import 'package:wallify/firebase_options.dart';
+import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/home%20page/fetched_images_provider.dart';
-import 'package:wallify/home%20page/home_page.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/theme/theme_provider.dart';
@@ -57,13 +58,21 @@ class MyApp extends StatelessWidget {
         // locale: DevicePreview.locale(context),
         // builder: DevicePreview.appBuilder,
         theme: Provider.of<ThemeProvider>(context).themeData,
-        home: AuthenticationPage(),
+        home: const AuthenticationPage(),
         routes: {
           "/settings_page": (context) => const SettingsPage(),
           "/create_account_page": (context) => const CreateAccountPage(),
           "/login_page": (context) => const LoginPage(),
           "/home_page": (context) => const CustomBottomNavBar(),
         },
+        localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: const Locale("en"),
+        supportedLocales: S.delegate.supportedLocales,
       ),
     );
   }

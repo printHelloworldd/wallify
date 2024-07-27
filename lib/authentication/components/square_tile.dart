@@ -7,8 +7,8 @@ class SquareTile extends StatelessWidget {
 
   final lightSquareTileTheme = ThemeData(
     colorScheme: ColorScheme.light(
-      background: Colors.grey[200]!,
-      onBackground: Colors.white,
+      surface: Colors.grey[200]!,
+      onSurface: Colors.white,
     ),
   );
 
@@ -26,9 +26,9 @@ class SquareTile extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           border:
-              Border.all(color: lightSquareTileTheme.colorScheme.onBackground),
+              Border.all(color: lightSquareTileTheme.colorScheme.onSurface),
           borderRadius: BorderRadius.circular(16),
-          color: lightSquareTileTheme.colorScheme.background,
+          color: lightSquareTileTheme.colorScheme.surface,
         ),
         child: Image.asset(
           imagePath,

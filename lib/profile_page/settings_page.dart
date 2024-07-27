@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/profile_page/components/settings_tile.dart';
 import 'package:wallify/theme/theme.dart';
 
@@ -13,32 +14,36 @@ class _SettingsPageState extends State<SettingsPage> {
   final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
   final lightTextTheme = lightTheme.textTheme;
 
-  List<List<dynamic>> settingsTiles = [
-    [Icons.language, "Language", "System default: English"],
-    [Icons.palette, "App color theme", "Try another look"],
-    [
-      Icons.history,
-      "Clear search history",
-      "This deletes all of your search history data"
-    ],
-    [
-      const ImageIcon(
-        AssetImage("assets/icons/broom.png"),
-        size: 24,
-      ),
-      "Clear cache",
-      "Cache size: 18 MB"
-    ],
-    [
-      Icons.settings_backup_restore,
-      "Reset all settings",
-      "Does more than uninstalling would do, \n because the preferences are stored \n at a special place as they have to be \n accessible directly after device startup"
-    ],
-    [Icons.system_update, "App version", "3.1.5"],
-  ];
+  var systemDefaultLang = "English";
+  var cacheSize = 18;
+
+  void changeLanguage() {}
 
   @override
   Widget build(BuildContext context) {
+      List<List<dynamic>> settingsTiles = [
+      [Icons.language, S.of(context).language, S.of(context).systemDefaultLang(systemDefaultLang)],
+      [Icons.palette, S.of(context).appColorTheme, S.of(context).tryAnotherLook],
+      [
+        Icons.history,
+        S.of(context).clearSearchHistory,
+        S.of(context).thisDeletesAllOfYourSearchHistoryData
+      ],
+      [
+        const ImageIcon(
+          AssetImage("assets/icons/broom.png"),
+          size: 24,
+        ),
+        S.of(context).clearCache,
+        S.of(context).cacheSize(cacheSize),
+      ],
+      [
+        Icons.settings_backup_restore,
+        S.of(context).resetAllSettings,
+        S.of(context).resetAllSettingsDesc
+      ],
+      [Icons.system_update, S.of(context).appVersion, "3.1.5"],
+    ];
     return Scaffold(
       backgroundColor: lightTheme.scaffoldBackgroundColor,
       appBar: AppBar(
@@ -49,9 +54,9 @@ class _SettingsPageState extends State<SettingsPage> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          "Settings",
-          style: TextStyle(
+        title: Text(
+          S.of(context).settings,
+          style: const TextStyle(
             fontSize: 24,
             color: Colors.black,
             fontFamily: "Roboto",
@@ -71,6 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       icon: settingsTiles[index][0],
                       title: settingsTiles[index][1],
                       subtitle: settingsTiles[index][2],
+                      changeLanguage: () => changeLanguage(),
                     );
                   },
                 ),

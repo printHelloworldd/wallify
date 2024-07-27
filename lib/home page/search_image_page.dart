@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wallify/generated/l10n.dart';
 
 import 'package:wallify/home%20page/components/masonry_grid_view_component.dart';
 import 'package:wallify/home%20page/fetched_images_provider.dart';
@@ -32,7 +33,7 @@ class _HomePageState extends State<SearchImagePage>
     colorScheme: ColorScheme.light(
       primary: Colors.white,
       secondary: Colors.grey.shade400,
-      background: Colors.grey.shade200,
+      surface: Colors.grey.shade200,
     ),
   );
 
@@ -82,9 +83,9 @@ class _HomePageState extends State<SearchImagePage>
                                 color:
                                     lightTextFieldTheme.colorScheme.secondary),
                           ),
-                          fillColor: lightTextFieldTheme.colorScheme.background,
+                          fillColor: lightTextFieldTheme.colorScheme.surface,
                           filled: true,
-                          hintText: "Search",
+                          hintText: S.of(context).search,
                         ),
                         onSubmitted: (query) =>
                             Provider.of<FetchedImagesProvider>(context,

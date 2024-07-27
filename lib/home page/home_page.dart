@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/home%20page/components/masonry_grid_view_component.dart';
 import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/home%20page/search_image_page.dart';
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage>
     colorScheme: ColorScheme.light(
       primary: Colors.white,
       secondary: Colors.grey.shade400,
-      background: Colors.grey.shade200,
+      surface: Colors.grey.shade200,
     ),
   );
 
@@ -150,9 +151,9 @@ class _HomePageState extends State<HomePage>
                       borderSide: BorderSide(
                           color: lightTextFieldTheme.colorScheme.secondary),
                     ),
-                    fillColor: lightTextFieldTheme.colorScheme.background,
+                    fillColor: lightTextFieldTheme.colorScheme.surface,
                     filled: true,
-                    hintText: "Search",
+                    hintText: S.of(context).search,
                   ),
                   onSubmitted: (query) => moveToSearchImagePage(query),
                 ),
@@ -239,30 +240,30 @@ class _HomePageState extends State<HomePage>
                     tabAlignment: TabAlignment.start,
                     indicator:
                         CircleTabIndicator(color: Colors.black, radius: 4),
-                    tabs: const [
+                    tabs: [
                       Tab(
-                        text: "Wallpapers",
+                        text: S.of(context).wallpapers,
                       ),
                       Tab(
-                        text: "Nature",
+                        text: S.of(context).nature,
                       ),
                       Tab(
-                        text: "Cars",
+                        text: S.of(context).cars,
                       ),
                       Tab(
-                        text: "Film",
+                        text: S.of(context).film,
                       ),
                       Tab(
-                        text: "Street",
+                        text: S.of(context).street,
                       ),
                       Tab(
-                        text: "Animals",
+                        text: S.of(context).animals,
                       ),
                       Tab(
-                        text: "Interiors",
+                        text: S.of(context).interiors,
                       ),
                       Tab(
-                        text: "Architecture",
+                        text: S.of(context).architecture,
                       ),
                     ],
                   ),

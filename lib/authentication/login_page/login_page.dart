@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wallify/authentication/components/authentication_textfield.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/authentication/components/square_tile.dart';
+import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/helper/helper_functions.dart';
 import 'package:wallify/services/auth_service.dart';
 import 'package:wallify/theme/theme.dart';
@@ -63,13 +64,17 @@ class _LoginPageState extends State<LoginPage> {
 
               // Hello again!
               Text(
-                "Hello Again!",
+                S.of(context).helloAgain,
                 style: lightTextTheme.displayLarge,
               ),
               const SizedBox(height: 10),
-              Text(
-                "Welcome back, you've been missed!",
-                style: lightTextTheme.titleSmall,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  S.of(context).welcomeBackYouveBeenMissed,
+                  style: lightTextTheme.titleSmall,
+                  textAlign: TextAlign.center,
+                ),
               ),
 
               const SizedBox(height: 40),
@@ -78,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
               AuthenticationTextField(
                 controller: emailController,
                 obscureText: false,
-                hintText: "Email",
+                hintText: S.of(context).email,
               ),
 
               const SizedBox(height: 10),
@@ -87,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
               AuthenticationTextField(
                 controller: passwordController,
                 obscureText: true,
-                hintText: "Password",
+                hintText: S.of(context).password,
               ),
 
               const SizedBox(height: 10),
@@ -98,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Forgot Password?",
+                      S.of(context).forgotPassword,
                       style: TextStyle(
                         color: Colors.grey[600],
                       ),
@@ -112,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               // Sign in button
               AuthenticationButton(
                 onTap: signUserIn,
-                name: "Sign In",
+                name: S.of(context).signIn,
                 textColor: lightButtonTheme!.onPrimary,
                 buttonColor: lightButtonTheme!.primary,
               ),
@@ -133,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
-                        "Or continue with",
+                        S.of(context).orContinueWith,
                         style: lightTextTheme.labelSmall,
                       ),
                     ),
@@ -182,12 +187,12 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Not a member? ",
+                    S.of(context).notAMember,
                     style: lightTextTheme.labelSmall,
                   ),
                   GestureDetector(
                     child: Text(
-                      "Register now",
+                      S.of(context).registerNow,
                       style: lightTextTheme.labelMedium,
                     ),
                     onTap: () => Navigator.pushNamed(context, "/create_account_page"),
