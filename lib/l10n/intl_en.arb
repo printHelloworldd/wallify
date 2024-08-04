@@ -54,5 +54,7 @@
   "systemDefaultLang": "System default: {lang}",
   "cacheSize": "Cache size: {cacheSize} MB",
   "myFavouritesWallpapers": "My favourites wallpapers",
-  "noImages": "No images.."
+  "noImages": "No images..",
+  "selectLanguage": "Select language",
+  "skipForNow": "Skip for now"
 }

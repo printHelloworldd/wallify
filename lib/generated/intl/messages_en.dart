@@ -79,6 +79,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "resetAllSettingsDesc": MessageLookupByLibrary.simpleMessage(
             "Does more than uninstalling would do, \n because the preferences are stored \n at a special place as they have to be \n accessible directly after device startup"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "selectLanguage":
+            MessageLookupByLibrary.simpleMessage("Select language"),
         "sendFeedback": MessageLookupByLibrary.simpleMessage("Send feedback"),
         "set": MessageLookupByLibrary.simpleMessage("Set"),
         "setAsWallpaper":
@@ -87,6 +89,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "signOut": MessageLookupByLibrary.simpleMessage("Sign out"),
         "signUp": MessageLookupByLibrary.simpleMessage("Sign Up"),
+        "skipForNow": MessageLookupByLibrary.simpleMessage("Skip for now"),
         "street": MessageLookupByLibrary.simpleMessage("Street"),
         "systemDefaultLang": m1,
         "systemDefaultLanguage":

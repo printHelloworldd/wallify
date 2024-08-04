@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:async_wallpaper/async_wallpaper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,7 @@ import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
 import 'package:wallify/generated/l10n.dart';
 
 import 'package:wallify/image_page/image_data_provider.dart';
@@ -59,7 +61,10 @@ class _ImagePageState extends State<ImagePage> {
   // save image to favourites
   void saveImage() {
     // save to FireBase
-    firestoreService.addImage(widget.imagePath);
+    if (!Provider.of<AuthenticationProvider>(context, listen: false)
+        .checkAnonymousMode()) {
+      firestoreService.addImage(widget.imagePath);
+    }
 
     // save to Hive local database
     Provider.of<ImageDataProvider>(context, listen: false).addImage(
@@ -73,7 +78,10 @@ class _ImagePageState extends State<ImagePage> {
   // delete image from favourites
   void deleteImage() {
     // delete from Firestore
-    firestoreService.removeImage(widget.imagePath);
+    if (!Provider.of<AuthenticationProvider>(context, listen: false)
+        .checkAnonymousMode()) {
+      firestoreService.removeImage(widget.imagePath);
+    }
 
     // delete from Hive
     Provider.of<ImageDataProvider>(context, listen: false).deleteImage(
@@ -216,11 +224,19 @@ class _ImagePageState extends State<ImagePage> {
             // image
             ClipRRect(
               borderRadius: BorderRadius.circular(24),
-              child: Image.network(
-                widget.imagePath,
+              // child: Image.network(
+              //   widget.imagePath,
+              //   width: MediaQuery.of(context).size.width,
+              //   height: MediaQuery.of(context).size.height / 1.25,
+              //   fit: BoxFit.cover,
+              // ),
+              child: CachedNetworkImage(
+                imageUrl: widget.imagePath,
+                fit: BoxFit.cover,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height / 1.25,
-                fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
               ),
             ),
 
@@ -302,8 +318,8 @@ class _ImagePageState extends State<ImagePage> {
                                     padding:
                                         WidgetStateProperty.all<EdgeInsets>(
                                             EdgeInsets.zero),
-                                    shape: WidgetStateProperty.all<
-                                        OutlinedBorder>(
+                                    shape:
+                                        WidgetStateProperty.all<OutlinedBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
@@ -350,8 +366,8 @@ class _ImagePageState extends State<ImagePage> {
                                     padding:
                                         WidgetStateProperty.all<EdgeInsets>(
                                             EdgeInsets.zero),
-                                    shape: WidgetStateProperty.all<
-                                        OutlinedBorder>(
+                                    shape:
+                                        WidgetStateProperty.all<OutlinedBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
@@ -398,8 +414,8 @@ class _ImagePageState extends State<ImagePage> {
                                     padding:
                                         WidgetStateProperty.all<EdgeInsets>(
                                             EdgeInsets.zero),
-                                    shape: WidgetStateProperty.all<
-                                        OutlinedBorder>(
+                                    shape:
+                                        WidgetStateProperty.all<OutlinedBorder>(
                                       RoundedRectangleBorder(
                                         borderRadius:
                                             BorderRadius.circular(8.0),

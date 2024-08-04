@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
+import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/image_page/image_page.dart';
@@ -77,62 +79,22 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
 
                   const SizedBox(height: 20),
 
-                  // Images
-                  FutureBuilder<List<String>>(
-                    future: firestoreService.getUserImages(),
-                    builder: ((context, snapshot) {
-                      if (snapshot.hasData) {
-                        List firestoreImages = snapshot.data!;
+                  // Images // TODO: display images from hive database, if there is no internet connection
+                  !Provider.of<AuthenticationProvider>(context, listen: false)
+                          .checkAnonymousMode()
+                      ? FutureBuilder<List<String>>(
+                          future: firestoreService.getUserImages(),
+                          builder: ((context, snapshot) {
+                            if (snapshot.hasData) {
+                              List firestoreImages = snapshot.data!;
 
-                        return Expanded(
-                          child: ScrollConfiguration(
-                            behavior: ScrollConfiguration.of(context)
-                                .copyWith(scrollbars: false),
-                            child: MasonryGridView.builder(
-                                itemCount: firestoreImages.length,
-                                gridDelegate:
-                                    const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 2),
-                                itemBuilder: (context, index) {
-                                  // // get each individual doc
-                                  // DocumentSnapshot document =
-                                  //     firestoreImages[index];
-                                  // String docID = document.id;
-
-                                  // Map<String, dynamic> data =
-                                  //     document.data() as Map<String, dynamic>;
-                                  // String imageLink = data["image"];
-
-                                  return Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: GestureDetector(
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: Image.network(
-                                          firestoreImages[index],
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => ImagePage(
-                                              imagePath: firestoreImages[index],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  );
-                                }),
-                          ),
-                        );
-                      } else {
-                        return Text(S.of(context).noImages);
-                      }
-                    }),
-                  ),
+                              return imagesRender(context, firestoreImages);
+                            } else {
+                              return Text(S.of(context).noImages);
+                            }
+                          }),
+                        )
+                      : imagesRender(context, images),
                 ],
               ),
             ),
@@ -141,4 +103,56 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
       },
     );
   }
+}
+
+@override
+Widget imagesRender(BuildContext context, List images) {
+  return Expanded(
+    child: ScrollConfiguration(
+      behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
+      child: MasonryGridView.builder(
+          itemCount: images.length,
+          gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2),
+          itemBuilder: (context, index) {
+            // // get each individual doc
+            // DocumentSnapshot document =
+            //     firestoreImages[index];
+            // String docID = document.id;
+
+            // Map<String, dynamic> data =
+            //     document.data() as Map<String, dynamic>;
+            // String imageLink = data["image"];
+
+            return Padding(
+              padding: const EdgeInsets.all(4),
+              child: GestureDetector(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  // child: Image.network(
+                  //   images[index],
+                  //   fit: BoxFit.cover,
+                  // ),
+                  child: CachedNetworkImage(
+                    imageUrl: images[index],
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ImagePage(
+                        imagePath: images[index],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            );
+          }),
+    ),
+  );
 }

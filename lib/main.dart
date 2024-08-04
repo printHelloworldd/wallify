@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:wallify/authentication/authentication_page/authentication_page.dart';
+import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
 import 'package:wallify/authentication/create_account_page/create_account_page.dart';
 import 'package:wallify/authentication/login_page/login_page.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
@@ -13,6 +14,11 @@ import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/theme/theme_provider.dart';
+
+// TODO: Check internet connection
+// TODO: Make loading circle while fetching images in HomePage
+
+// TODO: After sign in or after connecting to the internet store images from Hive database into Firestore
 
 void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -27,7 +33,7 @@ void main() async {
   await Hive.initFlutter();
 
   // open a hivebox
-  await Hive.openBox("test_image_database");
+  await Hive.openBox("test_hive_database_2");
 
   runApp(
     ChangeNotifierProvider(
@@ -50,6 +56,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<FetchedImagesProvider>(
           create: (_) => FetchedImagesProvider(),
+        ),
+        ChangeNotifierProvider<AuthenticationProvider>(
+          create: (_) => AuthenticationProvider(),
         )
       ],
       child: MaterialApp(
@@ -66,12 +75,11 @@ class MyApp extends StatelessWidget {
           "/home_page": (context) => const CustomBottomNavBar(),
         },
         localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
-        locale: const Locale("en"),
         supportedLocales: S.delegate.supportedLocales,
       ),
     );

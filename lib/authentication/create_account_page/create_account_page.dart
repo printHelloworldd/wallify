@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
 import 'package:wallify/authentication/components/authentication_textfield.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/authentication/components/square_tile.dart';
+import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/helper/helper_functions.dart';
 import 'package:wallify/services/auth_service.dart';
@@ -57,10 +60,10 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         // create a user document and add to firebase
         createUserDocument(userCredential);
 
+        Navigator.pushNamed(context, "/home_page");
+
         // pop loading circle
         if (context.mounted) Navigator.pop(context);
-        
-        Navigator.pushNamed(context, "/home_page");
       } on FirebaseAuthException catch (e) {
         // pop loading circle
         Navigator.pop(context);
@@ -68,12 +71,18 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         // display error message to user
         displayMessageToUser(e.code, context);
       }
+
+      Provider.of<AuthenticationProvider>(context, listen: false)
+          .changeAnonymousMode(false);
     }
   }
 
-  Future<void> createUserDocument (UserCredential? userCredential) async {
+  Future<void> createUserDocument(UserCredential? userCredential) async {
     if (userCredential != null && userCredential.user != null) {
-      await FirebaseFirestore.instance.collection("Users").doc(userCredential.user!.email).set({
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userCredential.user!.email)
+          .set({
         "email": userCredential.user!.email,
         "username": nameController.text,
         "photoUrl": userCredential.user!.photoURL,
@@ -190,7 +199,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   // google button
                   SquareTile(
                     imagePath: "assets/logo_icons/google.png",
-                    onTap: () => AuthService().signInWithGoogle().whenComplete(() => Navigator.pushNamed(context, "/home_page")),
+                    onTap: () => AuthService().signInWithGoogle().whenComplete(
+                      () {
+                        Provider.of<AuthenticationProvider>(context,
+                                listen: false)
+                            .changeAnonymousMode(false);
+                        Navigator.pushNamed(context, "/home_page");
+                      },
+                    ),
                   ),
 
                   const SizedBox(width: 25),

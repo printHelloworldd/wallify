@@ -609,6 +609,26 @@ class S {
       args: [],
     );
   }
+
+  /// `Select language`
+  String get selectLanguage {
+    return Intl.message(
+      'Select language',
+      name: 'selectLanguage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Skip for now`
+  String get skipForNow {
+    return Intl.message(
+      'Skip for now',
+      name: 'skipForNow',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

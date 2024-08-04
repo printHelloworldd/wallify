@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/find_locale.dart';
+import 'package:intl/intl.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/profile_page/components/settings_tile.dart';
 import 'package:wallify/theme/theme.dart';
@@ -11,19 +13,48 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  var systemDefaultLocale = "";
+  @override
+  void initState() {
+    super.initState();
+    findSystemLocale().then((value) {
+      switch (value) {
+        case "ru_RU":
+          value = "русский";
+          break;
+        case "en_US":
+          value = "english";
+          break;
+        case "en_GB":
+          value = "english";
+          break;
+        default:
+      }
+      setState(() {
+        systemDefaultLocale = value;
+      });
+    });
+  }
+
   final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
   final lightTextTheme = lightTheme.textTheme;
 
-  var systemDefaultLang = "English";
+  var currentLocale = Intl.getCurrentLocale();
   var cacheSize = 18;
-
-  void changeLanguage() {}
 
   @override
   Widget build(BuildContext context) {
-      List<List<dynamic>> settingsTiles = [
-      [Icons.language, S.of(context).language, S.of(context).systemDefaultLang(systemDefaultLang)],
-      [Icons.palette, S.of(context).appColorTheme, S.of(context).tryAnotherLook],
+    List<List<dynamic>> settingsTiles = [
+      [
+        Icons.language,
+        S.of(context).language,
+        S.of(context).systemDefaultLang(systemDefaultLocale)
+      ],
+      [
+        Icons.palette,
+        S.of(context).appColorTheme,
+        S.of(context).tryAnotherLook
+      ],
       [
         Icons.history,
         S.of(context).clearSearchHistory,
@@ -76,7 +107,165 @@ class _SettingsPageState extends State<SettingsPage> {
                       icon: settingsTiles[index][0],
                       title: settingsTiles[index][1],
                       subtitle: settingsTiles[index][2],
-                      changeLanguage: () => changeLanguage(),
+                      changeLanguage: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              height: MediaQuery.of(context).size.height / 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    S.of(context).selectLanguage,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  Divider(
+                                    color: Colors.grey[300],
+                                    thickness: 1,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          S.load(const Locale('en', 'GB'));
+                                          currentLocale = "en";
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      style: ButtonStyle(
+                                        padding:
+                                            WidgetStateProperty.all<EdgeInsets>(
+                                                EdgeInsets.zero),
+                                        shape: WidgetStateProperty.all<
+                                            OutlinedBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            WidgetStateColor.resolveWith(
+                                          (Set<WidgetState> states) {
+                                            if (states.contains(
+                                                    WidgetState.hovered) ||
+                                                states.contains(
+                                                    WidgetState.pressed)) {
+                                              return Colors.grey[
+                                                  300]!; // Цвет фона при наведении и нажатии
+                                            }
+                                            return currentLocale == "en"
+                                                ? Colors.grey[400]!
+                                                : Colors
+                                                    .transparent; // Ис,ходный цвет фона
+                                          },
+                                        ),
+                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0, vertical: 8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.check_circle_outline,
+                                              color: currentLocale == "en"
+                                                  ? Colors.black
+                                                  : Colors.transparent,
+                                            ),
+                                            const SizedBox(width: 10),
+                                            const Text(
+                                              "English",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 24,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5),
+                                    child: TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          S.load(const Locale('ru'));
+                                          currentLocale = "ru";
+                                        });
+                                        Navigator.pop(context);
+                                      },
+                                      style: ButtonStyle(
+                                        padding:
+                                            WidgetStateProperty.all<EdgeInsets>(
+                                                EdgeInsets.zero),
+                                        shape: WidgetStateProperty.all<
+                                            OutlinedBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                        ),
+                                        backgroundColor:
+                                            WidgetStateColor.resolveWith(
+                                          (Set<WidgetState> states) {
+                                            if (states.contains(
+                                                    WidgetState.hovered) ||
+                                                states.contains(
+                                                    WidgetState.pressed)) {
+                                              return Colors.grey[
+                                                  300]!; // Цвет фона при наведении и нажатии
+                                            }
+                                            return currentLocale == "ru"
+                                                ? Colors.grey[400]!
+                                                : Colors
+                                                    .transparent; // Исходный цвет фона
+                                          },
+                                        ),
+                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0, vertical: 8.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.check_circle_outline,
+                                              color: currentLocale == "ru"
+                                                  ? Colors.black
+                                                  : Colors.transparent,
+                                            ),
+                                            const SizedBox(width: 10),
+                                            const Text(
+                                              "Русский",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 24,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
                     );
                   },
                 ),

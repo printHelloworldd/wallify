@@ -84,6 +84,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "resetAllSettingsDesc": MessageLookupByLibrary.simpleMessage(
             "Делает больше, чем удаление, \n потому что настройки хранятся \n в специальном месте, и они должны быть \n доступны сразу после запуска устройства"),
         "search": MessageLookupByLibrary.simpleMessage("Поиск"),
+        "selectLanguage": MessageLookupByLibrary.simpleMessage("Выберите язык"),
         "sendFeedback": MessageLookupByLibrary.simpleMessage("Отправить отзыв"),
         "set": MessageLookupByLibrary.simpleMessage("Установить"),
         "setAsWallpaper":
@@ -92,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "signIn": MessageLookupByLibrary.simpleMessage("Войти"),
         "signOut": MessageLookupByLibrary.simpleMessage("Выйти"),
         "signUp": MessageLookupByLibrary.simpleMessage("Зарегистрироваться"),
+        "skipForNow": MessageLookupByLibrary.simpleMessage("Пропускать"),
         "street": MessageLookupByLibrary.simpleMessage("Улица"),
         "systemDefaultLang": m1,
         "thisDeletesAllOfYourSearchHistoryData":

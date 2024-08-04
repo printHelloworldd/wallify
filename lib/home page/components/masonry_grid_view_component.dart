@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
@@ -58,9 +59,15 @@ class _MasonryGridViewComponentState extends State<MasonryGridViewComponent> {
                     child: GestureDetector(
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          imageProvider.getAllImages()[index][0],
+                        // child: Image.network(
+                        //   imageProvider.getAllImages()[index][0],
+                        //   fit: BoxFit.cover,
+                        // ),
+                        child: CachedNetworkImage(
+                          imageUrl: imageProvider.getAllImages()[index][0],
                           fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              const CircularProgressIndicator(),
                         ),
                       ),
                       onTap: () => widget.onTap(index),

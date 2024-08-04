@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:provider/provider.dart';
 import 'package:wallify/generated/l10n.dart';
 
@@ -8,6 +11,7 @@ import 'package:wallify/home%20page/components/masonry_grid_view_component.dart'
 import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/image_page/image_page.dart';
 import 'package:wallify/theme/theme.dart';
+import 'package:http/http.dart' as http;
 
 class SearchImagePage extends StatefulWidget {
   final String query;
@@ -24,6 +28,20 @@ class SearchImagePage extends StatefulWidget {
 class _HomePageState extends State<SearchImagePage>
     with SingleTickerProviderStateMixin {
   @override
+  String toLenguageCode = "en";
+  var query = "";
+  @override
+  // void initState() {
+  //   super.initState();
+  //   detectLanguage(widget.query).then((value) async {
+  //     if (value == "en") {
+  //       query = widget.query;
+  //     } else {
+  //       query = await translateQuery(widget.query, toLenguageCode);
+  //     }
+  //   });
+  // }
+
   final TextEditingController searchController = TextEditingController();
 
   final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
@@ -47,6 +65,52 @@ class _HomePageState extends State<SearchImagePage>
         ),
       ),
     );
+  }
+
+  static const projectID = "total-bliss-430816-e3";
+
+  Future<String> detectLanguage(String text) async {
+    final url = Uri.parse(
+        "https://translation.googleapis.com/v3/projects/$projectID/locations/global:detectLanguage");
+    final payload = {"content": text};
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: json.encode(payload),
+    );
+    print(response.body);
+
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body);
+      final languages = body["languages"] as List;
+      final languageCode = languages.first["languageCode"];
+      print("Detected language: $languageCode");
+
+      return languageCode;
+    } else {
+      throw Exception();
+    }
+  }
+
+  static const apiKey = "AIzaSyD7Mwbp2Na6I_UuPnOkHR8q_U5qGP2NHqs";
+
+  static Future<String> translateQuery(
+      String query, String toLenguageCode) async {
+    final response = await http.post(
+        "https://translation.googleapis.com/language/translate/v2?target=$toLenguageCode&key=$apiKey&q=$query"
+            as Uri);
+
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body);
+      final translations = body["data"]["translations"] as List;
+      final translation = translations.first;
+      print("Translated query: $translation");
+
+      return HtmlUnescape().convert(translation["translatedText"]);
+    } else {
+      throw Exception();
+    }
   }
 
   @override
@@ -87,10 +151,19 @@ class _HomePageState extends State<SearchImagePage>
                           filled: true,
                           hintText: S.of(context).search,
                         ),
-                        onSubmitted: (query) =>
-                            Provider.of<FetchedImagesProvider>(context,
-                                    listen: false)
-                                .fetchImages(query),
+                        onSubmitted: (query) async {
+                          // detectLanguage(query).then((value) async {
+                          //   if (value == "en") {
+                          //     return;
+                          //   } else {
+                          //     query =
+                          //         await translateQuery(query, toLenguageCode);
+                          //   }
+                          // });
+                          Provider.of<FetchedImagesProvider>(context,
+                                  listen: false)
+                              .fetchImages(widget.query);
+                        },
                       ),
                     ),
                   ],

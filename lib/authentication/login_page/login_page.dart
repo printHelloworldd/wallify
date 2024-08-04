@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
 import 'package:wallify/authentication/components/authentication_textfield.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/authentication/components/square_tile.dart';
+import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/helper/helper_functions.dart';
 import 'package:wallify/services/auth_service.dart';
@@ -38,10 +41,10 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text,
       );
 
+      Navigator.pushNamed(context, "/home_page");
+
       // pop loading circle
       if (context.mounted) Navigator.pop(context);
-
-      Navigator.pushNamed(context, "/home_page");
     }
 
     // display any errors
@@ -49,6 +52,9 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pop(context);
       displayMessageToUser(e.code, context);
     }
+
+    Provider.of<AuthenticationProvider>(context, listen: false)
+        .changeAnonymousMode(false);
   }
 
   @override
@@ -161,7 +167,14 @@ class _LoginPageState extends State<LoginPage> {
                   // google button
                   SquareTile(
                     imagePath: "assets/logo_icons/google.png",
-                    onTap: () => AuthService().signInWithGoogle().whenComplete(() => Navigator.pushNamed(context, "/home_page")),
+                    onTap: () => AuthService().signInWithGoogle().whenComplete(
+                      () {
+                        Provider.of<AuthenticationProvider>(context,
+                                listen: false)
+                            .changeAnonymousMode(false);
+                        Navigator.pushNamed(context, "/home_page");
+                      },
+                    ),
                   ),
 
                   const SizedBox(width: 25),
@@ -195,7 +208,8 @@ class _LoginPageState extends State<LoginPage> {
                       S.of(context).registerNow,
                       style: lightTextTheme.labelMedium,
                     ),
-                    onTap: () => Navigator.pushNamed(context, "/create_account_page"),
+                    onTap: () =>
+                        Navigator.pushNamed(context, "/create_account_page"),
                   ),
                 ],
               ),

@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
+import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/theme/theme.dart';
 
@@ -32,7 +35,9 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           // user is logged in
-          if (snapshot.hasData) {
+          if (snapshot.hasData ||
+              Provider.of<AuthenticationProvider>(context, listen: false)
+                  .checkAnonymousMode()) {
             return const CustomBottomNavBar();
           }
 
@@ -53,7 +58,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                             bottomRight: Radius.circular(140),
                           ),
                           child: Image.asset(
-                            "assets/images/marcelo-cidrack-7jZNgIuJrCM-unsplash.jpg",
+                            "assets/images/BG.jpg",
                             width: MediaQuery.of(context).size.width,
                             height: MediaQuery.of(context).size.height / 1.75,
                             fit: BoxFit.cover,
@@ -101,6 +106,24 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       name: S.of(context).login,
                       textColor: lightButtonTheme!.onPrimary,
                       buttonColor: lightButtonTheme!.primary,
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<AuthenticationProvider>(context,
+                                listen: false)
+                            .changeAnonymousMode(true);
+                        Navigator.pushNamed(context, "/home_page");
+                      },
+                      child: Text(
+                        S.of(context).skipForNow,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
                   ],
                 ),
