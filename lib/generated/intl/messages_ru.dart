@@ -65,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "nature": MessageLookupByLibrary.simpleMessage("Природа"),
         "noData": MessageLookupByLibrary.simpleMessage("Нет данных"),
         "noImages": MessageLookupByLibrary.simpleMessage("Нет изображений.."),
+        "noImagesBySearch": MessageLookupByLibrary.simpleMessage(
+            "По вашему запросу ничего не найдено. Попробуйте изменить запрос или использовать другие ключевые слова"),
         "notAMember":
             MessageLookupByLibrary.simpleMessage("Вы еще не участник? "),
         "or": MessageLookupByLibrary.simpleMessage("Или"),

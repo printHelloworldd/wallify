@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/find_locale.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/profile_page/components/settings_tile.dart';
+import 'package:wallify/provider/locale_provider.dart';
 import 'package:wallify/theme/theme.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -139,6 +141,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                           S.load(const Locale('en', 'GB'));
                                           currentLocale = "en";
                                         });
+                                        Provider.of<LocaleProvider>(context,
+                                                listen: false)
+                                            .setLocale(Locale('en', 'GB'));
                                         Navigator.pop(context);
                                       },
                                       style: ButtonStyle(
@@ -204,6 +209,9 @@ class _SettingsPageState extends State<SettingsPage> {
                                           S.load(const Locale('ru'));
                                           currentLocale = "ru";
                                         });
+                                        Provider.of<LocaleProvider>(context,
+                                                listen: false)
+                                            .setLocale(Locale('ru'));
                                         Navigator.pop(context);
                                       },
                                       style: ButtonStyle(

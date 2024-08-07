@@ -6,6 +6,7 @@ import 'package:wallify/authentication/authentication_page/authentication_provid
 import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/profile_page/components/custom_text_button.dart';
+import 'package:wallify/provider/locale_provider.dart';
 import 'package:wallify/theme/theme.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -35,6 +36,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context);
+
     final List<String> buttons = [
       S.of(context).settings,
       S.of(context).recommend,

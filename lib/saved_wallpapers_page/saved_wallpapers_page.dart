@@ -37,16 +37,6 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
   final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
   final lightTextTheme = lightTheme.textTheme;
 
-  // final List<String> images = [
-  //   "amine-mayoufi-_5PyWBp9HqA-unsplash.jpg",
-  //   "john-towner-3Kv48NS4WUU-unsplash.jpg",
-  //   "mads-schmidt-rasmussen-6YmzwamGzCg-unsplash.jpg",
-  //   "marcelo-cidrack-7jZNgIuJrCM-unsplash.jpg",
-  //   "marcelo-vaz-ka6WGHXcFMY-unsplash.jpg",
-  //   "paul-pastourmatzis-KT3WlrL_bsg-unsplash.jpg",
-  //   "tobias-rademacher-NuBvAE6VfSM-unsplash.jpg"
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ImageDataProvider>(
@@ -82,10 +72,13 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                   // Images // TODO: display images from hive database, if there is no internet connection
                   !Provider.of<AuthenticationProvider>(context, listen: false)
                           .checkAnonymousMode()
-                      ? FutureBuilder<List<String>>(
+                      ? FutureBuilder(
                           future: firestoreService.getUserImages(),
                           builder: ((context, snapshot) {
-                            if (snapshot.hasData) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.data!.isNotEmpty) {
                               List firestoreImages = snapshot.data!;
 
                               return imagesRender(context, firestoreImages);
@@ -94,7 +87,9 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                             }
                           }),
                         )
-                      : imagesRender(context, images),
+                      : images.isNotEmpty
+                          ? imagesRender(context, images)
+                          : Text(S.of(context).noImages),
                 ],
               ),
             ),
@@ -111,48 +106,49 @@ Widget imagesRender(BuildContext context, List images) {
     child: ScrollConfiguration(
       behavior: ScrollConfiguration.of(context).copyWith(scrollbars: false),
       child: MasonryGridView.builder(
-          itemCount: images.length,
-          gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2),
-          itemBuilder: (context, index) {
-            // // get each individual doc
-            // DocumentSnapshot document =
-            //     firestoreImages[index];
-            // String docID = document.id;
+        itemCount: images.length,
+        gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2),
+        itemBuilder: (context, index) {
+          // // get each individual doc
+          // DocumentSnapshot document =
+          //     firestoreImages[index];
+          // String docID = document.id;
 
-            // Map<String, dynamic> data =
-            //     document.data() as Map<String, dynamic>;
-            // String imageLink = data["image"];
+          // Map<String, dynamic> data =
+          //     document.data() as Map<String, dynamic>;
+          // String imageLink = data["image"];
 
-            return Padding(
-              padding: const EdgeInsets.all(4),
-              child: GestureDetector(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  // child: Image.network(
-                  //   images[index],
-                  //   fit: BoxFit.cover,
-                  // ),
-                  child: CachedNetworkImage(
-                    imageUrl: images[index],
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) =>
-                        const CircularProgressIndicator(),
-                  ),
+          return Padding(
+            padding: const EdgeInsets.all(4),
+            child: GestureDetector(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                // child: Image.network(
+                //   images[index],
+                //   fit: BoxFit.cover,
+                // ),
+                child: CachedNetworkImage(
+                  imageUrl: images[index],
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
                 ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ImagePage(
-                        imagePath: images[index],
-                      ),
-                    ),
-                  );
-                },
               ),
-            );
-          }),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ImagePage(
+                      imagePath: images[index],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      ),
     ),
   );
 }

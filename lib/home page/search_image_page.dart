@@ -4,21 +4,23 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:wallify/generated/l10n.dart';
 
+import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/home%20page/components/masonry_grid_view_component.dart';
 import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/image_page/image_page.dart';
 import 'package:wallify/theme/theme.dart';
-import 'package:http/http.dart' as http;
 
 class SearchImagePage extends StatefulWidget {
   final String query;
+  final VoidCallback onSearchPageClosed;
 
   const SearchImagePage({
     super.key,
     required this.query,
+    required this.onSearchPageClosed,
   });
 
   @override
@@ -29,7 +31,6 @@ class _HomePageState extends State<SearchImagePage>
     with SingleTickerProviderStateMixin {
   @override
   String toLenguageCode = "en";
-  var query = "";
   @override
   // void initState() {
   //   super.initState();
@@ -115,6 +116,7 @@ class _HomePageState extends State<SearchImagePage>
 
   @override
   Widget build(BuildContext context) {
+    var query = widget.query;
     return Scaffold(
       backgroundColor: lightTheme.scaffoldBackgroundColor,
       body: SafeArea(
@@ -130,6 +132,7 @@ class _HomePageState extends State<SearchImagePage>
                     IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
+                        widget.onSearchPageClosed();
                         Navigator.pop(context);
                       },
                     ),
@@ -151,7 +154,7 @@ class _HomePageState extends State<SearchImagePage>
                           filled: true,
                           hintText: S.of(context).search,
                         ),
-                        onSubmitted: (query) async {
+                        onSubmitted: (searchQuery) async {
                           // detectLanguage(query).then((value) async {
                           //   if (value == "en") {
                           //     return;
@@ -162,7 +165,11 @@ class _HomePageState extends State<SearchImagePage>
                           // });
                           Provider.of<FetchedImagesProvider>(context,
                                   listen: false)
-                              .fetchImages(widget.query);
+                              .changeQuery(searchQuery);
+                          query = searchQuery;
+                          await Provider.of<FetchedImagesProvider>(context,
+                                  listen: false)
+                              .fetchImages(searchQuery);
                         },
                       ),
                     ),
@@ -175,7 +182,7 @@ class _HomePageState extends State<SearchImagePage>
                 Expanded(
                   child: MasonryGridViewComponent(
                     onTap: (index) => moveToImagePage(index),
-                    query: widget.query,
+                    query: query,
                   ),
                 ),
               ],

@@ -629,6 +629,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Nothing found for your request. Try changing your request or using other keywords.`
+  String get noImagesBySearch {
+    return Intl.message(
+      'Nothing found for your request. Try changing your request or using other keywords.',
+      name: 'noImagesBySearch',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

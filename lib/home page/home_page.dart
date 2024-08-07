@@ -122,7 +122,12 @@ class _HomePageState extends State<HomePage>
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SearchImagePage(query: query),
+        builder: (context) => SearchImagePage(
+            query: query,
+            onSearchPageClosed: () {
+              Provider.of<FetchedImagesProvider>(context, listen: false)
+                  .fetchImages(tabs[_tabController.index]);
+            }),
       ),
     );
     searchController.clear();

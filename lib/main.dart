@@ -13,6 +13,7 @@ import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/profile_page/settings_page.dart';
+import 'package:wallify/provider/locale_provider.dart';
 import 'package:wallify/theme/theme_provider.dart';
 
 // TODO: Check internet connection
@@ -59,6 +60,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<AuthenticationProvider>(
           create: (_) => AuthenticationProvider(),
+        ),
+        ChangeNotifierProvider<LocaleProvider>(
+          create: (_) => LocaleProvider(),
         )
       ],
       child: MaterialApp(

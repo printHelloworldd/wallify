@@ -56,5 +56,6 @@
   "myFavouritesWallpapers": "My favourites wallpapers",
   "noImages": "No images..",
   "selectLanguage": "Select language",
-  "skipForNow": "Skip for now"
+  "skipForNow": "Skip for now",
+  "noImagesBySearch": "Nothing found for your request. Try changing your request or using other keywords."
 }

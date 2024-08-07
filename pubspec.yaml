@@ -28,6 +28,7 @@ dependencies:
   google_nav_bar: null
   dot_navigation_bar: null
   popover: ^0.3.0+1
+  shimmer: ^3.0.0
 
   http: null
   html_unescape: ^2.0.0

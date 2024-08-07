@@ -9,6 +9,13 @@ class FetchedImagesProvider extends ChangeNotifier {
   int totalResults = 0;
   int page = 1;
   bool isLoading = false;
+  var query = "";
+
+  // For loadMore method in SearchPage
+  void changeQuery(String newQuery) {
+    query = newQuery;
+    notifyListeners();
+  }
 
   // initialize list
   Future<List<List<String>>> initializeImages(String query) async {
@@ -59,7 +66,7 @@ class FetchedImagesProvider extends ChangeNotifier {
     return allImages;
   }
 
-  void loadMoreImages(String query) async {
+  void loadMoreImages() async {
     isLoading = true;
     page++;
     List<List<String>> fetchedImages = [];
