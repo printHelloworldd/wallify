@@ -8,6 +8,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gallery_saver_updated/gallery_saver.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
@@ -140,8 +141,9 @@ class _ImagePageState extends State<ImagePage> {
       log("filePath: ${file.path}");
       await GallerySaver.saveImage(file.path, albumName: "Wallify")
           .then((success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(S.of(context).downloadedToGallery)),
+        Fluttertoast.showToast(
+          msg: '😊 ${S.of(context).downloadedToGallery}',
+          backgroundColor: Colors.green,
         );
       });
     } catch (e) {
@@ -291,6 +293,7 @@ class _ImagePageState extends State<ImagePage> {
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
+                        backgroundColor: Colors.grey[300],
                         builder: (context) {
                           return Container(
                             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -299,16 +302,16 @@ class _ImagePageState extends State<ImagePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 16),
-                                  child: Text(
-                                    S.of(context).setAsWallpaper,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                                // Padding(
+                                //   padding: const EdgeInsets.only(left: 16),
+                                //   child: Text(
+                                //     S.of(context).setAsWallpaper,
+                                //     style: const TextStyle(
+                                //       color: Colors.white,
+                                //       fontWeight: FontWeight.bold,
+                                //     ),
+                                //   ),
+                                // ),
                                 TextButton(
                                   onPressed: () {
                                     setWallpaper(0);
@@ -333,7 +336,7 @@ class _ImagePageState extends State<ImagePage> {
                                             states.contains(
                                                 WidgetState.pressed)) {
                                           return Colors.grey[
-                                              300]!; // Цвет фона при наведении и нажатии
+                                              400]!; // Цвет фона при наведении и нажатии
                                         }
                                         return Colors
                                             .transparent; // Исходный цвет фона
@@ -347,11 +350,18 @@ class _ImagePageState extends State<ImagePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          S.of(context).homeScreen,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.phone_android,
+                                                color: Color(0xFF004864)),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              S.of(context).homeScreen,
+                                              style: const TextStyle(
+                                                color: Color(0xFF004864),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -381,7 +391,7 @@ class _ImagePageState extends State<ImagePage> {
                                             states.contains(
                                                 WidgetState.pressed)) {
                                           return Colors.grey[
-                                              300]!; // Цвет фона при наведении и нажатии
+                                              400]!; // Цвет фона при наведении и нажатии
                                         }
                                         return Colors
                                             .transparent; // Исходный цвет фона
@@ -395,11 +405,18 @@ class _ImagePageState extends State<ImagePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          S.of(context).lockScreen,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.phonelink_lock,
+                                                color: Color(0xFF004864)),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              S.of(context).lockScreen,
+                                              style: const TextStyle(
+                                                color: Color(0xFF004864),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
@@ -429,7 +446,7 @@ class _ImagePageState extends State<ImagePage> {
                                             states.contains(
                                                 WidgetState.pressed)) {
                                           return Colors.grey[
-                                              300]!; // Цвет фона при наведении и нажатии
+                                              400]!; // Цвет фона при наведении и нажатии
                                         }
                                         return Colors
                                             .transparent; // Исходный цвет фона
@@ -443,11 +460,18 @@ class _ImagePageState extends State<ImagePage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          S.of(context).homeAndLockScreens,
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                          ),
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.content_copy,
+                                                color: Color(0xFF004864)),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              S.of(context).homeAndLockScreens,
+                                              style: const TextStyle(
+                                                color: Color(0xFF004864),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),

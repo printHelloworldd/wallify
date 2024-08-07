@@ -44,6 +44,7 @@ dependencies:
 
   flutter_wallpaper_manager: null
   async_wallpaper: ^2.0.3
+  fluttertoast: ^8.2.6
 
   flutter_cache_manager: null
   # uuid: 

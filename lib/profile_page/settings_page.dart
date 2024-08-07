@@ -112,6 +112,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       changeLanguage: () {
                         showModalBottomSheet(
                           context: context,
+                          backgroundColor: Colors.grey[300],
                           builder: (context) {
                             return Container(
                               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -129,7 +130,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                     ),
                                   ),
                                   Divider(
-                                    color: Colors.grey[300],
+                                    color: Colors.grey[400],
                                     thickness: 1,
                                   ),
                                   Padding(
@@ -165,10 +166,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                                 states.contains(
                                                     WidgetState.pressed)) {
                                               return Colors.grey[
-                                                  300]!; // Цвет фона при наведении и нажатии
+                                                  400]!; // Цвет фона при наведении и нажатии
                                             }
                                             return currentLocale == "en"
-                                                ? Colors.grey[400]!
+                                                ? const Color(0xFF004864)
                                                 : Colors
                                                     .transparent; // Ис,ходный цвет фона
                                           },
@@ -184,14 +185,16 @@ class _SettingsPageState extends State<SettingsPage> {
                                             Icon(
                                               Icons.check_circle_outline,
                                               color: currentLocale == "en"
-                                                  ? Colors.black
+                                                  ? Colors.white
                                                   : Colors.transparent,
                                             ),
                                             const SizedBox(width: 10),
-                                            const Text(
+                                            Text(
                                               "English",
                                               style: TextStyle(
-                                                color: Colors.black,
+                                                color: currentLocale == "en"
+                                                    ? Colors.white
+                                                    : Colors.black,
                                                 fontSize: 24,
                                               ),
                                             ),
@@ -233,10 +236,10 @@ class _SettingsPageState extends State<SettingsPage> {
                                                 states.contains(
                                                     WidgetState.pressed)) {
                                               return Colors.grey[
-                                                  300]!; // Цвет фона при наведении и нажатии
+                                                  400]!; // Цвет фона при наведении и нажатии
                                             }
                                             return currentLocale == "ru"
-                                                ? Colors.grey[400]!
+                                                ? const Color(0xFF004864)
                                                 : Colors
                                                     .transparent; // Исходный цвет фона
                                           },
@@ -252,14 +255,16 @@ class _SettingsPageState extends State<SettingsPage> {
                                             Icon(
                                               Icons.check_circle_outline,
                                               color: currentLocale == "ru"
-                                                  ? Colors.black
+                                                  ? Colors.white
                                                   : Colors.transparent,
                                             ),
                                             const SizedBox(width: 10),
-                                            const Text(
+                                            Text(
                                               "Русский",
                                               style: TextStyle(
-                                                color: Colors.black,
+                                                color: currentLocale == "ru"
+                                                    ? Colors.white
+                                                    : Colors.black,
                                                 fontSize: 24,
                                               ),
                                             ),

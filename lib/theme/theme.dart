@@ -48,6 +48,16 @@ final lightTheme = ThemeData(
     secondary: Colors.white,
     onSecondary: Colors.black,
   )),
+  progressIndicatorTheme: const ProgressIndicatorThemeData(
+    color: Color(0xFF004864), // Цвет индикатора загрузки
+  ),
+  textSelectionTheme: TextSelectionThemeData(
+    cursorColor: const Color(0xFF004864), // Цвет курсора в поле ввода
+    selectionColor:
+        const Color(0xFF004864).withOpacity(0.3), // Цвет выделения текста
+    selectionHandleColor:
+        const Color(0xFF004864), // Цвет ручки выделения текста
+  ),
 );
 
 final darkTheme = ThemeData(
