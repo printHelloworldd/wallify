@@ -58,6 +58,14 @@ final lightTheme = ThemeData(
     selectionHandleColor:
         const Color(0xFF004864), // Цвет ручки выделения текста
   ),
+  dialogTheme: DialogTheme(
+    backgroundColor: Colors.grey[300],
+  ),
+  // textButtonTheme: TextButtonThemeData(
+  //   style: TextButton.styleFrom(
+  //     textStyle: const TextStyle(color: Color(0xFF004864)),
+  //   ),
+  // ),
 );
 
 final darkTheme = ThemeData(

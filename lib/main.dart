@@ -15,6 +15,7 @@ import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/provider/locale_provider.dart';
 import 'package:wallify/theme/theme_provider.dart';
+import 'package:wiredash/wiredash.dart';
 
 // TODO: Check internet connection
 // TODO: Make loading circle while fetching images in HomePage
@@ -65,26 +66,30 @@ class MyApp extends StatelessWidget {
           create: (_) => LocaleProvider(),
         )
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        // useInheritedMediaQuery: true,
-        // locale: DevicePreview.locale(context),
-        // builder: DevicePreview.appBuilder,
-        theme: Provider.of<ThemeProvider>(context).themeData,
-        home: const AuthenticationPage(),
-        routes: {
-          "/settings_page": (context) => const SettingsPage(),
-          "/create_account_page": (context) => const CreateAccountPage(),
-          "/login_page": (context) => const LoginPage(),
-          "/home_page": (context) => const CustomBottomNavBar(),
-        },
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
+      child: Wiredash(
+        projectId: 'wallify-2catg8c',
+        secret: 'uVMZR2zuPWPIZJlF1xA5v5NHEKOcsah_',
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          // useInheritedMediaQuery: true,
+          // locale: DevicePreview.locale(context),
+          // builder: DevicePreview.appBuilder,
+          theme: Provider.of<ThemeProvider>(context).themeData,
+          home: const AuthenticationPage(),
+          routes: {
+            "/settings_page": (context) => const SettingsPage(),
+            "/create_account_page": (context) => const CreateAccountPage(),
+            "/login_page": (context) => const LoginPage(),
+            "/home_page": (context) => const CustomBottomNavBar(),
+          },
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+        ),
       ),
     );
   }

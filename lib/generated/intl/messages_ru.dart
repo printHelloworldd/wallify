@@ -52,7 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "helloAgain":
             MessageLookupByLibrary.simpleMessage("И снова здравствуйте!"),
         "homeAndLockScreens": MessageLookupByLibrary.simpleMessage(
-            "Домашний экран и экран блокировки"),
+            "Главный экран и экран блокировки"),
         "homeScreen": MessageLookupByLibrary.simpleMessage("Главный экран"),
         "interiors": MessageLookupByLibrary.simpleMessage("Интерьеры"),
         "joinUsAndCreateYourAccount": MessageLookupByLibrary.simpleMessage(

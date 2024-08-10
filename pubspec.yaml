@@ -71,6 +71,10 @@ dependencies:
   # web: 
   # win32: 
 
+  rate_my_app: ^2.2.0
+  wiredash: ^2.2.1
+  flutter_markdown: ^0.7.3+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
