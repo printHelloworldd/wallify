@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wallify/home%20page/home_page.dart';
 import 'package:wallify/profile_page/profile_page.dart';
 import 'package:wallify/saved_wallpapers_page/saved_wallpapers_page.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class CustomBottomNavBar extends StatefulWidget {
   const CustomBottomNavBar({super.key});
@@ -28,6 +30,8 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Provider.of<ThemeProvider>(context).currentTheme;
+
     return Stack(
       children: [
         // Home Page, Saved Wallpapers Page, Profile Page
@@ -58,7 +62,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                   height: _currentPageIndex == 0 ? 60 : 50,
                   decoration: BoxDecoration(
                     color: _currentPageIndex == 0
-                        ? const Color(0xFF014864)
+                        ? themeData.primaryColor
                         : Colors.white,
                     borderRadius:
                         BorderRadius.circular(_currentPageIndex == 0 ? 30 : 25),
@@ -86,7 +90,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                   height: _currentPageIndex == 1 ? 60 : 50,
                   decoration: BoxDecoration(
                     color: _currentPageIndex == 1
-                        ? const Color(0xFF014864)
+                        ? themeData.primaryColor
                         : Colors.white,
                     borderRadius:
                         BorderRadius.circular(_currentPageIndex == 1 ? 30 : 25),
@@ -114,7 +118,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
                   height: _currentPageIndex == 2 ? 60 : 50,
                   decoration: BoxDecoration(
                     color: _currentPageIndex == 2
-                        ? const Color(0xFF014864)
+                        ? themeData.primaryColor
                         : Colors.white,
                     borderRadius:
                         BorderRadius.circular(_currentPageIndex == 2 ? 30 : 25),

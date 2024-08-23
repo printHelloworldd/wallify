@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_in_store_app_version_checker/flutter_in_store_app_version_checker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/find_locale.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_app_cache_manager/simple_app_cache_manager.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/profile_page/components/settings_tile.dart';
 import 'package:wallify/provider/locale_provider.dart';
 import 'package:wallify/theme/theme.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -14,11 +18,17 @@ class SettingsPage extends StatefulWidget {
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends State<SettingsPage> with CacheMixin {
+  final _checker = InStoreAppVersionChecker();
+  String currenctAppVersion = "";
   var systemDefaultLocale = "";
+
   @override
   void initState() {
     super.initState();
+    checkVersion();
+    // cacheManager = SimpleAppCacheManager();
+    // updateCacheSize();
     findSystemLocale().then((value) {
       switch (value) {
         case "ru_RU":
@@ -33,19 +43,55 @@ class _SettingsPageState extends State<SettingsPage> {
         default:
       }
       setState(() {
-        systemDefaultLocale = value;
+        systemDefaultLocale =
+            value; // TODO: I every time after loading this page set system locale
       });
     });
   }
 
-  final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
-  final lightTextTheme = lightTheme.textTheme;
+  void checkVersion() async {
+    _checker.checkUpdate().then((value) {
+      // print(value.appURL);         // Return the app url
+      // print(value.canUpdate);      // Return true if update is available
+      setState(() {
+        currenctAppVersion = value.currentVersion;
+      });
+      print(currenctAppVersion); // Return current app version
+      // print(value
+      //     .errorMessage); // Return error message if found else it will return null
+      // print(value.newVersion); // Return the new app version
+    });
+  }
+
+  final lightButtonTheme = lightBlueTheme.buttonTheme.colorScheme;
+  final lightTextTheme = lightBlueTheme.textTheme;
 
   var currentLocale = Intl.getCurrentLocale();
-  var cacheSize = 18;
+
+  // // Cache management
+  // late final SimpleAppCacheManager cacheManager;
+  // late ValueNotifier<String> cacheSizeNotifier = ValueNotifier<String>('');
+  // var cacheSize = "";
+
+  // void updateCacheSize() async {
+  //   cacheSize = await cacheManager.getTotalCacheSize();
+  //   cacheSizeNotifier.value = cacheSize;
+  // }
+
+  // void clearCache() async {
+  //   cacheManager.clearCache();
+  //   updateCacheSize();
+  //   Fluttertoast.showToast(
+  //     msg: '😊 ${S.of(context).downloadedToGallery}', // TODO: Change the text
+  //     backgroundColor: Colors.green,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final themeData = Provider.of<ThemeProvider>(context).currentTheme;
+
     List<List<dynamic>> settingsTiles = [
       [
         Icons.language,
@@ -68,17 +114,16 @@ class _SettingsPageState extends State<SettingsPage> {
           size: 24,
         ),
         S.of(context).clearCache,
-        S.of(context).cacheSize(cacheSize),
+        S.of(context).cacheSize,
       ],
       [
         Icons.settings_backup_restore,
         S.of(context).resetAllSettings,
         S.of(context).resetAllSettingsDesc
       ],
-      [Icons.system_update, S.of(context).appVersion, "3.1.5"],
+      [Icons.system_update, S.of(context).appVersion, currenctAppVersion],
     ];
     return Scaffold(
-      backgroundColor: lightTheme.scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -89,9 +134,11 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         title: Text(
           S.of(context).settings,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 24,
-            color: Colors.black,
+            color: themeProvider.isDarkMode == true
+                ? themeData.primaryColorLight
+                : themeData.primaryColorDark,
             fontFamily: "Roboto",
           ),
         ),
@@ -109,6 +156,15 @@ class _SettingsPageState extends State<SettingsPage> {
                       icon: settingsTiles[index][0],
                       title: settingsTiles[index][1],
                       subtitle: settingsTiles[index][2],
+                      cacheSizeNotifier: cacheSizeNotifier,
+                      clearCache: () {
+                        cacheManager.clearCache();
+                        updateCacheSize();
+                        Fluttertoast.showToast(
+                          msg: '😊 ${S.of(context).cacheCleared}',
+                          backgroundColor: Colors.green,
+                        );
+                      },
                       changeLanguage: () {
                         showModalBottomSheet(
                           context: context,
@@ -288,5 +344,22 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
       ),
     );
+  }
+}
+
+mixin CacheMixin on State<SettingsPage> {
+  late final SimpleAppCacheManager cacheManager;
+  late ValueNotifier<String> cacheSizeNotifier = ValueNotifier<String>('');
+
+  @override
+  void initState() {
+    super.initState();
+    cacheManager = SimpleAppCacheManager();
+    updateCacheSize();
+  }
+
+  void updateCacheSize() async {
+    final cacheSize = await cacheManager.getTotalCacheSize();
+    cacheSizeNotifier.value = cacheSize;
   }
 }

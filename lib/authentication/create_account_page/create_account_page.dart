@@ -9,8 +9,10 @@ import 'package:wallify/authentication/components/square_tile.dart';
 import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/helper/helper_functions.dart';
+import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/services/auth_service.dart';
 import 'package:wallify/theme/theme.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({super.key});
@@ -25,8 +27,15 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final passwordController = TextEditingController();
   final confirmedPasswordController = TextEditingController();
 
-  final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
-  final lightTextTheme = lightTheme.textTheme;
+  // TextTheme textTheme = const TextTheme();
+  // ButtonThemeData buttonTheme = const ButtonThemeData();
+
+  // @override
+  // void initState() {
+  //   buttonTheme = Provider.of<ThemeProvider>(context).themeData.buttonTheme;
+  //   textTheme = Provider.of<ThemeProvider>(context).themeData.textTheme;
+  //   super.initState();
+  // }
 
   void signUserUp() async {
     // show loading circle
@@ -60,6 +69,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         // create a user document and add to firebase
         createUserDocument(userCredential);
 
+        await Provider.of<ImageDataProvider>(context, listen: false)
+            .syncImagaes();
+
         Navigator.pushNamed(context, "/home_page");
 
         // pop loading circle
@@ -75,7 +87,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
       Provider.of<AuthenticationProvider>(context, listen: false)
           .changeAnonymousMode(false);
     }
-  }
+  } // TODO: Transfer method to build method
 
   Future<void> createUserDocument(UserCredential? userCredential) async {
     if (userCredential != null && userCredential.user != null) {
@@ -93,8 +105,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    final buttonTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.buttonTheme;
+    final textTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.textTheme;
+
     return Scaffold(
-      backgroundColor: lightTheme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -105,12 +121,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               // Hello again!
               Text(
                 S.of(context).wellcome,
-                style: lightTextTheme.displayLarge,
+                style: textTheme.displayLarge,
               ),
               const SizedBox(height: 10),
               Text(
                 S.of(context).joinUsAndCreateYourAccount,
-                style: lightTextTheme.titleSmall,
+                style: textTheme.titleSmall,
                 textAlign: TextAlign.center,
               ),
 
@@ -156,8 +172,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               AuthenticationButton(
                 onTap: signUserUp,
                 name: S.of(context).signUp,
-                textColor: lightButtonTheme!.onPrimary,
-                buttonColor: lightButtonTheme!.primary,
+                textColor: buttonTheme.colorScheme!.onPrimary,
+                buttonColor: buttonTheme.colorScheme!.primary,
               ),
 
               const SizedBox(height: 20),
@@ -170,20 +186,20 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
-                        color: lightTheme.dividerColor,
+                        color: lightBlueTheme.dividerColor,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
                         S.of(context).or,
-                        style: lightTextTheme.labelSmall,
+                        style: textTheme.labelSmall,
                       ),
                     ),
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
-                        color: lightTheme.dividerColor,
+                        color: lightBlueTheme.dividerColor,
                       ),
                     ),
                   ],
@@ -200,10 +216,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                   SquareTile(
                     imagePath: "assets/logo_icons/google.png",
                     onTap: () => AuthService().signInWithGoogle().whenComplete(
-                      () {
+                      () async {
                         Provider.of<AuthenticationProvider>(context,
                                 listen: false)
                             .changeAnonymousMode(false);
+                        await Provider.of<ImageDataProvider>(context,
+                                listen: false)
+                            .syncImagaes();
                         Navigator.pushNamed(context, "/home_page");
                       },
                     ),
@@ -232,12 +251,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                 children: [
                   Text(
                     S.of(context).alreadyHaveAnAccount,
-                    style: lightTextTheme.labelSmall,
+                    style: textTheme.labelSmall,
                   ),
                   GestureDetector(
                     child: Text(
                       S.of(context).signIn,
-                      style: lightTextTheme.labelMedium,
+                      style: textTheme.labelMedium,
                     ),
                     onTap: () => Navigator.pushNamed(context, "/login_page"),
                   ),

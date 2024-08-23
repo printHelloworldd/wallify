@@ -7,6 +7,7 @@ import 'package:wallify/components/custom_bottom_nav_bar.dart';
 import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/theme/theme.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
@@ -16,8 +17,19 @@ class AuthenticationPage extends StatefulWidget {
 }
 
 class _AuthenticationPageState extends State<AuthenticationPage> {
-  final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
-  final lightTextTheme = lightTheme.textTheme;
+  bool isAnonymousMode = true;
+
+  @override
+  void initState() {
+    super.initState();
+    checkAnonymousMode();
+  }
+
+  void checkAnonymousMode() async {
+    isAnonymousMode =
+        await Provider.of<AuthenticationProvider>(context, listen: false)
+            .checkAnonymousMode();
+  }
 
   void createAccount() {
     Navigator.pushNamed(context, "/create_account_page");
@@ -29,15 +41,17 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final buttonTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.buttonTheme;
+    final textTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.textTheme;
+
     return Scaffold(
-      backgroundColor: lightTheme.scaffoldBackgroundColor,
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           // user is logged in
-          if (snapshot.hasData ||
-              Provider.of<AuthenticationProvider>(context, listen: false)
-                  .checkAnonymousMode()) {
+          if (snapshot.hasData || isAnonymousMode) {
             return const CustomBottomNavBar();
           }
 
@@ -70,7 +84,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           top: 50,
                           child: Text(
                             "Wallify",
-                            style: lightTextTheme.titleLarge,
+                            style: textTheme.titleLarge,
                           ),
                         )
                       ],
@@ -83,7 +97,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
                         S.of(context).welcomeToWallify,
-                        style: lightTextTheme.titleMedium,
+                        style: textTheme.titleMedium,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -94,8 +108,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     AuthenticationButton(
                       onTap: createAccount,
                       name: S.of(context).createAccount,
-                      textColor: lightButtonTheme!.onSecondary,
-                      buttonColor: lightButtonTheme!.secondary,
+                      textColor: buttonTheme.colorScheme!.onSecondary,
+                      buttonColor: buttonTheme.colorScheme!.secondary,
                     ),
 
                     const SizedBox(height: 15),
@@ -104,8 +118,8 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                     AuthenticationButton(
                       onTap: login,
                       name: S.of(context).login,
-                      textColor: lightButtonTheme!.onPrimary,
-                      buttonColor: lightButtonTheme!.primary,
+                      textColor: buttonTheme.colorScheme!.onPrimary,
+                      buttonColor: buttonTheme.colorScheme!.primary,
                     ),
 
                     const SizedBox(height: 15),

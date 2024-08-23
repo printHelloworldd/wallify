@@ -14,7 +14,7 @@ class FetchedImagesProvider extends ChangeNotifier {
   // For loadMore method in SearchPage
   void changeQuery(String newQuery) {
     query = newQuery;
-    notifyListeners();
+    // notifyListeners();
   }
 
   // initialize list

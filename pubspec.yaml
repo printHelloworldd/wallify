@@ -21,6 +21,8 @@ dependencies:
 
   internet_connection_checker_plus: ^2.5.1
   cached_network_image: ^3.4.0
+  simple_app_cache_manager: ^0.0.4
+  flutter_in_store_app_version_checker: ^1.7.1
 
   cupertino_icons: null
   provider: null
@@ -40,9 +42,9 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: null
 
-  gallery_saver_updated: ^3.0.0
+  gallery_saver_updated: ^3.0.0 
 
-  flutter_wallpaper_manager: null
+  # flutter_wallpaper_manager: null 
   async_wallpaper: ^2.0.3
   fluttertoast: ^8.2.6
 

@@ -11,7 +11,7 @@ configurations.all {
     resolutionStrategy {
         eachDependency {
             if ((requested.group == "org.jetbrains.kotlin") && (requested.name.startsWith("kotlin-stdlib"))) {
-                useVersion("1.8.0")
+                useVersion("2.0.10")
             }
         }
     }
@@ -77,19 +77,19 @@ flutter {
     source '../..'
 }
 
-dependencies {
-    constraints {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
-            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
-        }
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
-            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
-        }
-    }
-    // classpath 'com.android.tools.build:gradle:7.3.0'
-    // classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    // classpath 'com.google.gms:google-services:4.4.0'
-}
+// dependencies {
+//     constraints {
+//         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.0") {
+//             because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+//         }
+//         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.0") {
+//             because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+//         }
+//     }
+//     // classpath 'com.android.tools.build:gradle:7.3.0'
+//     // classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//     // classpath 'com.google.gms:google-services:4.4.0'
+// }
 
 // remove this line 
 // plugins {

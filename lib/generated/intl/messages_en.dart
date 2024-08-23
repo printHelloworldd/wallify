@@ -20,8 +20,6 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
-  static String m0(cacheSize) => "Cache size: ${cacheSize} MB";
-
   static String m1(lang) => "System default: ${lang}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -33,9 +31,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("App color theme"),
         "appVersion": MessageLookupByLibrary.simpleMessage("App version"),
         "architecture": MessageLookupByLibrary.simpleMessage("Architecture"),
-        "cacheSize": m0,
+        "cacheSize": MessageLookupByLibrary.simpleMessage("Cache size: "),
         "cars": MessageLookupByLibrary.simpleMessage("Cars"),
         "clearCache": MessageLookupByLibrary.simpleMessage("Clear cache"),
+        "cacheCleared": MessageLookupByLibrary.simpleMessage("Cache cleared"),
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Clear search history"),
         "confirmPassword":
@@ -52,19 +51,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "homeAndLockScreens":
             MessageLookupByLibrary.simpleMessage("Home and Lock screens"),
         "homeScreen": MessageLookupByLibrary.simpleMessage("Home screen"),
+        "ifYouLikeThisApp": MessageLookupByLibrary.simpleMessage(
+            "If you like this app, please take a little bit of your time to review it! \n It really helps us and it shouldn\'t take you more than one minute."),
         "interiors": MessageLookupByLibrary.simpleMessage("Interiors"),
         "joinUsAndCreateYourAccount": MessageLookupByLibrary.simpleMessage(
             "Join us and create your account!"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "lockScreen": MessageLookupByLibrary.simpleMessage("Lock screen"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "maybeLater": MessageLookupByLibrary.simpleMessage("MAYBE LATER"),
         "myFavouritesWallpapers":
-            MessageLookupByLibrary.simpleMessage("My favourites wallpapers"),
+            MessageLookupByLibrary.simpleMessage("My favourite wallpapers"),
         "nature": MessageLookupByLibrary.simpleMessage("Nature"),
         "noData": MessageLookupByLibrary.simpleMessage("No data"),
         "noImages": MessageLookupByLibrary.simpleMessage("No images.."),
         "noImagesBySearch": MessageLookupByLibrary.simpleMessage(
             "Nothing found for your request. Try changing your request or using other keywords."),
+        "noThanks": MessageLookupByLibrary.simpleMessage("NO THANKS"),
         "notAMember": MessageLookupByLibrary.simpleMessage("Not a member? "),
         "or": MessageLookupByLibrary.simpleMessage("Or"),
         "orContinueWith":
@@ -73,7 +76,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "passwordsDoNotMatch":
             MessageLookupByLibrary.simpleMessage("Passwords do not match!"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+        "rate": MessageLookupByLibrary.simpleMessage("RATE"),
         "rateApp": MessageLookupByLibrary.simpleMessage("Rate app"),
+        "rateThisApp": MessageLookupByLibrary.simpleMessage("Rate this app"),
         "recommend": MessageLookupByLibrary.simpleMessage("Recommend"),
         "registerNow": MessageLookupByLibrary.simpleMessage("Register now"),
         "resetAllSettings":

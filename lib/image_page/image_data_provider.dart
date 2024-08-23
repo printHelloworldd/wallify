@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wallify/data/hive_database.dart';
+import 'package:wallify/services/firestore.dart';
 
 class ImageDataProvider extends ChangeNotifier {
   // hive database
@@ -32,5 +33,23 @@ class ImageDataProvider extends ChangeNotifier {
 
     db.saveImages(allImages);
     notifyListeners();
+  }
+
+  void updateImages(List<String> images) {
+    db.saveImages(images);
+  }
+
+  Future syncImagaes() async {
+    // Get images from Hive local database
+    List<String> imagesFromHive = getAllImages();
+    // Get images from firestore
+    final FirestoreService firestoreService = FirestoreService();
+    List<String> imagesFromFirestore = await firestoreService.getUserImages();
+    // add all images into one list ana delete dublicate images
+    List<String> allImages = imagesFromHive + imagesFromFirestore;
+    List<String> uniqueImages = allImages.toSet().toList();
+    // store all images list into Hive local database ana firestore
+    firestoreService.updateUserDetails(uniqueImages);
+    updateImages(uniqueImages);
   }
 }

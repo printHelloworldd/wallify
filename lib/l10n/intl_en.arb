@@ -52,10 +52,16 @@
   "resetAllSettingsDesc": "Does more than uninstalling would do, \n because the preferences are stored \n at a special place as they have to be \n accessible directly after device startup",
   "appVersion": "App version",
   "systemDefaultLang": "System default: {lang}",
-  "cacheSize": "Cache size: {cacheSize} MB",
-  "myFavouritesWallpapers": "My favourites wallpapers",
+  "myFavouritesWallpapers": "My favourite wallpapers",
   "noImages": "No images..",
   "selectLanguage": "Select language",
   "skipForNow": "Skip for now",
-  "noImagesBySearch": "Nothing found for your request. Try changing your request or using other keywords."
+  "noImagesBySearch": "Nothing found for your request. Try changing your request or using other keywords.",
+  "rateThisApp": "Rate this app",
+  "ifYouLikeThisApp": "If you like this app, please take a little bit of your time to review it! \n It really helps us and it shouldn't take you more than one minute.",
+  "rate": "RATE",
+  "noThanks": "NO THANKS",
+  "maybeLater": "MAYBE LATER",
+  "cacheSize": "Cache size: ",
+  "cacheCleared": "Cache cleared"
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:provider/provider.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class PolicyDialog extends StatelessWidget {
   final double radius;
@@ -12,7 +14,10 @@ class PolicyDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Provider.of<ThemeProvider>(context).currentTheme;
+
     return Dialog(
+      backgroundColor: themeData.dialogTheme.backgroundColor,
       shape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
       child: Column(

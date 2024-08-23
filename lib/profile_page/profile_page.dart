@@ -15,6 +15,7 @@ import 'package:wallify/profile_page/components/custom_text_button.dart';
 import 'package:wallify/profile_page/components/policy_dialog.dart';
 import 'package:wallify/provider/locale_provider.dart';
 import 'package:wallify/theme/theme.dart';
+import 'package:wallify/theme/theme_provider.dart';
 import 'package:wiredash/wiredash.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -28,9 +29,6 @@ class ProfilePage extends StatelessWidget {
         .get();
   }
 
-  final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
-  final lightTextTheme = lightTheme.textTheme;
-
   void signUserOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.popUntil(context, (route) => route.isFirst);
@@ -40,7 +38,7 @@ class ProfilePage extends StatelessWidget {
     } else {
       print("Sign out failed.");
     }
-  }
+  } // TODO: Transfer to build method
 
   @override
   Widget build(BuildContext context) {
@@ -164,8 +162,12 @@ class ProfilePage extends StatelessWidget {
 
     return Consumer<AuthenticationProvider>(
       builder: (context, value, child) {
+        final themeProvider = Provider.of<ThemeProvider>(context);
+        final buttonTheme = themeProvider.currentTheme.buttonTheme;
+        final textTheme = themeProvider.currentTheme.textTheme;
+        final themeData = themeProvider.currentTheme;
+
         return Scaffold(
-          backgroundColor: lightTheme.scaffoldBackgroundColor,
           body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             future: getUserDetails(),
             builder: (context, snapshot) {
@@ -194,7 +196,7 @@ class ProfilePage extends StatelessWidget {
                             ClipOval(
                               child: Image.network(
                                 user!["photoUrl"] ??
-                                    "https://static-00.iconduck.com/assets.00/profile-circle-icon-2048x2048-cqe5466q.png",
+                                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
@@ -203,9 +205,11 @@ class ProfilePage extends StatelessWidget {
                             const SizedBox(height: 10),
                             Text(
                               user["username"],
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.black,
+                                color: themeProvider.isDarkMode == true
+                                    ? themeData.primaryColorLight
+                                    : themeData.primaryColorDark,
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -226,8 +230,8 @@ class ProfilePage extends StatelessWidget {
                           shrinkWrap: true,
                           itemCount: 5,
                           separatorBuilder: (BuildContext context, int index) {
-                            return const Divider(
-                              color: Colors.grey,
+                            return Divider(
+                              color: themeData.dividerColor,
                               thickness: 1,
                               height: 0,
                             );
@@ -253,7 +257,6 @@ class ProfilePage extends StatelessWidget {
                                     S.of(context).rateApp) {
                                   // Инициализация и отображение диалога оценки
                                   RateMyApp rateMyApp = RateMyApp(
-                                    // TODO: add localization
                                     preferencesPrefix: 'rateMyApp_',
                                     minDays:
                                         0, // Минимальное количество дней с момента установки
@@ -271,15 +274,21 @@ class ProfilePage extends StatelessWidget {
                                     print('RateMyApp initialized');
                                     rateMyApp.showRateDialog(
                                       context,
-                                      title:
-                                          'Rate this app', // Заголовок диалога
-                                      message:
-                                          'If you like this app, please take a little bit of your time to review it!\nIt really helps us and it shouldn\'t take you more than one minute.', // Сообщение диалога
-                                      rateButton: 'RATE', // Текст кнопки оценки
-                                      noButton:
-                                          'NO THANKS', // Текст кнопки отказа
-                                      laterButton:
-                                          'MAYBE LATER', // Текст кнопки "Может быть позже"
+                                      title: S
+                                          .of(context)
+                                          .rateThisApp, // Заголовок диалога
+                                      message: S
+                                          .of(context)
+                                          .ifYouLikeThisApp, // Сообщение диалога
+                                      rateButton: S
+                                          .of(context)
+                                          .rate, // Текст кнопки оценки
+                                      noButton: S
+                                          .of(context)
+                                          .noThanks, // Текст кнопки отказа
+                                      laterButton: S
+                                          .of(context)
+                                          .maybeLater, // Текст кнопки "Может быть позже"
                                       listener: (button) {
                                         // Обработчик нажатий на кнопки
                                         switch (button) {
@@ -317,7 +326,14 @@ class ProfilePage extends StatelessWidget {
                                     context: context,
                                     builder: (context) {
                                       return PolicyDialog(
-                                          mdFileName: "privacy_policy.md");
+                                          mdFileName:
+                                              Provider.of<LocaleProvider>(
+                                                              context,
+                                                              listen: false)
+                                                          .locale ==
+                                                      Locale("ru")
+                                                  ? "privacy_policy_ru.md"
+                                                  : "privacy_policy.md");
                                     },
                                   );
                                 }
@@ -337,14 +353,14 @@ class ProfilePage extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                color: lightButtonTheme!.primary,
+                                color: buttonTheme.colorScheme!.primary,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Center(
                                 child: Text(
                                   S.of(context).signOut,
                                   style: TextStyle(
-                                    color: lightButtonTheme!.onPrimary,
+                                    color: buttonTheme.colorScheme!.onPrimary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                   ),
@@ -360,7 +376,7 @@ class ProfilePage extends StatelessWidget {
               }
 
               // Anonymous mode
-              else if (value.checkAnonymousMode()) {
+              else if (value.isAnonymousMode) {
                 return SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -372,19 +388,21 @@ class ProfilePage extends StatelessWidget {
                         Column(
                           children: [
                             ClipOval(
-                              child: Image.network(
-                                "https://static-00.iconduck.com/assets.00/profile-circle-icon-2048x2048-cqe5466q.png",
+                              child: Image.asset(
+                                "assets/images/user-image.jpg",
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
                               ),
                             ),
                             const SizedBox(height: 10),
-                            const Text(
+                            Text(
                               "user",
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.black,
+                                color: themeProvider.isDarkMode == true
+                                    ? themeData.primaryColorLight
+                                    : themeData.primaryColorDark,
                               ),
                             ),
                           ],
@@ -397,8 +415,8 @@ class ProfilePage extends StatelessWidget {
                           shrinkWrap: true,
                           itemCount: 5,
                           separatorBuilder: (BuildContext context, int index) {
-                            return const Divider(
-                              color: Colors.grey,
+                            return Divider(
+                              color: themeData.dividerColor,
                               thickness: 1,
                               height: 0,
                             );
@@ -424,7 +442,6 @@ class ProfilePage extends StatelessWidget {
                                     S.of(context).rateApp) {
                                   // Инициализация и отображение диалога оценки
                                   RateMyApp rateMyApp = RateMyApp(
-                                    // TODO: add localization
                                     preferencesPrefix: 'rateMyApp_',
                                     minDays:
                                         0, // Минимальное количество дней с момента установки
@@ -509,14 +526,14 @@ class ProfilePage extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
-                                color: lightButtonTheme!.primary,
+                                color: buttonTheme.colorScheme!.primary,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Center(
                                 child: Text(
                                   S.of(context).signIn,
                                   style: TextStyle(
-                                    color: lightButtonTheme!.onPrimary,
+                                    color: buttonTheme.colorScheme!.onPrimary,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                   ),

@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/home%20page/fetched_images_provider.dart';
 
 class MasonryGridViewComponent extends StatefulWidget {
   final Function(int index) onTap;
   final String query;
+  final ScrollController scrollController;
 
   const MasonryGridViewComponent({
     super.key,
     required this.onTap,
     required this.query,
+    required this.scrollController,
   });
 
   @override
@@ -23,12 +26,10 @@ class MasonryGridViewComponent extends StatefulWidget {
 }
 
 class _MasonryGridViewComponentState extends State<MasonryGridViewComponent> {
-  final ScrollController scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
-    scrollController.addListener(loadMoreImages);
+    widget.scrollController.addListener(loadMoreImages);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await Provider.of<FetchedImagesProvider>(context, listen: false)
           .fetchImages(widget.query);
@@ -64,7 +65,7 @@ class _MasonryGridViewComponentState extends State<MasonryGridViewComponent> {
                       const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                   ),
-                  controller: scrollController,
+                  controller: widget.scrollController,
                   itemBuilder: (context, index) => Column(
                     children: [
                       Padding(
@@ -116,8 +117,8 @@ class _MasonryGridViewComponentState extends State<MasonryGridViewComponent> {
   }
 
   void loadMoreImages() {
-    if (scrollController.position.pixels ==
-            scrollController.position.maxScrollExtent &&
+    if (widget.scrollController.position.pixels ==
+            widget.scrollController.position.maxScrollExtent &&
         Provider.of<FetchedImagesProvider>(context, listen: false)
                 .getAllImages()
                 .length <

@@ -9,6 +9,7 @@ import 'package:wallify/home%20page/search_image_page.dart';
 import 'package:wallify/image_page/image_page.dart';
 
 import 'package:wallify/theme/theme.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,7 +20,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  @override
   // void initState() {
   //   super.initState();
   //   // _tabController = TabController(length: 3, vsync: this);
@@ -28,12 +28,10 @@ class _HomePageState extends State<HomePage>
   // }
 
   final TextEditingController searchController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
 
   late final TabController _tabController =
       TabController(length: tabs.length, vsync: this);
-
-  final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
-  final lightTextTheme = lightTheme.textTheme;
 
   final lightTextFieldTheme = ThemeData(
     colorScheme: ColorScheme.light(
@@ -135,8 +133,12 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    final buttonTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.buttonTheme;
+    final textTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.textTheme;
+
     return Scaffold(
-      backgroundColor: lightTheme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -160,6 +162,7 @@ class _HomePageState extends State<HomePage>
                     filled: true,
                     hintText: S.of(context).search,
                   ),
+                  style: const TextStyle(color: Colors.black),
                   onSubmitted: (query) => moveToSearchImagePage(query),
                 ),
 
@@ -236,15 +239,15 @@ class _HomePageState extends State<HomePage>
                     controller: _tabController,
                     isScrollable: true,
                     labelPadding: const EdgeInsets.only(right: 20),
-                    labelColor: Colors.black,
+                    labelColor: textTheme.labelSmall!.color,
                     labelStyle: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                     unselectedLabelColor: Colors.grey,
                     tabAlignment: TabAlignment.start,
-                    indicator:
-                        CircleTabIndicator(color: Colors.black, radius: 4),
+                    indicator: CircleTabIndicator(
+                        color: textTheme.labelSmall!.color as Color, radius: 4),
                     tabs: [
                       Tab(
                         text: S.of(context).wallpapers,
@@ -284,34 +287,42 @@ class _HomePageState extends State<HomePage>
                       MasonryGridViewComponent(
                         onTap: (index) => moveToImagePage(index),
                         query: tabs[0],
+                        scrollController: scrollController,
                       ),
                       MasonryGridViewComponent(
                         onTap: (index) => moveToImagePage(index),
                         query: tabs[1],
+                        scrollController: scrollController,
                       ),
                       MasonryGridViewComponent(
                         onTap: (index) => moveToImagePage(index),
                         query: tabs[2],
+                        scrollController: scrollController,
                       ),
                       MasonryGridViewComponent(
                         onTap: (index) => moveToImagePage(index),
                         query: tabs[3],
+                        scrollController: scrollController,
                       ),
                       MasonryGridViewComponent(
                         onTap: (index) => moveToImagePage(index),
                         query: tabs[4],
+                        scrollController: scrollController,
                       ),
                       MasonryGridViewComponent(
                         onTap: (index) => moveToImagePage(index),
                         query: tabs[5],
+                        scrollController: scrollController,
                       ),
                       MasonryGridViewComponent(
                         onTap: (index) => moveToImagePage(index),
                         query: tabs[6],
+                        scrollController: scrollController,
                       ),
                       MasonryGridViewComponent(
                         onTap: (index) => moveToImagePage(index),
                         query: tabs[7],
+                        scrollController: scrollController,
                       ),
                     ],
                   ),

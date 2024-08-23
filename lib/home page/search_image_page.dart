@@ -29,7 +29,7 @@ class SearchImagePage extends StatefulWidget {
 
 class _HomePageState extends State<SearchImagePage>
     with SingleTickerProviderStateMixin {
-  @override
+  final ScrollController scrollController = ScrollController();
   String toLenguageCode = "en";
   @override
   // void initState() {
@@ -45,8 +45,8 @@ class _HomePageState extends State<SearchImagePage>
 
   final TextEditingController searchController = TextEditingController();
 
-  final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
-  final lightTextTheme = lightTheme.textTheme;
+  final lightButtonTheme = lightBlueTheme.buttonTheme.colorScheme;
+  final lightTextTheme = lightBlueTheme.textTheme;
 
   final lightTextFieldTheme = ThemeData(
     colorScheme: ColorScheme.light(
@@ -118,7 +118,6 @@ class _HomePageState extends State<SearchImagePage>
   Widget build(BuildContext context) {
     var query = widget.query;
     return Scaffold(
-      backgroundColor: lightTheme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -154,6 +153,7 @@ class _HomePageState extends State<SearchImagePage>
                           filled: true,
                           hintText: S.of(context).search,
                         ),
+                        style: const TextStyle(color: Colors.black),
                         onSubmitted: (searchQuery) async {
                           // detectLanguage(query).then((value) async {
                           //   if (value == "en") {
@@ -170,6 +170,13 @@ class _HomePageState extends State<SearchImagePage>
                           await Provider.of<FetchedImagesProvider>(context,
                                   listen: false)
                               .fetchImages(searchQuery);
+
+                          // scrollController.animateTo(
+                          //   0,
+                          //   duration: const Duration(milliseconds: 20),
+                          //   curve: Curves.easeOut,
+                          // );
+                          scrollController.jumpTo(0);
                         },
                       ),
                     ),
@@ -183,6 +190,7 @@ class _HomePageState extends State<SearchImagePage>
                   child: MasonryGridViewComponent(
                     onTap: (index) => moveToImagePage(index),
                     query: query,
+                    scrollController: scrollController,
                   ),
                 ),
               ],

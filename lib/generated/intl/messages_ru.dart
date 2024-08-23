@@ -20,8 +20,6 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'ru';
 
-  static String m0(cacheSize) => "Размер кэша: ${cacheSize} МБ";
-
   static String m1(lang) => "Системное значение по умолчанию: ${lang}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -33,9 +31,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Цветовая тема приложения"),
         "appVersion": MessageLookupByLibrary.simpleMessage("Версия приложения"),
         "architecture": MessageLookupByLibrary.simpleMessage("Архитектура"),
-        "cacheSize": m0,
+        "cacheSize": MessageLookupByLibrary.simpleMessage("Размер кэша: "),
         "cars": MessageLookupByLibrary.simpleMessage("Автомобили"),
         "clearCache": MessageLookupByLibrary.simpleMessage("Очистить кэш"),
+        "cacheCleared": MessageLookupByLibrary.simpleMessage("Кэш очищен"),
         "clearSearchHistory":
             MessageLookupByLibrary.simpleMessage("Очистить историю поиска"),
         "confirmPassword":
@@ -54,12 +53,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "homeAndLockScreens": MessageLookupByLibrary.simpleMessage(
             "Главный экран и экран блокировки"),
         "homeScreen": MessageLookupByLibrary.simpleMessage("Главный экран"),
+        "ifYouLikeThisApp": MessageLookupByLibrary.simpleMessage(
+            "Если вам понравилось это приложение, пожалуйста, уделите немного времени и оставьте отзыв! \n Это действительно помогает нам и не займет у вас больше минуты."),
         "interiors": MessageLookupByLibrary.simpleMessage("Интерьеры"),
         "joinUsAndCreateYourAccount": MessageLookupByLibrary.simpleMessage(
             "Присоединяйтесь и создайте свою учетную запись!"),
         "language": MessageLookupByLibrary.simpleMessage("Язык"),
         "lockScreen": MessageLookupByLibrary.simpleMessage("Экран блокировки"),
         "login": MessageLookupByLibrary.simpleMessage("Войти"),
+        "maybeLater": MessageLookupByLibrary.simpleMessage("МОЖЕТ БЫТЬ ПОЗЖЕ"),
         "myFavouritesWallpapers":
             MessageLookupByLibrary.simpleMessage("Мои любимые обои"),
         "nature": MessageLookupByLibrary.simpleMessage("Природа"),
@@ -67,6 +69,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noImages": MessageLookupByLibrary.simpleMessage("Нет изображений.."),
         "noImagesBySearch": MessageLookupByLibrary.simpleMessage(
             "По вашему запросу ничего не найдено. Попробуйте изменить запрос или использовать другие ключевые слова"),
+        "noThanks": MessageLookupByLibrary.simpleMessage("НЕТ, СПАСИБО"),
         "notAMember":
             MessageLookupByLibrary.simpleMessage("Вы еще не участник? "),
         "or": MessageLookupByLibrary.simpleMessage("Или"),
@@ -77,7 +80,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Пароли не совпадают!"),
         "privacyPolicy":
             MessageLookupByLibrary.simpleMessage("Политика конфиденциальности"),
+        "rate": MessageLookupByLibrary.simpleMessage("ОЦЕНИТЬ"),
         "rateApp": MessageLookupByLibrary.simpleMessage("Оценить приложение"),
+        "rateThisApp":
+            MessageLookupByLibrary.simpleMessage("Оценить это приложение"),
         "recommend": MessageLookupByLibrary.simpleMessage("Рекомендовать"),
         "registerNow":
             MessageLookupByLibrary.simpleMessage("Зарегистрируйтесь Сейчас"),

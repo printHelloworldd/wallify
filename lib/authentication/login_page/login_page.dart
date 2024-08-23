@@ -8,8 +8,10 @@ import 'package:wallify/authentication/components/square_tile.dart';
 import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/helper/helper_functions.dart';
+import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/services/auth_service.dart';
 import 'package:wallify/theme/theme.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,9 +23,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
-  final lightTextTheme = lightTheme.textTheme;
 
   void signUserIn() async {
     // show loading circle
@@ -41,6 +40,9 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text,
       );
 
+      await Provider.of<ImageDataProvider>(context, listen: false)
+          .syncImagaes();
+
       Navigator.pushNamed(context, "/home_page");
 
       // pop loading circle
@@ -55,12 +57,16 @@ class _LoginPageState extends State<LoginPage> {
 
     Provider.of<AuthenticationProvider>(context, listen: false)
         .changeAnonymousMode(false);
-  }
+  } // TODO: Transfer method to build method
 
   @override
   Widget build(BuildContext context) {
+    final buttonTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.buttonTheme;
+    final textTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.textTheme;
+
     return Scaffold(
-      backgroundColor: lightTheme.scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Column(
@@ -71,14 +77,14 @@ class _LoginPageState extends State<LoginPage> {
               // Hello again!
               Text(
                 S.of(context).helloAgain,
-                style: lightTextTheme.displayLarge,
+                style: textTheme.displayLarge,
               ),
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   S.of(context).welcomeBackYouveBeenMissed,
-                  style: lightTextTheme.titleSmall,
+                  style: textTheme.titleSmall,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -110,9 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Text(
                       S.of(context).forgotPassword,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                      ),
+                      style: textTheme.labelSmall,
                     ),
                   ],
                 ),
@@ -124,8 +128,8 @@ class _LoginPageState extends State<LoginPage> {
               AuthenticationButton(
                 onTap: signUserIn,
                 name: S.of(context).signIn,
-                textColor: lightButtonTheme!.onPrimary,
-                buttonColor: lightButtonTheme!.primary,
+                textColor: buttonTheme.colorScheme!.onPrimary,
+                buttonColor: buttonTheme.colorScheme!.primary,
               ),
 
               const SizedBox(height: 40),
@@ -138,20 +142,20 @@ class _LoginPageState extends State<LoginPage> {
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
-                        color: lightTheme.dividerColor,
+                        color: lightBlueTheme.dividerColor,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Text(
                         S.of(context).orContinueWith,
-                        style: lightTextTheme.labelSmall,
+                        style: textTheme.labelSmall,
                       ),
                     ),
                     Expanded(
                       child: Divider(
                         thickness: 0.5,
-                        color: lightTheme.dividerColor,
+                        color: lightBlueTheme.dividerColor,
                       ),
                     ),
                   ],
@@ -168,10 +172,13 @@ class _LoginPageState extends State<LoginPage> {
                   SquareTile(
                     imagePath: "assets/logo_icons/google.png",
                     onTap: () => AuthService().signInWithGoogle().whenComplete(
-                      () {
+                      () async {
                         Provider.of<AuthenticationProvider>(context,
                                 listen: false)
                             .changeAnonymousMode(false);
+                        await Provider.of<ImageDataProvider>(context,
+                                listen: false)
+                            .syncImagaes();
                         Navigator.pushNamed(context, "/home_page");
                       },
                     ),
@@ -201,12 +208,12 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     S.of(context).notAMember,
-                    style: lightTextTheme.labelSmall,
+                    style: textTheme.labelSmall,
                   ),
                   GestureDetector(
                     child: Text(
                       S.of(context).registerNow,
-                      style: lightTextTheme.labelMedium,
+                      style: textTheme.labelMedium,
                     ),
                     onTap: () =>
                         Navigator.pushNamed(context, "/create_account_page"),

@@ -422,6 +422,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
+  flutter_in_store_app_version_checker:
+    dependency: "direct main"
+    description:
+      name: flutter_in_store_app_version_checker
+      sha256: e4e1c0a03ef07fae88f5dcfc7d49a5fa8fb22ab89f9dd59d88eafb9da537acf2
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.7.1"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -464,14 +472,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_wallpaper_manager:
-    dependency: "direct main"
-    description:
-      name: flutter_wallpaper_manager
-      sha256: "369f63c6fdb4515477ced545e39581fb3d56afcdde8bcb9ba8a58d42c2dd1c9c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.4"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -625,10 +625,10 @@ packages:
     dependency: "direct main"
     description:
       name: http
-      sha256: "761a297c042deedc1ffbb156d6e2af13886bb305c2a343a4d972504cd67dd938"
+      sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.1"
+    version: "1.2.2"
   http_multi_server:
     dependency: transitive
     description:
@@ -1053,6 +1053,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  simple_app_cache_manager:
+    dependency: "direct main"
+    description:
+      name: simple_app_cache_manager
+      sha256: "98233ff6b221587716dab62791e0f38e09b975fad5cde46c29e8ca2a34884b00"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   sky_engine:
     dependency: transitive
     description: flutter

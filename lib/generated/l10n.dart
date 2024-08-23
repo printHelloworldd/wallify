@@ -570,6 +570,26 @@ class S {
     );
   }
 
+  /// `Cache size`
+  String get cacheSize {
+    return Intl.message(
+      'Cache size: ',
+      name: 'cacheSize',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cache cleared`
+  String get cacheCleared {
+    return Intl.message(
+      'Cache cleared',
+      name: 'cacheCleared',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `System default: {lang}`
   String systemDefaultLang(Object lang) {
     return Intl.message(
@@ -580,20 +600,10 @@ class S {
     );
   }
 
-  /// `Cache size: {cacheSize} MB`
-  String cacheSize(Object cacheSize) {
-    return Intl.message(
-      'Cache size: $cacheSize MB',
-      name: 'cacheSize',
-      desc: '',
-      args: [cacheSize],
-    );
-  }
-
-  /// `My favourites wallpapers`
+  /// `My favourite wallpapers`
   String get myFavouritesWallpapers {
     return Intl.message(
-      'My favourites wallpapers',
+      'My favourite wallpapers',
       name: 'myFavouritesWallpapers',
       desc: '',
       args: [],
@@ -635,6 +645,56 @@ class S {
     return Intl.message(
       'Nothing found for your request. Try changing your request or using other keywords.',
       name: 'noImagesBySearch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rate this app`
+  String get rateThisApp {
+    return Intl.message(
+      'Rate this app',
+      name: 'rateThisApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `If you like this app, please take a little bit of your time to review it! \n It really helps us and it shouldn't take you more than one minute.`
+  String get ifYouLikeThisApp {
+    return Intl.message(
+      'If you like this app, please take a little bit of your time to review it! \n It really helps us and it shouldn\'t take you more than one minute.',
+      name: 'ifYouLikeThisApp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RATE`
+  String get rate {
+    return Intl.message(
+      'RATE',
+      name: 'rate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `NO THANKS`
+  String get noThanks {
+    return Intl.message(
+      'NO THANKS',
+      name: 'noThanks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MAYBE LATER`
+  String get maybeLater {
+    return Intl.message(
+      'MAYBE LATER',
+      name: 'maybeLater',
       desc: '',
       args: [],
     );

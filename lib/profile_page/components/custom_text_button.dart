@@ -1,5 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wallify/theme/theme.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class CustomTextButton extends StatelessWidget {
   final Function() onPressed;
@@ -15,6 +18,9 @@ class CustomTextButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final themeData = Provider.of<ThemeProvider>(context).currentTheme;
+
     return TextButton(
       onPressed: onPressed,
       style: ButtonStyle(
@@ -28,7 +34,7 @@ class CustomTextButton extends StatelessWidget {
           (Set<WidgetState> states) {
             if (states.contains(WidgetState.hovered) ||
                 states.contains(WidgetState.pressed)) {
-              return Colors.grey[400]!; // Цвет фона при наведении и нажатии
+              return themeData.hoverColor; // Цвет фона при наведении и нажатии
             }
             return Colors.transparent; // Исходный цвет фона
           },
@@ -41,12 +47,22 @@ class CustomTextButton extends StatelessWidget {
           children: [
             Text(
               text,
-              style: const TextStyle(
-                color: Colors.black,
+              style: TextStyle(
+                color: themeProvider.isDarkMode == true
+                    ? themeData.primaryColorLight
+                    : themeData.primaryColorDark,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Icon(icon, color: Colors.grey[700]),
+            Icon(
+              icon,
+              /* color: themeData == darkBlueTheme
+                    ? themeData.primaryColorDark
+                    : themeData.primaryColorLight */
+              color: themeProvider.isDarkMode == true
+                  ? themeData.primaryColorLight
+                  : themeData.primaryColorDark,
+            ),
           ],
         ),
       ),

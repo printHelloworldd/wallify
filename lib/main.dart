@@ -14,6 +14,7 @@ import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/provider/locale_provider.dart';
+import 'package:wallify/theme/theme.dart';
 import 'package:wallify/theme/theme_provider.dart';
 import 'package:wiredash/wiredash.dart';
 
@@ -51,6 +52,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    themeProvider.setSystemTheme(context,
+        theme: themeProvider.currentTheme.primaryColor ==
+                const Color(0xFF004864)
+            ? "blue"
+            : "red"); // TODO: If there more than 2 themes it won't work properly
+
+    // Проверяем системную тему и обновляем тему приложения
+    // final brightness = MediaQueryData.fromView(
+    //         WidgetsBinding.instance.platformDispatcher.views.first)
+    //     .platformBrightness;
+    // themeProvider.updateThemeFromSystem(brightness == Brightness.dark);
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ImageDataProvider>(
@@ -74,13 +88,16 @@ class MyApp extends StatelessWidget {
           // useInheritedMediaQuery: true,
           // locale: DevicePreview.locale(context),
           // builder: DevicePreview.appBuilder,
-          theme: Provider.of<ThemeProvider>(context).themeData,
+          // theme: darkBlueTheme,
+          theme: themeProvider.currentTheme,
+          // themeMode: Provider.of<ThemeProvider>(context).getThemeMode,
           home: const AuthenticationPage(),
           routes: {
             "/settings_page": (context) => const SettingsPage(),
             "/create_account_page": (context) => const CreateAccountPage(),
             "/login_page": (context) => const LoginPage(),
             "/home_page": (context) => const CustomBottomNavBar(),
+            "/authentication_page": (context) => const AuthenticationPage(),
           },
           localizationsDelegates: const [
             S.delegate,

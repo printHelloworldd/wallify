@@ -20,6 +20,7 @@ import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/services/firestore.dart';
 import 'package:wallify/theme/theme.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class ImagePage extends StatefulWidget {
   final String imagePath;
@@ -40,11 +41,19 @@ class _ImagePageState extends State<ImagePage> {
   final FirestoreService firestoreService = FirestoreService();
 
   bool isFavouriteImage = false;
+  bool isAnonymousMode = true;
 
   @override
   void initState() {
     super.initState();
     loadFavouriteImage();
+    checkAnonymousMode();
+  }
+
+  void checkAnonymousMode() async {
+    isAnonymousMode =
+        await Provider.of<AuthenticationProvider>(context, listen: false)
+            .checkAnonymousMode();
   }
 
   // load existing note
@@ -60,10 +69,9 @@ class _ImagePageState extends State<ImagePage> {
   }
 
   // save image to favourites
-  void saveImage() {
+  void saveImage() async {
     // save to FireBase
-    if (!Provider.of<AuthenticationProvider>(context, listen: false)
-        .checkAnonymousMode()) {
+    if (!isAnonymousMode) {
       firestoreService.addImage(widget.imagePath);
     }
 
@@ -77,10 +85,9 @@ class _ImagePageState extends State<ImagePage> {
   }
 
   // delete image from favourites
-  void deleteImage() {
+  void deleteImage() async {
     // delete from Firestore
-    if (!Provider.of<AuthenticationProvider>(context, listen: false)
-        .checkAnonymousMode()) {
+    if (!isAnonymousMode) {
       firestoreService.removeImage(widget.imagePath);
     }
 
@@ -202,13 +209,13 @@ class _ImagePageState extends State<ImagePage> {
 
   @override
   Widget build(BuildContext context) {
-    final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
-    final lightTextTheme = lightTheme.textTheme;
+    final themeData = Provider.of<ThemeProvider>(context).currentTheme;
+    final lightButtonTheme = lightBlueTheme.buttonTheme.colorScheme;
+    final lightTextTheme = lightBlueTheme.textTheme;
 
     bool downloading = false;
 
     return Scaffold(
-      backgroundColor: lightTheme.scaffoldBackgroundColor,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -251,7 +258,7 @@ class _ImagePageState extends State<ImagePage> {
                 children: [
                   // donwload button
                   IconButton(
-                    icon: const Icon(Icons.file_download, color: Colors.black),
+                    icon: const Icon(Icons.file_download),
                     onPressed: downloadImage,
                   ),
 
@@ -259,7 +266,7 @@ class _ImagePageState extends State<ImagePage> {
 
                   // share button
                   IconButton(
-                    icon: const Icon(Icons.share, color: Colors.black),
+                    icon: const Icon(Icons.share),
                     onPressed: () async {
                       final result = await Share.share(
                           "Test share text\n\n${widget.imagePath}"); // TODO: Change the text
@@ -277,10 +284,8 @@ class _ImagePageState extends State<ImagePage> {
                   // save button
                   IconButton(
                     icon: Icon(
-                        isFavouriteImage
-                            ? Icons.bookmark
-                            : Icons.bookmark_border,
-                        color: Colors.black),
+                      isFavouriteImage ? Icons.bookmark : Icons.bookmark_border,
+                    ),
                     onPressed: () {
                       isFavouriteImage ? deleteImage() : saveImage();
                     },
@@ -293,7 +298,8 @@ class _ImagePageState extends State<ImagePage> {
                     onTap: () {
                       showModalBottomSheet(
                         context: context,
-                        backgroundColor: Colors.grey[300],
+                        backgroundColor:
+                            Colors.grey[300], // TODO: Change to global theme
                         builder: (context) {
                           return Container(
                             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -352,13 +358,13 @@ class _ImagePageState extends State<ImagePage> {
                                       children: [
                                         Row(
                                           children: [
-                                            const Icon(Icons.phone_android,
-                                                color: Color(0xFF004864)),
+                                            Icon(Icons.phone_android,
+                                                color: themeData.primaryColor),
                                             const SizedBox(width: 10),
                                             Text(
                                               S.of(context).homeScreen,
-                                              style: const TextStyle(
-                                                color: Color(0xFF004864),
+                                              style: TextStyle(
+                                                color: themeData.primaryColor,
                                               ),
                                             ),
                                           ],
@@ -407,13 +413,13 @@ class _ImagePageState extends State<ImagePage> {
                                       children: [
                                         Row(
                                           children: [
-                                            const Icon(Icons.phonelink_lock,
-                                                color: Color(0xFF004864)),
+                                            Icon(Icons.phonelink_lock,
+                                                color: themeData.primaryColor),
                                             const SizedBox(width: 10),
                                             Text(
                                               S.of(context).lockScreen,
-                                              style: const TextStyle(
-                                                color: Color(0xFF004864),
+                                              style: TextStyle(
+                                                color: themeData.primaryColor,
                                               ),
                                             ),
                                           ],
@@ -462,13 +468,13 @@ class _ImagePageState extends State<ImagePage> {
                                       children: [
                                         Row(
                                           children: [
-                                            const Icon(Icons.content_copy,
-                                                color: Color(0xFF004864)),
+                                            Icon(Icons.content_copy,
+                                                color: themeData.primaryColor),
                                             const SizedBox(width: 10),
                                             Text(
                                               S.of(context).homeAndLockScreens,
-                                              style: const TextStyle(
-                                                color: Color(0xFF004864),
+                                              style: TextStyle(
+                                                color: themeData.primaryColor,
                                               ),
                                             ),
                                           ],

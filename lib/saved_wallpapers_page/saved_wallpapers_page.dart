@@ -8,6 +8,7 @@ import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/image_page/image_page.dart';
 import 'package:wallify/services/firestore.dart';
 import 'package:wallify/theme/theme.dart';
+import 'package:wallify/theme/theme_provider.dart';
 
 class SavedWallpapersPage extends StatefulWidget {
   const SavedWallpapersPage({super.key});
@@ -21,12 +22,20 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
   final FirestoreService firestoreService = FirestoreService();
 
   List<String> images = [];
+  bool isAnonymousMode = true;
 
   @override
   void initState() {
     super.initState();
     Provider.of<ImageDataProvider>(context, listen: false).initializeImages();
     loadImages();
+    checkAnonymousMode();
+  }
+
+  void checkAnonymousMode() async {
+    isAnonymousMode =
+        await Provider.of<AuthenticationProvider>(context, listen: false)
+            .checkAnonymousMode();
   }
 
   void loadImages() {
@@ -34,16 +43,17 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
         Provider.of<ImageDataProvider>(context, listen: false).getAllImages();
   }
 
-  final lightButtonTheme = lightTheme.buttonTheme.colorScheme;
-  final lightTextTheme = lightTheme.textTheme;
-
   @override
   Widget build(BuildContext context) {
+    final buttonTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.buttonTheme;
+    final textTheme =
+        Provider.of<ThemeProvider>(context).currentTheme.textTheme;
+
     return Consumer<ImageDataProvider>(
       builder: (context, imageDataProvider, _) {
         // final List<String> images = imageDataProvider.getFavoriteImages();
         return Scaffold(
-          backgroundColor: lightTheme.scaffoldBackgroundColor,
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -56,7 +66,7 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       S.of(context).myFavouritesWallpapers,
-                      style: lightTextTheme.displayLarge,
+                      style: textTheme.displayLarge,
                     ),
                   ),
 
@@ -64,14 +74,13 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
 
                   Divider(
                     thickness: 0.5,
-                    color: lightTheme.dividerColor,
+                    color: lightBlueTheme.dividerColor,
                   ),
 
                   const SizedBox(height: 20),
 
                   // Images // TODO: display images from hive database, if there is no internet connection
-                  !Provider.of<AuthenticationProvider>(context, listen: false)
-                          .checkAnonymousMode()
+                  !isAnonymousMode
                       ? FutureBuilder(
                           future: firestoreService.getUserImages(),
                           builder: ((context, snapshot) {
