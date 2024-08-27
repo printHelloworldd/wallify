@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class AuthenticationTextField extends StatelessWidget {
-  final controller;
+  final TextEditingController controller;
   final bool obscureText;
   final String hintText;
 
@@ -41,6 +41,7 @@ class AuthenticationTextField extends StatelessWidget {
           filled: true,
           hintText: hintText,
         ),
+        style: const TextStyle(color: Colors.black),
       ),
     );
   }

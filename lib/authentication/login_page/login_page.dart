@@ -5,7 +5,6 @@ import 'package:wallify/authentication/authentication_page/authentication_provid
 import 'package:wallify/authentication/components/authentication_textfield.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/authentication/components/square_tile.dart';
-import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/helper/helper_functions.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
@@ -40,11 +39,6 @@ class _LoginPageState extends State<LoginPage> {
         password: passwordController.text,
       );
 
-      await Provider.of<ImageDataProvider>(context, listen: false)
-          .syncImagaes();
-
-      Navigator.pushNamed(context, "/home_page");
-
       // pop loading circle
       if (context.mounted) Navigator.pop(context);
     }
@@ -57,7 +51,11 @@ class _LoginPageState extends State<LoginPage> {
 
     Provider.of<AuthenticationProvider>(context, listen: false)
         .changeAnonymousMode(false);
-  } // TODO: Transfer method to build method
+
+    await Provider.of<ImageDataProvider>(context, listen: false).syncImagaes();
+
+    Navigator.pushNamed(context, "/home_page");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +112,13 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      S.of(context).forgotPassword,
-                      style: textTheme.labelSmall,
+                    GestureDetector(
+                      onTap: () =>
+                          Navigator.pushNamed(context, "/forgot_password_page"),
+                      child: Text(
+                        S.of(context).forgotPassword,
+                        style: textTheme.labelSmall,
+                      ),
                     ),
                   ],
                 ),

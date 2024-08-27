@@ -6,7 +6,6 @@ import 'package:wallify/authentication/authentication_page/authentication_provid
 import 'package:wallify/authentication/components/authentication_textfield.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/authentication/components/square_tile.dart';
-import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/helper/helper_functions.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
@@ -69,11 +68,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         // create a user document and add to firebase
         createUserDocument(userCredential);
 
-        await Provider.of<ImageDataProvider>(context, listen: false)
-            .syncImagaes();
-
-        Navigator.pushNamed(context, "/home_page");
-
         // pop loading circle
         if (context.mounted) Navigator.pop(context);
       } on FirebaseAuthException catch (e) {
@@ -86,8 +80,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
       Provider.of<AuthenticationProvider>(context, listen: false)
           .changeAnonymousMode(false);
+
+      await Provider.of<ImageDataProvider>(context, listen: false)
+          .syncImagaes();
+
+      Navigator.pushNamed(context, "/home_page");
     }
-  } // TODO: Transfer method to build method
+  }
 
   Future<void> createUserDocument(UserCredential? userCredential) async {
     if (userCredential != null && userCredential.user != null) {

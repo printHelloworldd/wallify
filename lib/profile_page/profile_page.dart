@@ -3,18 +3,14 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
-import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
 import 'package:wallify/profile_page/components/custom_text_button.dart';
 import 'package:wallify/profile_page/components/policy_dialog.dart';
 import 'package:wallify/provider/locale_provider.dart';
-import 'package:wallify/theme/theme.dart';
 import 'package:wallify/theme/theme_provider.dart';
 import 'package:wiredash/wiredash.dart';
 
@@ -38,7 +34,7 @@ class ProfilePage extends StatelessWidget {
     } else {
       print("Sign out failed.");
     }
-  } // TODO: Transfer to build method
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +153,6 @@ class ProfilePage extends StatelessWidget {
       }).catchError((error) {
         print('RateMyApp initialization failed: $error');
       });
-      ;
     }
 
     return Consumer<AuthenticationProvider>(
@@ -331,7 +326,7 @@ class ProfilePage extends StatelessWidget {
                                                               context,
                                                               listen: false)
                                                           .locale ==
-                                                      Locale("ru")
+                                                      const Locale("ru")
                                                   ? "privacy_policy_ru.md"
                                                   : "privacy_policy.md");
                                     },
@@ -430,7 +425,8 @@ class ProfilePage extends StatelessWidget {
                                 } else if (buttons[index] ==
                                     S.of(context).recommend) {
                                   final result = await Share.share(
-                                      "Test share text"); // TODO: Change the text and add localization
+                                    'Try "Wallify" - the best wallpapers for every day! \n https://play.google.com/store/apps/details?id=com.android.chrome',
+                                  ); // TODO: 1) Change app link in Play Store. 2) add snack bar. 3) Add localization
 
                                   if (result.status ==
                                       ShareResultStatus.success) {

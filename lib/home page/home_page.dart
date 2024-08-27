@@ -8,7 +8,6 @@ import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/home%20page/search_image_page.dart';
 import 'package:wallify/image_page/image_page.dart';
 
-import 'package:wallify/theme/theme.dart';
 import 'package:wallify/theme/theme_provider.dart';
 
 class HomePage extends StatefulWidget {

@@ -4,9 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
 import 'package:wallify/authentication/components/authentication_button.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
-import 'package:wallify/data/hive_database.dart';
 import 'package:wallify/generated/l10n.dart';
-import 'package:wallify/theme/theme.dart';
 import 'package:wallify/theme/theme_provider.dart';
 
 class AuthenticationPage extends StatefulWidget {
@@ -74,7 +72,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                           child: Image.asset(
                             "assets/images/BG.jpg",
                             width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height / 1.75,
+                            height: MediaQuery.of(context).size.height / 1.85,
                             fit: BoxFit.cover,
                           ),
                         ),

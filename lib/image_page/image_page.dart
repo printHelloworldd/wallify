@@ -269,10 +269,11 @@ class _ImagePageState extends State<ImagePage> {
                     icon: const Icon(Icons.share),
                     onPressed: () async {
                       final result = await Share.share(
-                          "Test share text\n\n${widget.imagePath}"); // TODO: Change the text
+                        'Look at this wallpaper!\n${widget.imagePath} \n Found it in the "Wallify" app. This wallpaper will not only decorate your screen, but will also make it unique! \n Go to "Wallify" and choose your favorite wallpaper. \n https://play.google.com/store/apps/details?id=com.android.chrome',
+                      ); // TODO: 1) Change app link in Play Store. 2) add snack bar. 3) Add localization 4) Download image and send it
 
                       if (result.status == ShareResultStatus.success) {
-                        print('Thank you for sharing my app!');
+                        print('Image shared successfuly');
                       } else {
                         print("Could not share the image");
                       }

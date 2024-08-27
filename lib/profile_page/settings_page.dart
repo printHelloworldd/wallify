@@ -43,8 +43,7 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
         default:
       }
       setState(() {
-        systemDefaultLocale =
-            value; // TODO: I every time after loading this page set system locale
+        systemDefaultLocale = value;
       });
     });
   }
@@ -82,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
   //   cacheManager.clearCache();
   //   updateCacheSize();
   //   Fluttertoast.showToast(
-  //     msg: '😊 ${S.of(context).downloadedToGallery}', // TODO: Change the text
+  //     msg: '😊 ${S.of(context).downloadedToGallery}',
   //     backgroundColor: Colors.green,
   //   );
   // }
@@ -91,6 +90,7 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final themeData = Provider.of<ThemeProvider>(context).currentTheme;
+    print("Current locale == $currentLocale");
 
     List<List<dynamic>> settingsTiles = [
       [
@@ -195,12 +195,13 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                     child: TextButton(
                                       onPressed: () {
                                         setState(() {
-                                          S.load(const Locale('en', 'GB'));
+                                          // S.load(const Locale('en', 'GB'));
                                           currentLocale = "en";
                                         });
                                         Provider.of<LocaleProvider>(context,
                                                 listen: false)
-                                            .setLocale(Locale('en', 'GB'));
+                                            .setLocale(
+                                                const Locale('en', 'GB'));
                                         Navigator.pop(context);
                                       },
                                       style: ButtonStyle(
@@ -224,7 +225,9 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                               return Colors.grey[
                                                   400]!; // Цвет фона при наведении и нажатии
                                             }
-                                            return currentLocale == "en"
+                                            return currentLocale == "en_US" ||
+                                                    currentLocale ==
+                                                        "en_GB" // TODO: Make this with switch statement like findSystemLocale
                                                 ? const Color(0xFF004864)
                                                 : Colors
                                                     .transparent; // Ис,ходный цвет фона
@@ -240,7 +243,8 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                           children: [
                                             Icon(
                                               Icons.check_circle_outline,
-                                              color: currentLocale == "en"
+                                              color: currentLocale == "en_US" ||
+                                                      currentLocale == "en_GB"
                                                   ? Colors.white
                                                   : Colors.transparent,
                                             ),
@@ -248,7 +252,9 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                             Text(
                                               "English",
                                               style: TextStyle(
-                                                color: currentLocale == "en"
+                                                color: currentLocale ==
+                                                            "en_US" ||
+                                                        currentLocale == "en_GB"
                                                     ? Colors.white
                                                     : Colors.black,
                                                 fontSize: 24,
@@ -265,12 +271,12 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                     child: TextButton(
                                       onPressed: () {
                                         setState(() {
-                                          S.load(const Locale('ru'));
+                                          // S.load(const Locale('ru'));
                                           currentLocale = "ru";
                                         });
                                         Provider.of<LocaleProvider>(context,
                                                 listen: false)
-                                            .setLocale(Locale('ru'));
+                                            .setLocale(const Locale('ru'));
                                         Navigator.pop(context);
                                       },
                                       style: ButtonStyle(
@@ -294,7 +300,7 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                               return Colors.grey[
                                                   400]!; // Цвет фона при наведении и нажатии
                                             }
-                                            return currentLocale == "ru"
+                                            return currentLocale == "ru_RU"
                                                 ? const Color(0xFF004864)
                                                 : Colors
                                                     .transparent; // Исходный цвет фона
@@ -310,7 +316,7 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                           children: [
                                             Icon(
                                               Icons.check_circle_outline,
-                                              color: currentLocale == "ru"
+                                              color: currentLocale == "ru_RU"
                                                   ? Colors.white
                                                   : Colors.transparent,
                                             ),
@@ -318,7 +324,7 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                             Text(
                                               "Русский",
                                               style: TextStyle(
-                                                color: currentLocale == "ru"
+                                                color: currentLocale == "ru_RU"
                                                     ? Colors.white
                                                     : Colors.black,
                                                 fontSize: 24,

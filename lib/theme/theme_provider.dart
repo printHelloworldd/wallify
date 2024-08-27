@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rate_my_app/rate_my_app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallify/theme/theme.dart';
 
 class ThemeProvider with ChangeNotifier {

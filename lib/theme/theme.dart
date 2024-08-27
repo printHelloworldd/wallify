@@ -20,7 +20,7 @@ final lightBlueTheme = ThemeData(
       fontSize: 36,
     ),
     titleMedium: GoogleFonts.oswald(
-      fontSize: 36,
+      fontSize: 32,
       fontWeight: FontWeight.w500,
       color: const Color(0xFF004864),
     ),
@@ -91,7 +91,7 @@ final darkBlueTheme = ThemeData(
       color: Colors.white,
     ),
     titleMedium: GoogleFonts.oswald(
-      fontSize: 36,
+      fontSize: 32,
       fontWeight: FontWeight.w500,
       color: const Color(0xFF004864),
     ),
@@ -164,7 +164,7 @@ final lightRedTheme = ThemeData(
         fontSize: 36,
         color: const Color(0xFF561C24)),
     titleMedium: GoogleFonts.oswald(
-      fontSize: 36,
+      fontSize: 32,
       fontWeight: FontWeight.w500,
       color: const Color(0xFF561C24),
     ),
@@ -222,7 +222,7 @@ final darkRedTheme = ThemeData(
   primaryColorLight: Colors.white,
   primaryColorDark: Colors.black,
   dividerColor: const Color(0xFFC7B7A3),
-  hoverColor: Color.fromARGB(255, 165, 72, 84),
+  hoverColor: const Color.fromARGB(255, 165, 72, 84),
   iconTheme: const IconThemeData(
     color: Colors.black,
   ),
@@ -230,17 +230,17 @@ final darkRedTheme = ThemeData(
     titleLarge: GoogleFonts.oswald(
       fontWeight: FontWeight.w500,
       fontSize: 36,
-      color: Color.fromARGB(255, 165, 72, 84),
+      color: const Color.fromARGB(255, 165, 72, 84),
     ),
     displayLarge: GoogleFonts.oswald(
       fontWeight: FontWeight.w500,
       fontSize: 36,
-      color: Color.fromARGB(255, 165, 72, 84),
+      color: const Color.fromARGB(255, 165, 72, 84),
     ),
     titleMedium: GoogleFonts.oswald(
-      fontSize: 36,
+      fontSize: 32,
       fontWeight: FontWeight.w500,
-      color: Color.fromARGB(255, 165, 72, 84),
+      color: const Color.fromARGB(255, 165, 72, 84),
     ),
     titleSmall: const TextStyle(
       fontSize: 20,

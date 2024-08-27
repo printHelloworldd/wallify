@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:wallify/authentication/authentication_page/authentication_page.dart';
 import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
 import 'package:wallify/authentication/create_account_page/create_account_page.dart';
+import 'package:wallify/authentication/login_page/forgot_password_page.dart';
 import 'package:wallify/authentication/login_page/login_page.dart';
 import 'package:wallify/components/custom_bottom_nav_bar.dart';
 import 'package:wallify/firebase_options.dart';
@@ -14,14 +15,10 @@ import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/image_page/image_data_provider.dart';
 import 'package:wallify/profile_page/settings_page.dart';
 import 'package:wallify/provider/locale_provider.dart';
-import 'package:wallify/theme/theme.dart';
 import 'package:wallify/theme/theme_provider.dart';
 import 'package:wiredash/wiredash.dart';
 
 // TODO: Check internet connection
-// TODO: Make loading circle while fetching images in HomePage
-
-// TODO: After sign in or after connecting to the internet store images from Hive database into Firestore
 
 void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
@@ -39,8 +36,11 @@ void main() async {
   await Hive.openBox("test_hive_database_2");
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => LocaleProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -76,9 +76,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<AuthenticationProvider>(
           create: (_) => AuthenticationProvider(),
         ),
-        ChangeNotifierProvider<LocaleProvider>(
-          create: (_) => LocaleProvider(),
-        )
       ],
       child: Wiredash(
         projectId: 'wallify-2catg8c',
@@ -98,6 +95,7 @@ class MyApp extends StatelessWidget {
             "/login_page": (context) => const LoginPage(),
             "/home_page": (context) => const CustomBottomNavBar(),
             "/authentication_page": (context) => const AuthenticationPage(),
+            "/forgot_password_page": (context) => const ForgotPasswordPage(),
           },
           localizationsDelegates: const [
             S.delegate,
@@ -105,6 +103,7 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+          // locale: Locale("ru"),
           supportedLocales: S.delegate.supportedLocales,
         ),
       ),
