@@ -8,11 +8,9 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wallify/authentication/authentication_page/authentication_provider.dart';
 import 'package:wallify/generated/l10n.dart';
-import 'package:wallify/profile_page/components/custom_text_button.dart';
-import 'package:wallify/profile_page/components/policy_dialog.dart';
+import 'package:wallify/profile_page/components/options.dart';
 import 'package:wallify/provider/locale_provider.dart';
 import 'package:wallify/theme/theme_provider.dart';
-import 'package:wiredash/wiredash.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
@@ -41,20 +39,64 @@ class ProfilePage extends StatelessWidget {
     final localeProvider = Provider.of<LocaleProvider>(
         context); // If delete it, locale doesn't load from prefs
 
-    final List<String> buttons = [
-      S.of(context).settings,
-      S.of(context).recommend,
-      S.of(context).rateApp,
-      S.of(context).sendFeedback,
-      S.of(context).privacyPolicy,
-    ];
-    final List<IconData> buttonIcons = [
-      Icons.settings,
-      Icons.share,
-      Icons.star_border,
-      Icons.email,
-      Icons.verified_user,
-    ];
+    void recommendApp() async {
+      final result = await Share.share(
+        'Try "Wallify" - the best wallpapers for every day! \n https://play.google.com/store/apps/details?id=com.android.chrome',
+      ); // TODO: 1) Change app link in Play Store. 2) add snack bar. 3) Add localization
+
+      if (result.status == ShareResultStatus.success) {
+        print('Thank you for sharing my app!');
+      } else {
+        print("Could not share the app");
+      }
+    }
+
+    void rateApp() {
+      // Инициализация и отображение диалога оценки
+      RateMyApp rateMyApp = RateMyApp(
+        preferencesPrefix: 'rateMyApp_',
+        minDays: 2, // Минимальное количество дней с момента установки
+        minLaunches: 2, // Минимальное количество запусков приложения
+        remindDays: 3, // Количество дней для напоминания о диалоге
+        remindLaunches: 3, // Количество запусков для напоминания о диалоге
+        googlePlayIdentifier: 'com.android.chrome', // TODOD: Change
+      );
+
+      rateMyApp.init().then((_) {
+        print('RateMyApp initialized');
+        rateMyApp.showRateDialog(
+          context,
+          title: 'Rate this app', // Заголовок диалога
+          message:
+              'If you like this app, please take a little bit of your time to review it!\nIt really helps us and it shouldn\'t take you more than one minute.', // Сообщение диалога
+          rateButton: 'RATE', // Текст кнопки оценки
+          noButton: 'NO THANKS', // Текст кнопки отказа
+          laterButton: 'MAYBE LATER', // Текст кнопки "Может быть позже"
+          listener: (button) {
+            // Обработчик нажатий на кнопки
+            switch (button) {
+              case RateMyAppDialogButton.rate:
+                print('Clicked on "Rate".');
+                break;
+              case RateMyAppDialogButton.later:
+                print('Clicked on "Later".');
+                break;
+              case RateMyAppDialogButton.no:
+                print('Clicked on "No".');
+                break;
+            }
+
+            return true; // Вернуть false, если нужно отменить событие нажатия.
+          },
+          ignoreNativeDialog: Platform.isAndroid,
+          dialogStyle: const DialogStyle(), // Настройка стиля диалога
+          onDismissed: () => rateMyApp.callEvent(RateMyAppEventType
+              .laterButtonPressed), // Обработчик закрытия диалога
+        );
+      }).catchError((error) {
+        print('RateMyApp initialization failed: $error');
+      });
+    }
 
     return Consumer<AuthenticationProvider>(
       builder: (context, value, child) {
@@ -121,126 +163,15 @@ class ProfilePage extends StatelessWidget {
                         const SizedBox(height: 40),
 
                         // Options
-                        ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: 5,
-                          separatorBuilder: (BuildContext context, int index) {
-                            return Divider(
-                              color: themeData.dividerColor,
-                              thickness: 1,
-                              height: 0,
-                            );
-                          },
-                          itemBuilder: (BuildContext context, int index) {
-                            return CustomTextButton(
-                              onPressed: () async {
-                                if (buttons[index] == S.of(context).settings) {
-                                  Navigator.pushNamed(
-                                      context, "/settings_page");
-                                } else if (buttons[index] ==
-                                    S.of(context).recommend) {
-                                  final result = await Share.share(
-                                      "Test share text"); // TODO: Change the text and add localization
-
-                                  if (result.status ==
-                                      ShareResultStatus.success) {
-                                    print('Thank you for sharing my app!');
-                                  } else {
-                                    print("Could not share the app");
-                                  }
-                                } else if (buttons[index] ==
-                                    S.of(context).rateApp) {
-                                  // Инициализация и отображение диалога оценки
-                                  RateMyApp rateMyApp = RateMyApp(
-                                    preferencesPrefix: 'rateMyApp_',
-                                    minDays:
-                                        0, // Минимальное количество дней с момента установки
-                                    minLaunches:
-                                        0, // Минимальное количество запусков приложения
-                                    remindDays:
-                                        0, // Количество дней для напоминания о диалоге
-                                    remindLaunches:
-                                        0, // Количество запусков для напоминания о диалоге
-                                    googlePlayIdentifier:
-                                        'com.android.chrome', // TODOD: Change
-                                  );
-
-                                  rateMyApp.init().then((_) {
-                                    print('RateMyApp initialized');
-                                    rateMyApp.showRateDialog(
-                                      context,
-                                      title: S
-                                          .of(context)
-                                          .rateThisApp, // Заголовок диалога
-                                      message: S
-                                          .of(context)
-                                          .ifYouLikeThisApp, // Сообщение диалога
-                                      rateButton: S
-                                          .of(context)
-                                          .rate, // Текст кнопки оценки
-                                      noButton: S
-                                          .of(context)
-                                          .noThanks, // Текст кнопки отказа
-                                      laterButton: S
-                                          .of(context)
-                                          .maybeLater, // Текст кнопки "Может быть позже"
-                                      listener: (button) {
-                                        // Обработчик нажатий на кнопки
-                                        switch (button) {
-                                          case RateMyAppDialogButton.rate:
-                                            print('Clicked on "Rate".');
-                                            break;
-                                          case RateMyAppDialogButton.later:
-                                            print('Clicked on "Later".');
-                                            break;
-                                          case RateMyAppDialogButton.no:
-                                            print('Clicked on "No".');
-                                            break;
-                                        }
-
-                                        return true; // Вернуть false, если нужно отменить событие нажатия.
-                                      },
-                                      ignoreNativeDialog: Platform.isAndroid,
-                                      dialogStyle:
-                                          const DialogStyle(), // Настройка стиля диалога
-                                      onDismissed: () => rateMyApp.callEvent(
-                                          RateMyAppEventType
-                                              .laterButtonPressed), // Обработчик закрытия диалога
-                                    );
-                                  }).catchError((error) {
-                                    print(
-                                        'RateMyApp initialization failed: $error');
-                                  });
-                                } else if (buttons[index] ==
-                                    S.of(context).sendFeedback) {
-                                  Wiredash.of(context)
-                                      .show(inheritMaterialTheme: true);
-                                } else if (buttons[index] ==
-                                    S.of(context).privacyPolicy) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return PolicyDialog(
-                                          mdFileName:
-                                              Provider.of<LocaleProvider>(
-                                                              context,
-                                                              listen: false)
-                                                          .locale ==
-                                                      const Locale("ru")
-                                                  ? "privacy_policy_ru.md"
-                                                  : "privacy_policy.md");
-                                    },
-                                  );
-                                }
-                              },
-                              text: buttons[index],
-                              icon: buttonIcons[index],
-                            );
-                          },
+                        Options(
+                          recommendApp: recommendApp,
+                          rateApp: rateApp,
+                          themeData: themeData,
                         ),
 
                         const SizedBox(height: 40),
 
+                        // Sign Out Button
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
                           child: GestureDetector(
@@ -306,114 +237,15 @@ class ProfilePage extends StatelessWidget {
                         const SizedBox(height: 50),
 
                         // Options
-                        ListView.separated(
-                          shrinkWrap: true,
-                          itemCount: 5,
-                          separatorBuilder: (BuildContext context, int index) {
-                            return Divider(
-                              color: themeData.dividerColor,
-                              thickness: 1,
-                              height: 0,
-                            );
-                          },
-                          itemBuilder: (BuildContext context, int index) {
-                            return CustomTextButton(
-                              onPressed: () async {
-                                if (buttons[index] == S.of(context).settings) {
-                                  Navigator.pushNamed(
-                                      context, "/settings_page");
-                                } else if (buttons[index] ==
-                                    S.of(context).recommend) {
-                                  final result = await Share.share(
-                                    'Try "Wallify" - the best wallpapers for every day! \n https://play.google.com/store/apps/details?id=com.android.chrome',
-                                  ); // TODO: 1) Change app link in Play Store. 2) add snack bar. 3) Add localization
-
-                                  if (result.status ==
-                                      ShareResultStatus.success) {
-                                    print('Thank you for sharing my app!');
-                                  } else {
-                                    print("Could not share the app");
-                                  }
-                                } else if (buttons[index] ==
-                                    S.of(context).rateApp) {
-                                  // Инициализация и отображение диалога оценки
-                                  RateMyApp rateMyApp = RateMyApp(
-                                    preferencesPrefix: 'rateMyApp_',
-                                    minDays:
-                                        0, // Минимальное количество дней с момента установки
-                                    minLaunches:
-                                        0, // Минимальное количество запусков приложения
-                                    remindDays:
-                                        0, // Количество дней для напоминания о диалоге
-                                    remindLaunches:
-                                        0, // Количество запусков для напоминания о диалоге
-                                    googlePlayIdentifier:
-                                        'com.android.chrome', // TODOD: Change
-                                  );
-
-                                  rateMyApp.init().then((_) {
-                                    print('RateMyApp initialized');
-                                    rateMyApp.showRateDialog(
-                                      context,
-                                      title:
-                                          'Rate this app', // Заголовок диалога
-                                      message:
-                                          'If you like this app, please take a little bit of your time to review it!\nIt really helps us and it shouldn\'t take you more than one minute.', // Сообщение диалога
-                                      rateButton: 'RATE', // Текст кнопки оценки
-                                      noButton:
-                                          'NO THANKS', // Текст кнопки отказа
-                                      laterButton:
-                                          'MAYBE LATER', // Текст кнопки "Может быть позже"
-                                      listener: (button) {
-                                        // Обработчик нажатий на кнопки
-                                        switch (button) {
-                                          case RateMyAppDialogButton.rate:
-                                            print('Clicked on "Rate".');
-                                            break;
-                                          case RateMyAppDialogButton.later:
-                                            print('Clicked on "Later".');
-                                            break;
-                                          case RateMyAppDialogButton.no:
-                                            print('Clicked on "No".');
-                                            break;
-                                        }
-
-                                        return true; // Вернуть false, если нужно отменить событие нажатия.
-                                      },
-                                      ignoreNativeDialog: Platform.isAndroid,
-                                      dialogStyle:
-                                          const DialogStyle(), // Настройка стиля диалога
-                                      onDismissed: () => rateMyApp.callEvent(
-                                          RateMyAppEventType
-                                              .laterButtonPressed), // Обработчик закрытия диалога
-                                    );
-                                  }).catchError((error) {
-                                    print(
-                                        'RateMyApp initialization failed: $error');
-                                  });
-                                } else if (buttons[index] ==
-                                    S.of(context).sendFeedback) {
-                                  Wiredash.of(context)
-                                      .show(inheritMaterialTheme: true);
-                                } else if (buttons[index] ==
-                                    S.of(context).privacyPolicy) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return PolicyDialog(
-                                          mdFileName: "privacy_policy.md");
-                                    },
-                                  );
-                                }
-                              },
-                              text: buttons[index],
-                              icon: buttonIcons[index],
-                            );
-                          },
+                        Options(
+                          recommendApp: recommendApp,
+                          rateApp: rateApp,
+                          themeData: themeData,
                         ),
 
                         const SizedBox(height: 40),
 
+                        // Login Button
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 25.0),
                           child: GestureDetector(

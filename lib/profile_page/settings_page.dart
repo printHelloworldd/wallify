@@ -209,8 +209,9 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                                   400]!; // Цвет фона при наведении и нажатии
                                             }
                                             return currentLocale == "en_US" ||
+                                                    currentLocale == "en_GB" ||
                                                     currentLocale ==
-                                                        "en_GB" // TODO: Make this with switch statement like findSystemLocale
+                                                        "en" // TODO: Make this with switch statement like findSystemLocale
                                                 ? const Color(0xFF004864)
                                                 : Colors
                                                     .transparent; // Ис,ходный цвет фона
@@ -227,7 +228,9 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                             Icon(
                                               Icons.check_circle_outline,
                                               color: currentLocale == "en_US" ||
-                                                      currentLocale == "en_GB"
+                                                      currentLocale ==
+                                                          "en_GB" ||
+                                                      currentLocale == "en"
                                                   ? Colors.white
                                                   : Colors.transparent,
                                             ),
@@ -237,7 +240,9 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                               style: TextStyle(
                                                 color: currentLocale ==
                                                             "en_US" ||
-                                                        currentLocale == "en_GB"
+                                                        currentLocale ==
+                                                            "en_GB" ||
+                                                        currentLocale == "en"
                                                     ? Colors.white
                                                     : Colors.black,
                                                 fontSize: 24,
@@ -283,7 +288,8 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                               return Colors.grey[
                                                   400]!; // Цвет фона при наведении и нажатии
                                             }
-                                            return currentLocale == "ru_RU"
+                                            return currentLocale == "ru_RU" ||
+                                                    currentLocale == "ru"
                                                 ? const Color(0xFF004864)
                                                 : Colors
                                                     .transparent; // Исходный цвет фона
@@ -299,7 +305,8 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                           children: [
                                             Icon(
                                               Icons.check_circle_outline,
-                                              color: currentLocale == "ru_RU"
+                                              color: currentLocale == "ru_RU" ||
+                                                      currentLocale == "ru"
                                                   ? Colors.white
                                                   : Colors.transparent,
                                             ),
@@ -307,7 +314,9 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
                                             Text(
                                               "Русский",
                                               style: TextStyle(
-                                                color: currentLocale == "ru_RU"
+                                                color: currentLocale ==
+                                                            "ru_RU" ||
+                                                        currentLocale == "ru"
                                                     ? Colors.white
                                                     : Colors.black,
                                                 fontSize: 24,
