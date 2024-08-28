@@ -45,8 +45,6 @@ class _SavedWallpapersPageState extends State<SavedWallpapersPage> {
 
   @override
   Widget build(BuildContext context) {
-    final buttonTheme =
-        Provider.of<ThemeProvider>(context).currentTheme.buttonTheme;
     final textTheme =
         Provider.of<ThemeProvider>(context).currentTheme.textTheme;
 
@@ -119,24 +117,11 @@ Widget imagesRender(BuildContext context, List images) {
         gridDelegate: const SliverSimpleGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2),
         itemBuilder: (context, index) {
-          // // get each individual doc
-          // DocumentSnapshot document =
-          //     firestoreImages[index];
-          // String docID = document.id;
-
-          // Map<String, dynamic> data =
-          //     document.data() as Map<String, dynamic>;
-          // String imageLink = data["image"];
-
           return Padding(
             padding: const EdgeInsets.all(4),
             child: GestureDetector(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                // child: Image.network(
-                //   images[index],
-                //   fit: BoxFit.cover,
-                // ),
                 child: CachedNetworkImage(
                   imageUrl: images[index],
                   fit: BoxFit.cover,

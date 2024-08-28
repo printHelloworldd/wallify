@@ -227,19 +227,19 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                     ),
                   ),
 
-                  const SizedBox(width: 25),
+                  // const SizedBox(width: 25),
 
-                  // facebook button
-                  SquareTile(
-                    imagePath: "assets/logo_icons/facebook.png",
-                  ),
+                  // // facebook button
+                  // SquareTile(
+                  //   imagePath: "assets/logo_icons/facebook.png",
+                  // ),
 
-                  const SizedBox(width: 25),
+                  // const SizedBox(width: 25),
 
-                  // apple button
-                  SquareTile(
-                    imagePath: "assets/logo_icons/apple-logo.png",
-                  ),
+                  // // apple button
+                  // SquareTile(
+                  //   imagePath: "assets/logo_icons/apple-logo.png",
+                  // ),
                 ],
               ),
 

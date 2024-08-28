@@ -103,7 +103,7 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
-          // locale: Locale("ru"),
+          // locale: Provider.of<LocaleProvider>(context).locale,
           supportedLocales: S.delegate.supportedLocales,
         ),
       ),

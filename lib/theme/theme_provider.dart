@@ -42,12 +42,6 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // bool isSystemBrightnessDark(BuildContext context) {
-  //   final Brightness brightness = MediaQuery.of(context).platformBrightness;
-  //   print("System brightness: $brightness");
-  //   return brightness == Brightness.dark ? true : false;
-  // }
-
   ThemeData _getThemeData(String theme) {
     switch (theme) {
       case "blue":
@@ -76,75 +70,6 @@ class ThemeProvider with ChangeNotifier {
     await prefs.setBool("isDarkMode", _isDarkMode);
     await prefs.setBool("isAutoMode", _isAutoMode);
   }
-
-  // bool _isDarkMode = false;
-  // bool _isAutoMode = true;
-  // bool _isLightMode = false;
-
-  // bool get isDarkMode => _isDarkMode;
-  // bool get isAutoMode => _isAutoMode;
-  // bool get isLightMode => _isLightMode;
-
-  // Map<String, bool> themes = {
-  //   "blue_theme": true,
-  //   "red_theme": false,
-  // };
-
-  // Future<String> getThemeMode() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String mode = prefs.getString("theme_mode") ?? "auto_mode";
-  //   return mode;
-  // }
-
-  // void toggleTheme(String mode) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   prefs.setString("theme_mode", mode);
-  //   switch (mode) {
-  //     case "auto_mode":
-  //       _isAutoMode = true;
-  //       _isDarkMode = false;
-  //       _isLightMode = false;
-  //       break;
-  //     case "dark_mode":
-  //       _isDarkMode = true;
-  //       _isAutoMode = false;
-  //       _isLightMode = false;
-  //       break;
-  //     case "light_mode":
-  //       _isLightMode = true;
-  //       _isDarkMode = false;
-  //       _isAutoMode = false;
-  //       break;
-  //     default:
-  //   }
-  //   notifyListeners();
-  // }
-
-  // void setDarkMode() {
-  //   _isDarkMode = true;
-  //   _isAutoMode = false;
-  //   notifyListeners();
-  // }
-
-  // void setLightMode() {
-  //   _isDarkMode = false;
-  //   _isAutoMode = false;
-  //   notifyListeners();
-  // }
-
-  // void setAutoMode() {
-  //   _isAutoMode = true;
-  //   notifyListeners();
-  // }
-
-  // void updateThemeFromSystem(bool isSystemDarkMode) async {
-  //   // String themeMode = await getThemeMode();
-  //   if (_isAutoMode) {
-  //     _isDarkMode = isSystemDarkMode;
-  //     _currentTheme = _getThemeData("blue");
-  //     notifyListeners();
-  //   }
-  // }
 
   // ThemeData get themeData {
   //   // return _isDarkMode ? darkBlueTheme : lightBlueTheme;

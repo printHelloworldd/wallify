@@ -1,11 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:async_wallpaper/async_wallpaper.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -100,41 +98,41 @@ class _ImagePageState extends State<ImagePage> {
     });
   }
 
-  // download the image {Linux / Windows / Web}
-  Future openFile({required String url, String? fileName}) async {
-    final name = fileName ?? url.split("/").last;
-    final file = await downloadFile(url, name);
-    if (file == null) return;
+  // // download the image {Linux / Windows / Web}
+  // Future openFile({required String url, String? fileName}) async {
+  //   final name = fileName ?? url.split("/").last;
+  //   final file = await downloadFile(url, name);
+  //   if (file == null) return;
 
-    print("Path: ${file.path}");
+  //   print("Path: ${file.path}");
 
-    // OpenFile.open(file.path);
-  }
+  //   // OpenFile.open(file.path);
+  // }
 
-  // download file into private folder not visible to user
-  Future<File?> downloadFile(String url, String name) async {
-    final appStorage = await getApplicationDocumentsDirectory();
-    final file = File("${appStorage.path}/$name");
+  // // download file into private folder not visible to user
+  // Future<File?> downloadFile(String url, String name) async {
+  //   final appStorage = await getApplicationDocumentsDirectory();
+  //   final file = File("${appStorage.path}/$name");
 
-    try {
-      final response = await Dio().get(
-        url,
-        options: Options(
-          responseType: ResponseType.bytes,
-          followRedirects: false,
-          receiveTimeout: Duration.zero,
-        ),
-      );
+  //   try {
+  //     final response = await Dio().get(
+  //       url,
+  //       options: Options(
+  //         responseType: ResponseType.bytes,
+  //         followRedirects: false,
+  //         receiveTimeout: Duration.zero,
+  //       ),
+  //     );
 
-      final raf = file.openSync(mode: FileMode.write);
-      raf.writeFromSync(response.data);
-      await raf.close();
+  //     final raf = file.openSync(mode: FileMode.write);
+  //     raf.writeFromSync(response.data);
+  //     await raf.close();
 
-      return file;
-    } catch (e) {
-      return null;
-    }
-  }
+  //     return file;
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
 
   // save image to gallery {Android / IOS}
   void downloadImage() async {
@@ -211,9 +209,6 @@ class _ImagePageState extends State<ImagePage> {
   Widget build(BuildContext context) {
     final themeData = Provider.of<ThemeProvider>(context).currentTheme;
     final lightButtonTheme = lightBlueTheme.buttonTheme.colorScheme;
-    final lightTextTheme = lightBlueTheme.textTheme;
-
-    bool downloading = false;
 
     return Scaffold(
       appBar: AppBar(
@@ -233,12 +228,6 @@ class _ImagePageState extends State<ImagePage> {
             // image
             ClipRRect(
               borderRadius: BorderRadius.circular(24),
-              // child: Image.network(
-              //   widget.imagePath,
-              //   width: MediaQuery.of(context).size.width,
-              //   height: MediaQuery.of(context).size.height / 1.25,
-              //   fit: BoxFit.cover,
-              // ),
               child: CachedNetworkImage(
                 imageUrl: widget.imagePath,
                 fit: BoxFit.cover,
@@ -309,16 +298,6 @@ class _ImagePageState extends State<ImagePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                // Padding(
-                                //   padding: const EdgeInsets.only(left: 16),
-                                //   child: Text(
-                                //     S.of(context).setAsWallpaper,
-                                //     style: const TextStyle(
-                                //       color: Colors.white,
-                                //       fontWeight: FontWeight.bold,
-                                //     ),
-                                //   ),
-                                // ),
                                 TextButton(
                                   onPressed: () {
                                     setWallpaper(0);

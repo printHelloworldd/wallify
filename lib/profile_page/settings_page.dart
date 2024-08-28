@@ -27,8 +27,6 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
   void initState() {
     super.initState();
     checkVersion();
-    // cacheManager = SimpleAppCacheManager();
-    // updateCacheSize();
     findSystemLocale().then((value) {
       switch (value) {
         case "ru_RU":
@@ -67,25 +65,6 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
 
   var currentLocale = Intl.getCurrentLocale();
 
-  // // Cache management
-  // late final SimpleAppCacheManager cacheManager;
-  // late ValueNotifier<String> cacheSizeNotifier = ValueNotifier<String>('');
-  // var cacheSize = "";
-
-  // void updateCacheSize() async {
-  //   cacheSize = await cacheManager.getTotalCacheSize();
-  //   cacheSizeNotifier.value = cacheSize;
-  // }
-
-  // void clearCache() async {
-  //   cacheManager.clearCache();
-  //   updateCacheSize();
-  //   Fluttertoast.showToast(
-  //     msg: '😊 ${S.of(context).downloadedToGallery}',
-  //     backgroundColor: Colors.green,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -103,11 +82,11 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
         S.of(context).appColorTheme,
         S.of(context).tryAnotherLook
       ],
-      [
-        Icons.history,
-        S.of(context).clearSearchHistory,
-        S.of(context).thisDeletesAllOfYourSearchHistoryData
-      ],
+      // [
+      //   Icons.history,
+      //   S.of(context).clearSearchHistory,
+      //   S.of(context).thisDeletesAllOfYourSearchHistoryData
+      // ],
       [
         const ImageIcon(
           AssetImage("assets/icons/broom.png"),
@@ -116,12 +95,16 @@ class _SettingsPageState extends State<SettingsPage> with CacheMixin {
         S.of(context).clearCache,
         S.of(context).cacheSize,
       ],
+      // [
+      //   Icons.settings_backup_restore,
+      //   S.of(context).resetAllSettings,
+      //   S.of(context).resetAllSettingsDesc
+      // ],
       [
-        Icons.settings_backup_restore,
-        S.of(context).resetAllSettings,
-        S.of(context).resetAllSettingsDesc
+        Icons.system_update,
+        S.of(context).appVersion,
+        currenctAppVersion,
       ],
-      [Icons.system_update, S.of(context).appVersion, currenctAppVersion],
     ];
     return Scaffold(
       appBar: AppBar(

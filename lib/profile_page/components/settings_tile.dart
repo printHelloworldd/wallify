@@ -29,13 +29,6 @@ class SettingsTile extends StatefulWidget {
 }
 
 class _SettingsTileState extends State<SettingsTile> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _selectedTheme =
-  //       List<bool>.generate(themeSelections.length, (index) => false);
-  // }
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -76,9 +69,6 @@ class _SettingsTileState extends State<SettingsTile> {
         title: Text(
           widget.title,
           style: TextStyle(
-            // color: themeData == darkBlueTheme
-            //     ? themeData.primaryColorLight
-            //     : themeData.primaryColorDark,
             color: themeProvider.isDarkMode == true
                 ? themeData.primaryColorLight
                 : themeData.primaryColorDark,

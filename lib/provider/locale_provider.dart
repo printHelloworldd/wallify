@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wallify/generated/l10n.dart';
 
 class LocaleProvider with ChangeNotifier {
-  Locale _locale = const Locale('en');
+  late Locale _locale;
 
   LocaleProvider() {
     _loadFromPrefs();
@@ -23,6 +23,9 @@ class LocaleProvider with ChangeNotifier {
     findSystemLocale().then((value) {
       switch (value) {
         case "ru_RU":
+          setLocale(Locale(value));
+          break;
+        case "ru":
           setLocale(Locale(value));
           break;
         case "en_US":

@@ -7,6 +7,7 @@ import 'package:wallify/home%20page/components/masonry_grid_view_component.dart'
 import 'package:wallify/home%20page/fetched_images_provider.dart';
 import 'package:wallify/home%20page/search_image_page.dart';
 import 'package:wallify/image_page/image_page.dart';
+import 'package:wallify/provider/locale_provider.dart';
 
 import 'package:wallify/theme/theme_provider.dart';
 
@@ -19,13 +20,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-  // void initState() {
-  //   super.initState();
-  //   // _tabController = TabController(length: 3, vsync: this);
-  //   Provider.of<FetchedImagesProvider>(context, listen: false)
-  //       .initializeImages();
-  // }
-
   final TextEditingController searchController = TextEditingController();
   final ScrollController scrollController = ScrollController();
 
@@ -51,57 +45,8 @@ class _HomePageState extends State<HomePage>
     "Architecture"
   ];
 
-  // final List<String> images = [
-  //   "amine-mayoufi-_5PyWBp9HqA-unsplash.jpg",
-  //   "john-towner-3Kv48NS4WUU-unsplash.jpg",
-  //   "mads-schmidt-rasmussen-6YmzwamGzCg-unsplash.jpg",
-  //   "marcelo-cidrack-7jZNgIuJrCM-unsplash.jpg",
-  //   "marcelo-vaz-ka6WGHXcFMY-unsplash.jpg",
-  //   "paul-pastourmatzis-KT3WlrL_bsg-unsplash.jpg",
-  //   "tobias-rademacher-NuBvAE6VfSM-unsplash.jpg"
-  // ];
-
-  // final List<String> images = [
-  //   "https://unsplash.com/photos/gray-car-FcyipqujfGg",
-  //   "https://unsplash.com/photos/gray-sports-coupe-parking-during-daytime-6lSBynPRaAQ",
-  //   "https://unsplash.com/photos/black-and-red-lamborghini-aventador-sv-rear-left-side-aTX_bRaOZnA",
-  //   "https://unsplash.com/photos/yellow-porsche-911-on-road-during-daytime-DwxlhTvC16Q",
-  //   "https://images.unsplash.com/photo-1514316454349-750a7fd3da3a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
-  //   "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2Fyc3xlbnwwfHwwfHx8MA%3D%3D",
-  //   "https://unsplash.com/photos/orange-lamborghini-car-oUBjd22gF6w",
-  // ];
-
   bool isPressed = false;
   bool isHovered = false;
-
-  // List<List> correctImages(Map imagesList) {
-  //   List<List> result = [];
-  //   for (int i = 0; i < imagesList.length; i++) {
-  //     String tinyImage = removeParams(imagesList[i]["src"]["tiny"]);
-  //     String large2xImage = imagesList[i]["src"]["large2x"];
-  //     List image = [tinyImage, large2xImage];
-  //     result.add(image);
-  //   }
-
-  //   return result;
-  // }
-
-  // int page = 1;
-  // loadMore() async {
-  //   setState(() {
-  //     page++;
-  //   });
-  //   String url = "https://api.pexels.com/v1/curated?per_page=15&page=$page";
-  //   await http.get(Uri.parse(url), headers: {
-  //     "Authorization":
-  //         "kXYEsDUMnCtWlsp4vhKd1HoUcDKOsqcckaY5mHUoN34jS13U46Mp28MS"
-  //   }).then((value) {
-  //     Map result = jsonDecode(value.body);
-  //     setState(() {
-  //       images.addAll(result["photos"]);
-  //     });
-  //   });
-  // }
 
   void moveToImagePage(int index) {
     Navigator.push(
@@ -132,8 +77,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    final buttonTheme =
-        Provider.of<ThemeProvider>(context).currentTheme.buttonTheme;
+    final localeProvider = Provider.of<LocaleProvider>(
+        context); // If delete it, locale doesn't load from prefs
     final textTheme =
         Provider.of<ThemeProvider>(context).currentTheme.textTheme;
 
@@ -164,71 +109,6 @@ class _HomePageState extends State<HomePage>
                   style: const TextStyle(color: Colors.black),
                   onSubmitted: (query) => moveToSearchImagePage(query),
                 ),
-
-                // MouseRegion(
-                //   onEnter: (_) {
-                //     setState(() {
-                //       isHovered = true;
-                //     });
-                //   },
-                //   onExit: (_) {
-                //     setState(() {
-                //       isHovered = false;
-                //     });
-                //   },
-                //   child: Container(
-                //     padding: const EdgeInsets.all(10),
-                //     height: 48,
-                //     decoration: BoxDecoration(
-                //       color: isPressed
-                //           ? lightTextFieldTheme.colorScheme.background
-                //           : (isHovered
-                //               ? lightTextFieldTheme.colorScheme.secondary
-                //               : lightTextFieldTheme.colorScheme.background),
-                //       borderRadius: BorderRadius.circular(8),
-                //       border: Border.all(
-                //         color: isPressed
-                //             ? lightTextFieldTheme.colorScheme.secondary
-                //             : lightTextFieldTheme.colorScheme.primary,
-                //       ),
-                //     ),
-                //     child: Row(
-                //       children: [
-                //         // Search icon
-                //         Padding(
-                //           padding: const EdgeInsets.only(right: 18),
-                //           child: Image.asset(
-                //             "assets/icons/magnifying-glass.png",
-                //             width: 24,
-                //             color: isPressed
-                //                 ? lightTextFieldTheme.colorScheme.secondary
-                //                 : (isHovered
-                //                     ? lightTextFieldTheme
-                //                         .colorScheme.background
-                //                     : lightTextFieldTheme
-                //                         .colorScheme.secondary),
-                //           ),
-                //         ),
-
-                //         // Search textfield
-                //         Expanded(
-                //           child: TextField(
-                //             controller: searchController,
-                //             decoration: const InputDecoration(
-                //               border: InputBorder.none,
-                //               hintText: "Nature, Film",
-                //             ),
-                //             onTap: () {
-                //               setState(() {
-                //                 isPressed = true;
-                //               });
-                //             },
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
 
                 const SizedBox(height: 20),
 

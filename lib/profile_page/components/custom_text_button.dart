@@ -55,9 +55,6 @@ class CustomTextButton extends StatelessWidget {
             ),
             Icon(
               icon,
-              /* color: themeData == darkBlueTheme
-                    ? themeData.primaryColorDark
-                    : themeData.primaryColorLight */
               color: themeProvider.isDarkMode == true
                   ? themeData.primaryColorLight
                   : themeData.primaryColorDark,

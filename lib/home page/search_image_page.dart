@@ -171,11 +171,6 @@ class _HomePageState extends State<SearchImagePage>
                                   listen: false)
                               .fetchImages(searchQuery);
 
-                          // scrollController.animateTo(
-                          //   0,
-                          //   duration: const Duration(milliseconds: 20),
-                          //   curve: Curves.easeOut,
-                          // );
                           scrollController.jumpTo(0);
                         },
                       ),
