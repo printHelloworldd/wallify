@@ -180,7 +180,7 @@ class SetButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 8),
         decoration: BoxDecoration(
-          color: lightButtonTheme!.primary,
+          color: lightButtonTheme.primary,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Center(
